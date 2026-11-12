@@ -148,6 +148,19 @@ details.rules ol,details.rules ul{margin:10px 0 4px;padding-left:20px;display:fl
 .pill{display:inline-block;font-size:12px;font-weight:800;padding:4px 10px;border-radius:99px;background:var(--felt-2);border:1px solid var(--line)}
 .offline-list{display:flex;flex-direction:column;gap:10px}
 .note{font-size:13px;color:var(--muted);text-align:center}
+.offhead{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin:34px 0 14px;padding-top:22px;border-top:2px dashed var(--line)}
+.offbadge{flex:none;font-family:var(--display);font-weight:900;font-size:11px;line-height:1.1;text-align:center;color:var(--on-accent);background:var(--sun);border-radius:50%;width:66px;height:66px;display:grid;place-items:center;transform:rotate(10deg);box-shadow:0 0 0 4px var(--ink),0 0 0 6px var(--sun)}
+.rhero{border-radius:24px;overflow:hidden;position:relative}
+.rhero .art{height:170px;border-radius:24px}
+.rhero .cover{font-size:clamp(40px,13vw,64px)!important}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.facts div{background:var(--felt);border:1px solid var(--line);border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.facts b{font-size:14px;line-height:1.25}
+.facts span{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;counter-reset:st}
+.steps li{position:relative;background:var(--text);color:var(--on-accent);border-radius:18px;padding:16px 16px 16px 64px;font-size:16px;line-height:1.45;font-weight:600;box-shadow:0 8px 0 rgba(0,0,0,.25);transform:rotate(var(--t,0deg));animation:pop .4s backwards;animation-delay:calc(var(--i,0) * 60ms)}
+.steps li::before{counter-increment:st;content:counter(st);position:absolute;left:12px;top:12px;width:40px;height:40px;border-radius:50%;background:var(--c,var(--sun));display:grid;place-items:center;font-family:var(--display);font-weight:900;font-size:18px;box-shadow:inset 0 0 0 2px rgba(26,19,48,.25)}
+.steps li:nth-child(odd){--t:-.6deg}.steps li:nth-child(even){--t:.7deg}
 #toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--mint);color:var(--on-accent);font-weight:800;padding:12px 18px;border-radius:14px;z-index:30;max-width:calc(100% - 32px);box-shadow:0 10px 30px rgba(0,0,0,.4)}
 #toast.bad{background:var(--rose);color:#fff}
 .adminlink{display:block;margin:10px auto 0;border:0;background:transparent;color:var(--muted);font-size:12px;text-decoration:underline}
@@ -402,9 +415,11 @@ const OFFLINE = [
   rules:GAMES.find(g=>g.id==="shagai").rules}
 ];
 const BUILTIN_COUNT = GAMES.length;
+const OFFLOOK={wink:["#ff7a59","Цаас, үзэг эсвэл хөзөр","10–20 мин"],liar:["#f2f0e6","52 хөзөр","15–30 мин"],bus:["#ffcf5c","52 хөзөр","10–20 мин"],tower:["#b9a4ff","52 хөзөр","20–30 мин"],forbid:["#7fe0c0","Цаас, үзэг, скотч","Үдэшлэгийн турш"],story:["#ff9ec4","Юу ч хэрэггүй","5–15 мин"],seven:["#8fd0ff","Юу ч хэрэггүй","5–10 мин"],"shagai-real":["#efe2c8","4 шагай","10–20 мин"]};
+const COVER_OFF={wink:"ИРМЭЭД\nАЛ!",liar:"ХУД\nЛАА!",bus:"4 ШАТ",tower:"ЦАМ\nХАГ",forbid:"ХОРИО\nТОЙ!",story:"НЭГ\nҮГЭЭР",seven:"7 БУМ!","shagai-real":"ШАГАЙ\nШИД"};
 const COVER={huzruur:"ШИЙТ\nГЭЛ!",imposter:"ХЭН\nБЭ?",bomb:"БУМ!",who:"ЧИ\nЧИ ЧИ",laws:"ХУУЛЬ\n№1",shagai:"МОРЬ\nТЭМЭЭ",act:"ДОХИО\nЗАНГАА",pairs:"ХОС\nХОС",sync:"1 = 1",talk:"ЯРЬЯ\nҮҮ?",cards:"♠ K\n♥ Q",hilo:"↑ ДЭЭШ\n↓ ДООШ",wyr:"ЭНЭ\nЭСВЭЛ",never:"ХЭЗЭЭ\nЧ ҮГҮЙ",hum:"МММ\nНА-НА",minute:"30\"",mission:"ШШШ…",guess:"??\nХЭД"};
 const MINMAX={huzruur:[2,99],imposter:[3,12],bomb:[3,99],who:[3,99],laws:[3,99],shagai:[2,99],act:[4,99],pairs:[4,12],sync:[2,2],talk:[2,2],cards:[3,99],hilo:[2,99],wyr:[2,99],never:[3,99],hum:[3,99],minute:[2,99],mission:[3,12],guess:[2,99],wink:[6,99],liar:[3,8],bus:[2,8],tower:[3,8],forbid:[3,99],story:[3,99],seven:[3,99],"shagai-real":[2,99]};
-[...GAMES,...OFFLINE].forEach(g=>{ const m=MINMAX[g.id]||[2,99]; g.min=m[0]; g.max=m[1]; g.cover=COVER[g.id]||""; g.img=""; });
+[...GAMES,...OFFLINE].forEach(g=>{ const m=MINMAX[g.id]||[2,99]; g.min=m[0]; g.max=m[1]; g.cover=COVER[g.id]||COVER_OFF[g.id]||""; g.img=""; if(OFFLOOK[g.id]){ g.c=OFFLOOK[g.id][0]; g.needs=OFFLOOK[g.id][1]; g.time=OFFLOOK[g.id][2]; } });
 const GDEF={}; [...GAMES,...OFFLINE].forEach(g=>GDEF[g.id]={name:g.name,players:g.players,desc:g.desc,rules:g.rules.slice(),min:g.min,max:g.max,cover:g.cover,img:""});
 const fits=(g,n)=>!n||(g.min<=n&&g.max>=n);
 
@@ -459,7 +474,7 @@ function rebuildContent(){
 
 /* ---------- routing ---------- */
 let filter = "all", current = "home";
-function go(id){ clearTimers(); closeHZ(); window.scrollTo(0,0); current=id||"home"; if(!id) return home(); if(id==="admin"||(id==="edit"&&MODE==="server"&&!ADMIN)) return adminLogin(); if(id==="edit") return editor(); const g=GAMES.find(x=>x.id===id); if(!g) return home(); (SCREENS[id]||customScreen)(g); }
+function go(id){ clearTimers(); closeHZ(); window.scrollTo(0,0); current=id||"home"; if(!id) return home(); if(id==="admin"||(id==="edit"&&MODE==="server"&&!ADMIN)) return adminLogin(); if(id==="edit") return editor(); if(id.startsWith("rules-")){ const rg=[...OFFLINE,...GAMES].find(x=>x.id===id.slice(6)); return rg?rulesScreen(rg):home(); } const g=GAMES.find(x=>x.id===id); if(!g) return home(); (SCREENS[id]||customScreen)(g); }
 
 function rulesHTML(g,open){ return `<details class="rules"${open?" open":""}><summary>Яаж тоглох вэ</summary><ol>${g.rules.map(r=>`<li>${esc(r)}</li>`).join("")}</ol></details>`; }
 function frame(g,inner){
@@ -534,12 +549,9 @@ function home(){
   ${filter!=="offline"&&list.length?`<button type="button" class="pickbox" id="pick">${ART.spinner}<div><b id="pickt">Юу тоглох вэ?</b><span id="picks">Дараад хүрд эргүүл. ${list.length} тоглоомоос нэгийг сонгоно.</span></div></button>`:""}
   ${filter!=="offline"?`<div class="grid">${list.map((g,idx)=>`<button type="button" class="game" style="--c:${g.c};--i:${idx}" data-g="${g.id}">${coverHTML(g,idx)}<div class="body"><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p>${g.custom||g.modes.includes("cards")?`<div class="meta">${g.custom?`<span class="tag">Миний</span>`:""}${g.modes.includes("cards")?`<span class="tag">Хөзөр</span>`:""}</div>`:""}</div></button>`).join("")}
     ${(MODE==="local"||ADMIN)&&(filter==="mine"||filter==="all")?`<button type="button" class="game" style="--c:#3a3060" id="addgame"><div class="art" aria-hidden="true" style="--rot:-4deg;--mis:rgba(255,194,61,.8)"><span class="cover" style="color:var(--sun);text-shadow:none">+ ШИНЭ</span></div><div class="body"><h3>Өөрийн тоглоом нэмэх</h3><p>Нэр, дүрэм, карт бичээд л болно.</p></div></button>`:""}</div>`:""}
-  <h2 class="section-title">${filter==="cards"?"Хөзрөөр утасгүй тоглох":"Утасгүй тоглох дүрмүүд"}</h2>
-  <p class="muted small" style="margin:0 0 12px">Дүрмийг нь уншаад шууд тогло. ${filter==="cards"?"Ердийн 52 хөзөр л хэрэгтэй.":"Дээрх тоглоомуудын дүрмийг ч «Утасгүй» шүүлтүүрээс харж болно."}</p>
-  <div class="offline-list">
-    ${offl.map(offlineCard).join("")}
-    ${filter==="offline"?GAMES.filter(g=>g.id!=="shagai").map(offlineCard).join(""):""}
-  </div>
+  ${offl.length?`<div class="offhead"><div><h2 class="section-title" style="margin:0">${filter==="cards"?"Хөзрөөр, утасгүй":"Утасгүй тоглоом"}</h2><p class="muted small" style="margin:4px 0 0">Утсаа хажуудаа тавь. Дүрмийг нь нэг уншаад л тогло.</p></div><span class="offbadge">УТАС<br>ХЭРЭГГҮЙ</span></div>
+  <div class="grid">${offl.map((g,idx)=>`<button type="button" class="game off" style="--c:${g.c};--i:${idx}" data-o="${g.id}">${coverHTML(g,idx+2)}<div class="body"><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p><div class="meta"><span class="tag">${esc(g.needs||"")}</span></div></div></button>`).join("")}</div>`:""}
+  ${filter==="offline"?`<h2 class="section-title">Утсан дээрх тоглоомуудын дүрэм</h2><p class="muted small" style="margin:0 0 12px">Эдгээрийг ч утасгүйгээр, цаас үзгээр тоглож болно.</p><div class="grid">${GAMES.filter(g=>!g.hidden&&fits(g,S.count)&&g.id!=="shagai").map((g,idx)=>`<button type="button" class="game off" style="--c:${g.c};--i:${idx}" data-o="${g.id}">${coverHTML(g,idx)}<div class="body"><h3>${esc(g.name)}</h3><p>Дүрмийг харах</p></div></button>`).join("")}</div>`:""}
   <p class="note" style="margin-top:24px">Хэмжээгээ мэдэж, бие биеэ хүндэл. Хэн ч хүсээгүй зүйлээ хийх албагүй.</p>
   ${MODE==="server"&&!ADMIN?`<button class="adminlink" id="adm" type="button">Админ</button>`:""}`;
   const adm=$("#adm"); if(adm) adm.onclick=()=>go("admin");
@@ -550,6 +562,7 @@ function home(){
   $("#drink").onclick=()=>{S.drink=!S.drink;save();home();};
   document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{filter=b.dataset.f;home();});
   document.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>go(b.dataset.g));
+  document.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>go("rules-"+b.dataset.o));
   const eb=$("#edit"); if(eb) eb.onclick=()=>go("edit");
   const pk=$("#pick"); if(pk) pk.onclick=()=>{ if(pk.classList.contains("spin")) return; pk.classList.add("spin"); let k=0, steps=14+Math.floor(Math.random()*8), pickG;
     const tick=()=>{ pickG=list[Math.floor(Math.random()*list.length)]; $("#pickt").textContent=pickG.name; beep(400+k*30,.04); k++; if(k<steps) timers.push(setTimeout(tick,60+k*k*2)); else { pk.classList.remove("spin"); beep(990,.2); buzz(60); $("#picks").textContent="Дахин дарвал энэ тоглоом нээгдэнэ"; pk.onclick=()=>go(pickG.id); } };
@@ -946,7 +959,7 @@ function gameEditForm(id){
     <div class="row"><label class="stack" style="flex:1"><span class="label">Хамгийн цөөн</span><input type="number" id="emin" min="1" max="99" value="${g.min}"></label><label class="stack" style="flex:1"><span class="label">Хамгийн олон</span><input type="number" id="emax" min="1" max="99" value="${g.max}"></label></div>
     <label class="stack"><span class="label">Тоглогчийн тоо (харагдах бичиг)</span><input type="text" id="ep" maxlength="20" value="${esc(g.players)}"></label>
     <label class="stack"><span class="label">Товч тайлбар</span><input type="text" id="ed" maxlength="100" value="${esc(g.desc)}"></label>
-    ${OFFLINE.includes(g)?"":`<label class="stack"><span class="label">Картан дээрх том бичиг (мөр шилжүүлж болно)</span><textarea class="short" id="ecv" style="min-height:60px">${esc(g.cover||"")}</textarea></label>
+    ${`<label class="stack"><span class="label">Картан дээрх том бичиг (мөр шилжүүлж болно)</span><textarea class="short" id="ecv" style="min-height:60px">${esc(g.cover||"")}</textarea></label>
     <div class="stack"><span class="label">Картын зураг (заавал биш)</span><div class="row"><input type="file" id="eimg" accept="image/*" style="flex:1;min-width:0"><button class="mini rose" id="eimgx" type="button">Зураггүй</button></div><span class="small muted" id="eimgs">${g.img?"Зурагтай":"Зураг байхгүй"}</span></div>`}
     <label class="stack"><span class="label">Дүрэм (мөр бүр нэг алхам)</span><textarea id="er">${esc(g.rules.join("\n"))}</textarea></label>
     <div class="row"><button class="btn" style="width:auto" id="es" type="button">Хадгалах</button><button class="mini" id="erst" type="button">Анхных руу</button><button class="mini" id="ex" type="button">Хаах</button></div>
@@ -961,6 +974,21 @@ function gameEditForm(id){
     if($("#ecv")) Object.assign(e[id]=e[id]||{},{cover:$("#ecv").value.trim(),img:newImg===undefined?g.img:newImg});
     e[id]=Object.assign(e[id]||{},{name:$("#en").value.trim()||g.name,players:$("#ep").value.trim()||g.players,desc:$("#ed").value.trim(),rules:lines,min:Math.max(1,+$("#emin").value||1),max:Math.max(1,+$("#emax").value||99)});
     store("pp-gedits",e); rebuildContent(); editor(); };
+}
+
+/* ---------- rules screen (offline play) ---------- */
+function rulesScreen(g){
+  current="rules"; const isOff=OFFLINE.includes(g);
+  $("#app").innerHTML=`<div class="topbar"><button class="back" type="button" aria-label="Буцах" id="back">←</button><h2>${esc(g.name)}</h2></div>
+  <div class="stack" style="--c:${g.c}">
+    <div class="rhero game" style="--c:${g.c};animation:none">${coverHTML(g,1)}</div>
+    <p style="margin:0;font-size:17px;font-weight:600">${esc(g.desc)}</p>
+    <div class="facts"><div><span>Хүн</span><b>${esc(g.players)}</b></div><div><span>Хэрэгтэй</span><b>${esc(g.needs||"Утас")}</b></div><div><span>Хугацаа</span><b>${esc(g.time||"Хүссэнээрээ")}</b></div></div>
+    <div class="label" style="margin-top:8px">Яаж тоглох вэ</div>
+    <ol class="steps">${g.rules.map((r,i)=>`<li style="--i:${i}">${esc(r)}</li>`).join("")}</ol>
+    <div class="btns" style="margin-top:8px">${isOff?`<button class="btn rose full" id="hz" type="button">Шийтгэл сугалах</button>`:`<button class="btn ghost" id="hz" type="button">Шийтгэл сугал</button><button class="btn" id="play" type="button">Утсаар тоглох</button>`}</div>
+  </div>`;
+  $("#back").onclick=()=>go(); $("#hz").onclick=()=>openHZ(); const pl=$("#play"); if(pl) pl.onclick=()=>go(g.id);
 }
 
 /* ---------- admin login ---------- */
