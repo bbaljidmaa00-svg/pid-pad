@@ -180,7 +180,12 @@ const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.f
 const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 let CV=0; /* content version: bump after edits so decks reshuffle */
 function deck(arr){ let pool=[],v=-1; return ()=>{ if(v!==CV||!pool.length){ pool=shuffle(arr.length?arr:["(Жагсаалт хоосон байна. «Засах» хэсгээс нэмээрэй.)"]); v=CV; } return pool.pop(); }; }
-function store(k,v){ try{ if(v===undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k,JSON.stringify(v)); }catch(e){ return null; } }
+const MEM={}; let STORAGE_OK=true;
+try{ localStorage.setItem("pp-test","1"); if(localStorage.getItem("pp-test")!=="1") STORAGE_OK=false; localStorage.removeItem("pp-test"); }catch(e){ STORAGE_OK=false; }
+function store(k,v){
+  if(v===undefined){ if(k in MEM) return MEM[k]; try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } }
+  MEM[k]=v; try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){ STORAGE_OK=false; }
+}
 let actx=null;
 function beep(f=880,d=.06,v=.15){ try{ actx=actx||new (window.AudioContext||window.webkitAudioContext)(); const o=actx.createOscillator(),g=actx.createGain(); o.frequency.value=f; g.gain.value=v; o.connect(g); g.connect(actx.destination); o.start(); g.gain.exponentialRampToValueAtTime(.0001,actx.currentTime+d); o.stop(actx.currentTime+d+.02);}catch(e){} }
 function buzz(p){ try{ navigator.vibrate && navigator.vibrate(p); }catch(e){} }
@@ -533,7 +538,8 @@ function editor(){
   const mine = localGames();
   $("#app").innerHTML=`<div class="topbar"><button class="back" type="button" aria-label="Буцах" id="back">←</button><h2>Засах</h2></div>
   <div class="stack">
-    <p class="muted small" style="margin:0">Энд хийсэн өөрчлөлт энэ утсанд хадгалагдана. Найзууддаа өгөх бол доорх «Хуваалцах» хэсгийг ашигла.</p>
+    ${STORAGE_OK?`<p class="muted small" style="margin:0">Энд хийсэн өөрчлөлт зөвхөн энэ утас, энэ хөтөч дээр хадгалагдана. Өөр утас, өөр хаяг (жишээ нь Cloudflare дээрх сайт) дээр харагдахгүй. Бусад газар харуулах бол доорх «Хуваалцах» хэсгийг ашигла.</p>`
+     :`<div class="card rose" style="min-height:0;padding:16px"><div class="big" style="font-size:17px">Энэ апп засварыг удаан хадгалж чадахгүй байна.</div><div class="small">Засвар чинь одоо ажиллана, гэхдээ хуудсыг хаахад алга болно. Сайтыг Safari эсвэл Chrome хөтчөөр нээгээд засна уу. Эсвэл засаад «Хуваалцах → Хуулах» дарж текстээ хадгалж аваарай.</div></div>`}
     <section class="panel" id="gamesec">
       <div class="row" style="justify-content:space-between"><h3 style="font-size:17px">Миний тоглоомууд</h3><button class="mini" id="newg" type="button">+ Шинэ тоглоом</button></div>
       ${mine.length?mine.map((c,i)=>`<div class="row" style="justify-content:space-between;border-top:1px solid var(--line);padding-top:10px"><span style="min-width:0"><b>${esc(c.name)}</b> <span class="muted small">· ${esc(c.players||"")}</span></span><span class="row"><button class="mini" type="button" data-eg="${i}">Засах</button><button class="mini rose" type="button" data-dg="${i}">Устгах</button></span></div>`).join(""):`<div class="muted small">Одоогоор алга. «Шинэ тоглоом» дарж өөрийн санасан тоглоомоо нэмээрэй. Карт бичвэл утсаар сугалдаг тоглоом болно.</div>`}
