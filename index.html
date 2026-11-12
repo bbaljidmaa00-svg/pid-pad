@@ -150,6 +150,9 @@ details.rules ol,details.rules ul{margin:10px 0 4px;padding-left:20px;display:fl
 .pill{display:inline-block;font-size:12px;font-weight:800;padding:4px 10px;border-radius:99px;background:var(--felt-2);border:1px solid var(--line)}
 .offline-list{display:flex;flex-direction:column;gap:10px}
 .note{font-size:13px;color:var(--muted);text-align:center}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--mint);color:var(--on-accent);font-weight:800;padding:12px 18px;border-radius:14px;z-index:30;max-width:calc(100% - 32px);box-shadow:0 10px 30px rgba(0,0,0,.4)}
+#toast.bad{background:var(--rose);color:#fff}
+.adminlink{display:block;margin:10px auto 0;border:0;background:transparent;color:var(--muted);font-size:12px;text-decoration:underline}
 .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .editbtn{flex:none;border:1px solid var(--line);background:var(--felt);border-radius:12px;padding:10px 14px;font-weight:800;font-size:14px}
 textarea{width:100%;min-height:180px;background:var(--ink);border:1px solid var(--line);color:var(--text);border-radius:12px;padding:10px 12px;font:inherit;font-size:14px;line-height:1.45;resize:vertical}
@@ -190,7 +193,18 @@ let CV=0; /* content version: bump after edits so decks reshuffle */
 function deck(arr){ let pool=[],v=-1; return ()=>{ if(v!==CV||!pool.length){ pool=shuffle(arr.length?arr:["(Жагсаалт хоосон байна. «Засах» хэсгээс нэмээрэй.)"]); v=CV; } return pool.pop(); }; }
 const MEM={}; let STORAGE_OK=true;
 try{ localStorage.setItem("pp-test","1"); if(localStorage.getItem("pp-test")!=="1") STORAGE_OK=false; localStorage.removeItem("pp-test"); }catch(e){ STORAGE_OK=false; }
+/* MODE: "pending" until we know if the site has a server; "server" = Cloudflare with admin-only edits; "local" = edits saved on this device */
+let MODE="pending", ADMIN=false, BUNDLE={content:{},games:[],gedits:{}}, pushT=null;
+const BKEY={"pp-content":"content","pp-games":"games","pp-gedits":"gedits"};
+function getPw(){ try{ return localStorage.getItem("pp-admin")||MEM.pw||""; }catch(e){ return MEM.pw||""; } }
+function setPw(p){ MEM.pw=p; try{ p?localStorage.setItem("pp-admin",p):localStorage.removeItem("pp-admin"); }catch(e){} }
+function toast(t,bad){ let el=$("#toast"); if(!el){ el=document.createElement("div"); el.id="toast"; document.body.appendChild(el); } el.textContent=t; el.className=bad?"bad":""; el.hidden=false; clearTimeout(el._t); el._t=setTimeout(()=>{el.hidden=true;},2600); }
+function pushServer(){ clearTimeout(pushT); pushT=setTimeout(()=>{
+  fetch("api/content",{method:"PUT",headers:{"content-type":"application/json","authorization":"Bearer "+getPw()},body:JSON.stringify(BUNDLE)})
+   .then(r=>{ if(r.ok) toast("Хадгалагдлаа. Бүх хүнд харагдана."); else if(r.status===401){ toast("Нууц үг буруу байна. Дахин нэвтэрнэ үү.",true); ADMIN=false; setPw(""); } else toast("Сервер хадгалж чадсангүй ("+r.status+").",true); })
+   .catch(()=>toast("Интернэт холболтоо шалгаад дахин хадгална уу.",true)); },300); }
 function store(k,v){
+  if(MODE==="server" && BKEY[k]){ if(v===undefined) return JSON.parse(JSON.stringify(BUNDLE[BKEY[k]])); BUNDLE[BKEY[k]]=v; pushServer(); return; }
   if(v===undefined){ if(k in MEM) return MEM[k]; try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } }
   MEM[k]=v; try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){ STORAGE_OK=false; }
 }
@@ -446,7 +460,7 @@ function rebuildContent(){
 
 /* ---------- routing ---------- */
 let filter = "all", current = "home";
-function go(id){ clearTimers(); closeHZ(); window.scrollTo(0,0); current=id||"home"; if(!id) return home(); if(id==="edit") return editor(); const g=GAMES.find(x=>x.id===id); if(!g) return home(); (SCREENS[id]||customScreen)(g); }
+function go(id){ clearTimers(); closeHZ(); window.scrollTo(0,0); current=id||"home"; if(!id) return home(); if(id==="admin"||(id==="edit"&&MODE==="server"&&!ADMIN)) return adminLogin(); if(id==="edit") return editor(); const g=GAMES.find(x=>x.id===id); if(!g) return home(); (SCREENS[id]||customScreen)(g); }
 
 function rulesHTML(g,open){ return `<details class="rules"${open?" open":""}><summary>Яаж тоглох вэ</summary><ol>${g.rules.map(r=>`<li>${esc(r)}</li>`).join("")}</ol></details>`; }
 function frame(g,inner){
@@ -492,7 +506,7 @@ function home(){
   const offl = (filter==="cards" ? OFFLINE.filter(g=>g.cards) : OFFLINE).filter(ok);
   $("#app").innerHTML=`
   <header class="hero">
-    <div class="hero-top"><div class="logo">Пид <span>Пад</span></div><button class="editbtn" id="edit" type="button">Засах</button></div>
+    <div class="hero-top"><div class="logo">Пид <span>Пад</span></div>${MODE==="local"||ADMIN?`<button class="editbtn" id="edit" type="button">Засах</button>`:""}</div>
     <p>Найзуудтайгаа цуглахад тоглох тоглоомууд. Нэг утсыг дамжуулж тогло, хөзөр шагайгаа гаргаад тогло, эсвэл дүрмийг нь хараад утасгүй тогло.</p>
   </header>
   <section class="panel" aria-label="Тохиргоо">
@@ -518,14 +532,16 @@ function home(){
   </nav>
   ${filter!=="offline"&&list.length?`<button type="button" class="pickbox" id="pick">${ART.spinner}<div><b id="pickt">Юу тоглох вэ?</b><span id="picks">Дараад хүрд эргүүл. ${list.length} тоглоомоос нэгийг сонгоно.</span></div></button>`:""}
   ${filter!=="offline"?`<div class="grid">${list.map((g,idx)=>`<button type="button" class="game" style="--c:${g.c};--i:${idx}" data-g="${g.id}"><div class="art" aria-hidden="true">${artSVG(g)}<span class="num">${esc(g.players)}</span></div><div class="body"><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p>${g.custom||g.modes.includes("cards")?`<div class="meta">${g.custom?`<span class="tag">Миний</span>`:""}${g.modes.includes("cards")?`<span class="tag">Хөзөр</span>`:""}</div>`:""}</div></button>`).join("")}
-    ${filter==="mine"||filter==="all"?`<button type="button" class="game" style="--c:#3a3060" id="addgame"><div class="art" aria-hidden="true" style="color:var(--sun)">${ART.plus}</div><div class="body"><h3>Өөрийн тоглоом нэмэх</h3><p>Нэр, дүрэм, карт бичээд л болно.</p></div></button>`:""}</div>`:""}
+    ${(MODE==="local"||ADMIN)&&(filter==="mine"||filter==="all")?`<button type="button" class="game" style="--c:#3a3060" id="addgame"><div class="art" aria-hidden="true" style="color:var(--sun)">${ART.plus}</div><div class="body"><h3>Өөрийн тоглоом нэмэх</h3><p>Нэр, дүрэм, карт бичээд л болно.</p></div></button>`:""}</div>`:""}
   <h2 class="section-title">${filter==="cards"?"Хөзрөөр утасгүй тоглох":"Утасгүй тоглох дүрмүүд"}</h2>
   <p class="muted small" style="margin:0 0 12px">Дүрмийг нь уншаад шууд тогло. ${filter==="cards"?"Ердийн 52 хөзөр л хэрэгтэй.":"Дээрх тоглоомуудын дүрмийг ч «Утасгүй» шүүлтүүрээс харж болно."}</p>
   <div class="offline-list">
     ${offl.map(offlineCard).join("")}
     ${filter==="offline"?GAMES.filter(g=>g.id!=="shagai").map(offlineCard).join(""):""}
   </div>
-  <p class="note" style="margin-top:24px">Хэмжээгээ мэдэж, бие биеэ хүндэл. Хэн ч хүсээгүй зүйлээ хийх албагүй.</p>`;
+  <p class="note" style="margin-top:24px">Хэмжээгээ мэдэж, бие биеэ хүндэл. Хэн ч хүсээгүй зүйлээ хийх албагүй.</p>
+  ${MODE==="server"&&!ADMIN?`<button class="adminlink" id="adm" type="button">Админ</button>`:""}`;
+  const adm=$("#adm"); if(adm) adm.onclick=()=>go("admin");
   document.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{S.players.splice(+b.dataset.rm,1);save();home();});
   $("#addf").onsubmit=e=>{e.preventDefault();const v=$("#pname").value.trim();if(v){S.players.push(v);save();home();setTimeout(()=>$("#pname")&&$("#pname").focus(),0);}};
   document.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{S.level=+b.dataset.l;save();home();});
@@ -533,7 +549,7 @@ function home(){
   $("#drink").onclick=()=>{S.drink=!S.drink;save();home();};
   document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{filter=b.dataset.f;home();});
   document.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>go(b.dataset.g));
-  $("#edit").onclick=()=>go("edit");
+  const eb=$("#edit"); if(eb) eb.onclick=()=>go("edit");
   const pk=$("#pick"); if(pk) pk.onclick=()=>{ if(pk.classList.contains("spin")) return; pk.classList.add("spin"); let k=0, steps=14+Math.floor(Math.random()*8), pickG;
     const tick=()=>{ pickG=list[Math.floor(Math.random()*list.length)]; $("#pickt").textContent=pickG.name; beep(400+k*30,.04); k++; if(k<steps) timers.push(setTimeout(tick,60+k*k*2)); else { pk.classList.remove("spin"); beep(990,.2); buzz(60); $("#picks").textContent="Дахин дарвал энэ тоглоом нээгдэнэ"; pk.onclick=()=>go(pickG.id); } };
     tick(); };
@@ -546,7 +562,7 @@ function editor(){
   const mine = localGames();
   $("#app").innerHTML=`<div class="topbar"><button class="back" type="button" aria-label="Буцах" id="back">←</button><h2>Засах</h2></div>
   <div class="stack">
-    ${STORAGE_OK?`<p class="muted small" style="margin:0">Энд хийсэн өөрчлөлт зөвхөн энэ утас, энэ хөтөч дээр хадгалагдана. Өөр утас, өөр хаяг (жишээ нь Cloudflare дээрх сайт) дээр харагдахгүй. Бусад газар харуулах бол доорх «Хуваалцах» хэсгийг ашигла.</p>`
+    ${MODE==="server"?`<div class="row" style="justify-content:space-between"><p class="small" style="margin:0;flex:1;min-width:0"><b style="color:var(--mint)">Админ.</b> Энд хийсэн өөрчлөлт сайтад орсон бүх хүнд шууд харагдана. Бусад хүн засах товч харахгүй.</p><button class="mini" id="logout" type="button">Гарах</button></div>`:STORAGE_OK?`<p class="muted small" style="margin:0">Энд хийсэн өөрчлөлт зөвхөн энэ утас, энэ хөтөч дээр хадгалагдана. Өөр утас, өөр хаяг (жишээ нь Cloudflare дээрх сайт) дээр харагдахгүй. Бусад газар харуулах бол доорх «Хуваалцах» хэсгийг ашигла.</p>`
      :`<div class="card rose" style="min-height:0;padding:16px"><div class="big" style="font-size:17px">Энэ апп засварыг удаан хадгалж чадахгүй байна.</div><div class="small">Засвар чинь одоо ажиллана, гэхдээ хуудсыг хаахад алга болно. Сайтыг Safari эсвэл Chrome хөтчөөр нээгээд засна уу. Эсвэл засаад «Хуваалцах → Хуулах» дарж текстээ хадгалж аваарай.</div></div>`}
     <section class="panel" id="gamesec">
       <div class="row" style="justify-content:space-between"><h3 style="font-size:17px">Миний тоглоомууд</h3><button class="mini" id="newg" type="button">+ Шинэ тоглоом</button></div>
@@ -576,6 +592,7 @@ function editor(){
     </section>
   </div>`;
   $("#back").onclick=()=>go();
+  const lo=$("#logout"); if(lo) lo.onclick=()=>{ setPw(""); ADMIN=false; toast("Админаас гарлаа."); go(); };
   const sel=()=>EDIT_SETS.find(s=>s.k===editKey);
   const fill=()=>{ $("#setv").value=setLines(sel()).join("\n"); };
   fill();
@@ -928,10 +945,33 @@ function gameEditForm(id){
     store("pp-gedits",e); rebuildContent(); editor(); };
 }
 
+/* ---------- admin login ---------- */
+function checkPw(pw){ return fetch("api/login",{method:"POST",headers:{"authorization":"Bearer "+pw}}).then(r=>r.status); }
+function adminLogin(){
+  current="admin";
+  $("#app").innerHTML=`<div class="topbar"><button class="back" type="button" aria-label="Буцах" id="back">←</button><h2>Админ</h2></div>
+  <form class="panel" id="lf"><div class="muted small">Зөвхөн админ тоглоом, асуулт, шийтгэлийг засна. Засвар нь сайтад орсон бүх хүнд харагдана.</div>
+    <label class="stack"><span class="label">Нууц үг</span><input type="password" id="pw" autocomplete="current-password"></label>
+    <button class="btn" type="submit">Нэвтрэх</button><div class="small" id="lmsg" style="color:var(--rose);font-weight:700"></div></form>`;
+  $("#back").onclick=()=>go(); $("#pw").focus();
+  $("#lf").onsubmit=e=>{ e.preventDefault(); const pw=$("#pw").value; if(!pw) return; $("#lmsg").textContent="Шалгаж байна…";
+    checkPw(pw).then(st=>{ if(st===200){ setPw(pw); ADMIN=true; toast("Админаар нэвтэрлээ."); go("edit"); }
+      else $("#lmsg").textContent = st===401?"Нууц үг буруу байна.":st===503?"Сервер дээр админы нууц үг тохируулаагүй байна (ADMIN_PASSWORD).":"Алдаа гарлаа ("+st+")."; })
+    .catch(()=>{ $("#lmsg").textContent="Сервертэй холбогдож чадсангүй."; }); };
+}
+
 /* ---------- boot ---------- */
 rebuildContent();
 home();
-try{ fetch("custom.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(d=>{ if(d&&typeof d==="object"){ SHARED={content:d.content||{},games:d.games||[],gedits:d.gedits||{}}; rebuildContent(); if(current==="home") home(); } }).catch(()=>{}); }catch(e){}
+const rerender=()=>{ if(current==="home") home(); else if(current==="edit") editor(); };
+const localMode=()=>{ MODE="local"; try{ fetch("custom.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(d=>{ if(d&&typeof d==="object"){ SHARED={content:d.content||{},games:d.games||[],gedits:d.gedits||{}}; } rebuildContent(); rerender(); }).catch(()=>{ rebuildContent(); rerender(); }); }catch(e){ rebuildContent(); rerender(); } };
+try{
+  fetch("api/content",{cache:"no-store"}).then(r=>{ if(!r.ok||!(r.headers.get("content-type")||"").includes("json")) throw 0; return r.json(); })
+  .then(d=>{ MODE="server"; SHARED={content:{},games:[],gedits:{}}; BUNDLE={content:d.content||{},games:d.games||[],gedits:d.gedits||{}};
+    const pw=getPw(); if(pw) checkPw(pw).then(st=>{ ADMIN=st===200; if(!ADMIN) setPw(""); rerender(); }).catch(()=>{});
+    rebuildContent(); rerender(); if(location.hash==="#admin") go("admin"); })
+  .catch(localMode);
+}catch(e){ localMode(); }
 </script>
 
 </body>
