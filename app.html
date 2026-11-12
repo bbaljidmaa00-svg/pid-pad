@@ -188,6 +188,57 @@ textarea.short{min-height:90px}
 .flip{animation:flip .4s ease-out}
 @keyframes flip{0%{transform:rotateX(70deg);opacity:0}100%{transform:none;opacity:1}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* home v5: hero banner + rails */
+.hero2{position:relative;border-radius:30px;overflow:hidden;isolation:isolate;padding:22px 20px 20px;min-height:340px;display:flex;align-items:flex-end;
+  background:radial-gradient(120% 80% at 100% 0%,rgba(255,92,122,.38),transparent 55%),radial-gradient(90% 70% at 0% 100%,rgba(111,182,255,.28),transparent 60%),linear-gradient(160deg,#2a2152,#1b1538 70%);
+  border:1px solid rgba(255,255,255,.08);box-shadow:0 30px 60px -30px rgba(0,0,0,.7)}
+.hero2::after{content:"";position:absolute;inset:0;z-index:-1;opacity:.35;mix-blend-mode:overlay;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hero-deco{position:absolute;top:0;right:0;width:62%;height:62%;z-index:-1;pointer-events:none}
+.hm{position:absolute;width:118px;border-radius:18px;overflow:hidden;box-shadow:0 18px 30px rgba(0,0,0,.45);border:3px solid #fffdf5;background:var(--c)}
+.hm .art{height:150px;position:relative;overflow:hidden;background:var(--c);color:#1a1330}
+.hm .cover{position:absolute;left:8px;right:-10px;top:30px;font-family:var(--display);font-weight:900;font-size:26px;line-height:.9;letter-spacing:-.04em;white-space:pre-line;color:#1a1330;text-shadow:2px 2px 0 rgba(255,92,122,.8);transform:rotate(-6deg);transform-origin:left top}
+.hm .tape,.hm .num{display:none}
+.hm img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hm.m0{right:16px;top:66px;transform:rotate(9deg);animation:bob 7s ease-in-out infinite}
+.hm.m1{right:108px;top:58px;transform:rotate(-8deg);width:96px;opacity:.85;animation:bob 8s ease-in-out -2s infinite}
+.hm.m2{right:-44px;top:196px;transform:rotate(-14deg);width:84px;opacity:.5;animation:bob 9s ease-in-out -4s infinite}
+@keyframes bob{50%{translate:0 -8px}}
+.hero-txt{position:relative;display:flex;flex-direction:column;gap:10px;width:100%}
+.hero-txt{min-height:298px}
+.hero-txt>.row{margin-bottom:auto}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--sun);background:rgba(26,19,48,.55);border:1px solid rgba(255,194,61,.35);padding:5px 10px;border-radius:99px;backdrop-filter:blur(6px)}
+.editbtn{background:rgba(26,19,48,.6);backdrop-filter:blur(6px)}
+.logo2{font-family:var(--display);font-weight:900;font-size:clamp(56px,19vw,92px);line-height:.86;letter-spacing:-.05em;text-transform:uppercase;margin-top:4px}
+.logo2 span{color:var(--sun);display:inline-block;transform:rotate(-3deg);text-shadow:4px 4px 0 var(--rose)}
+.hero-txt p{margin:0;color:#ece6fa;font-size:15px;max-width:30ch;text-shadow:0 1px 10px rgba(16,11,34,.9)}
+.pickbtn{display:flex;align-items:center;gap:12px;width:100%;margin-top:6px;border:0;border-radius:20px;padding:12px 16px 12px 12px;background:var(--sun);color:var(--on-accent);text-align:left;box-shadow:0 10px 0 -2px #c98a14,0 20px 30px -10px rgba(255,194,61,.5);transition:transform .15s,box-shadow .15s}
+.pickbtn:active{transform:translateY(6px);box-shadow:0 4px 0 -2px #c98a14}
+.pickbtn svg{flex:none;width:44px;height:44px}
+.pickbtn.spin svg{animation:spin .5s linear infinite}
+.pickbtn b{display:block;font-family:var(--display);font-size:17px;line-height:1.15}
+.pickbtn small{display:block;font-size:13px;font-weight:600;opacity:.75}
+.quick{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+.qrow{display:flex;align-items:center;gap:10px}
+.qlabel{flex:none;font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.04em}
+.qrow .seg{flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+.qrow .seg button{flex:1 0 auto;padding:7px 6px;min-width:30px}
+.qset{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;text-align:left;width:100%;background:var(--felt);border:1px solid var(--line);border-radius:16px;padding:10px 14px}
+.qset>span:first-child{font-size:14px}
+.qset>.small{grid-column:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qedit{grid-column:2;grid-row:1/3;font-size:13px;font-weight:800;color:var(--sun)}
+.filters{position:sticky;top:0;z-index:4;margin-inline:-16px;padding:12px 16px;background:linear-gradient(var(--ink) 75%,transparent)}
+.sec{margin-top:26px}
+.sechead{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-bottom:12px}
+.sechead h2{font-size:20px;display:flex;align-items:center;gap:8px}
+.sechead p{margin:3px 0 0;font-size:13px;color:var(--muted)}
+.cnt{font-family:var(--body);font-size:12px;font-weight:800;background:var(--felt-2);border:1px solid var(--line);color:var(--muted);border-radius:99px;padding:1px 8px}
+.seeall{flex:none;border:0;background:transparent;color:var(--sun);font-weight:800;font-size:14px;padding:6px 0}
+.rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(150px,44%);gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:-16px;padding:4px 16px 14px;scroll-padding-inline:16px;scrollbar-width:none;overscroll-behavior-x:contain}
+.rail::-webkit-scrollbar{display:none}
+.rail>.game{scroll-snap-align:start;animation:none}
+.addline{display:block;width:100%;margin-top:22px;border:1.5px dashed var(--line);background:transparent;border-radius:18px;padding:16px;font-weight:800;color:var(--sun)}
+.setsheet{background:var(--felt);border:1px solid var(--line);border-radius:26px;padding:18px;gap:18px;max-height:88vh;overflow:auto}
+@media (min-width:520px){.rail{grid-auto-columns:200px}}
 </style>
 
 <div id="app"></div>
@@ -434,14 +485,48 @@ const OFFLINE = [
   rules:["Тойргоор хүн бүр зөвхөн нэг үг нэмж үлгэр зохионо.","2 секундээс удаан бодох, утгагүй үг хэлэх, өгүүлбэрийг эвдэх хориотой.","Гацсан хүн шийтгэл хийгээд үлгэрийг шинээр эхлүүлнэ.","Нэмэлт: хүн бүр нууц үгтэй. Тэр үгээ үлгэрт оруулж чадвал бусад нь шийтгэл."]},
  {id:"seven",name:"Долоон бум",players:"3+",desc:"Тоол, гэхдээ 7-той тоонд «бум» гэ.",
   rules:["Тойргоор 1-ээс эхэлж дараалан тоолно.","7-д хуваагддаг эсвэл 7 орсон тоо (7, 14, 17, 21...) дээр тоо биш «Бум!» гэнэ.","«Бум» гэсний дараа чиглэл эсрэгээр эргэнэ.","Алдсан хүн шийтгэл хийгээд 1-ээс шинээр эхэлнэ. 50 хүрвэл бүгд хундага өргөнө."]},
+ {id:"sugalaa",name:"Нэг сугалаа",players:"2–12",cards:true,desc:"Хүн бүр нэг хөзөр сугална. Хамгийн бага нь шийтгэл, хамгийн их нь шийтгэлийг сонгоно.",
+  rules:["Хөзрийг холиод ширээний голд нүүрээр нь доош тавь.","Бүгд нэгэн зэрэг нэг нэг хөзөр сугалж, «Гурав, хоёр, нэг!» гэхэд зэрэг нээнэ.","Хүч: 2 хамгийн бага, дараа нь 3 ... 10, Боол, Хатан, Ноён, хамгийн их нь Туз.","Хамгийн бага хөзөртэй хүн шийтгэл авна. Хамгийн их хөзөртэй хүн ямар шийтгэл байхыг сонгоно, эсвэл аппаас сугална.","Хоёр хүн хамгийн бага бол хоёулаа дахин нэг нэг сугална. Дахиад тэнцвэл хоёулаа хамт шийтгэл хийнэ.","Бүх хөзөр дуусталаа үргэлжлүүл. Халаалтын хамгийн хурдан тоглоом."]},
+ {id:"zavsar",name:"Завсарт уу?",players:"2–10",cards:true,desc:"Хоёр хөзрийн дунд гурав дахь нь орох уу? Мөрийгөө тавь.",
+  rules:["Нэг хүн хөзөр тараагч болно. Тоглогч бүрт ээлжлэн тоглоно.","Тараагч хоёр хөзрийг нүүрээр нь дээш тавина. Жишээ: 4 ба Хатан.","Тоглогч «Завсарт» эсвэл «Гадна» гэж хэлнэ. Дараа нь гурав дахь хөзрийг нээнэ.","Таавал тоглогч хэн нэгнийг сонгож Зөөлөн шийтгэл өгнө.","Алдвал өөрөө Халуухан шийтгэл авна.","Гурав дахь хөзөр хоёр хөзрийн аль нэгтэй яг ижил гарвал (жишээ нь 4 эсвэл Хатан) «Шон!» болж, тоглогч Галзуу шийтгэл авна.","Хоёр хөзөр зэрэгцээ (6 ба 7) эсвэл ижил гарвал «Гадна» гэж хэлэхээс өөр аргагүй. Тараагч дуртай бол хөзрийг сольж болно."]},
+ {id:"alga",name:"Алгаа цохи",players:"3–8",cards:true,desc:"Тоолж байгаа тоо, нээсэн хөзөр давхцвал бүгд овоо руу алга цохино. Сүүлчийнх нь шийтгэл.",
+  rules:["Бүх хөзрийг бүгдэд тэнцүү тарааж өг. Хөзрөө харахгүй, нүүрээр нь доош барина.","Ээлжээр өөрийн хөзрийн дээд талын нэгийг ширээний голд нүүрээр нь дээш хаяна. Хаяхдаа дараалан «Туз, 2, 3, ... 10, Боол, Хатан, Ноён» гэж тоолно. Ноёны дараа дахин Туз.","Хаясан хөзөр хэлсэн тоотой таарвал (жишээ нь «7» гэхэд 7 гарвал) бүгд овоон дээр алгаа цохино.","Мөн дараалан хоёр ижил хөзөр (8, 8) гарвал, эсвэл Ноён гарвал бүгд цохино.","Хамгийн сүүлд цохисон хүн бүх овоог авч, Зөөлөн шийтгэл хийнэ.","Шалтгаангүй цохисон хүн хоёр хөзрөө овоонд нэмж, Халуухан шийтгэл авна.","Хөзрөө хамгийн түрүүнд дуусгасан хүн хожно. Хамгийн олон хөзөртэй үлдсэн хүн Галзуу шийтгэл."]},
+ {id:"tulaan",name:"Тулаан хөзөр",players:"2–4",cards:true,desc:"Хоёулаа зэрэг хөзөр нээнэ. Том нь авна. Тэнцвэл жинхэнэ тулаан эхэлнэ.",
+  rules:["Хөзрийг хоёр тэнцүү овоо болгож хуваа. Хөзрөө харахгүй.","Хоёулаа зэрэг дээд хөзрөө нээнэ. Том хөзөртэй нь хоёуланг авч, өөрийн овооны доор хийнэ. 2 хамгийн бага, Туз хамгийн их.","Тэнцвэл «Тулаан!» гэж хашгирна. Хоёулаа 3 хөзрийг нүүрээр нь доош, 4 дэх хөзрийг нүүрээр нь дээш тавина. 4 дэх нь том хүн бүгдийг авна.","Тулаанд ялагдсан хүн Халуухан шийтгэл авна. Дахин тэнцвэл дахин тулаан, ялагдсан нь Галзуу шийтгэл.","10 минут тогло. Цаг дуусахад цөөн хөзөртэй хүн хөзрийн зөрүүгийн тоогоор (10 хөзөр тутамд 1) шийтгэл авна.","3–4 хүн бол хүн бүр зэрэг нээнэ. Хамгийн бага хөзөртэй хүн Зөөлөн шийтгэл."]},
+ {id:"21",name:"21-ээс бүү хэтэр",players:"2–8",cards:true,desc:"Ээлжээр хөзөр хаяж нийлбэрийг чангаар хэлнэ. 21-ээс хэтрүүлсэн хүн шийтгэл.",
+  rules:["Хүн бүрт 3 хөзөр тара. Үлдсэнийг голд нүүрээр нь доош тавь.","Ээлжээр нэг хөзөр голд хаяж, нийлбэрийг чангаар хэлнэ. Дараа нь овооноос нэг хөзөр авч, гартаа дахин 3 болгоно.","Утга: Туз = 1, 2–9 = нүүрэн дээрх тоо, Боол, Хатан, Ноён = 10.","Тусгай хөзөр: 10 тавибал нийлбэрээс 10 хасна. 4 тавибал нийлбэр өөрчлөгдөхгүй, чиглэл эсрэгээр эргэнэ. Ноён тавибал нийлбэр шууд 21 болно.","Нийлбэрийг 21-ээс хэтрүүлэх хөзрөөс өөр хөзөргүй болсон хүн Халуухан шийтгэл авна. Нийлбэр 0-ээс эхэлнэ.","Яг 21 хүргэсэн хүн хэн нэгнийг сонгож Зөөлөн шийтгэл өгнө.","Нийлбэрийг буруу хэлсэн хүн шууд Зөөлөн шийтгэл авна. Бусад нь сайн сонсож байгаарай."]},
+ {id:"hos",name:"Хос хайх",players:"2–6",cards:true,desc:"Бүх хөзөр нүүрээрээ доош. Хоёрыг эргүүлж ижил тоотойг ол. Ой тойн тоглоом.",
+  rules:["Бүх хөзрийг нүүрээр нь доош 6–8 мөр болгож дэлгэ.","Ээлжээр хоёр хөзөр эргүүлж бүгдэд үзүүлнэ.","Ижил тоотой (жишээ нь 9 ба 9) бол авч, дахин нэг ээлж тоглоно.","Ижил биш бол буцааж нүүрээр нь доош тавиад дараагийн хүнд ээлж шилжинэ. Хаана юу байсныг сайн санаарай.","Хос Ноён олсон хүн хэн нэгэнд Халуухан шийтгэл өгнө. Хос Туз олсон хүн хүссэн хүнээ нэг асуултанд үнэнээр хариулуулна.","Нэг хөзрийг өмнө нь харчихаад дахин алдсан хүн Зөөлөн шийтгэл авна.","Бүх хос олдоход хамгийн цөөн хостой хүн Галзуу шийтгэл."]},
+ {id:"naim",name:"Найм солигч",players:"2–6",cards:true,desc:"Ижил дүрс эсвэл тоог дарж хөзрөө дуусга. 8 бол дүрсийг сольдог шидэт хөзөр.",
+  rules:["Хүн бүрт 7 хөзөр тара. Нэг хөзрийг голд нүүрээр нь дээш тавь, үлдсэнийг овоо болго.","Ээлжээр голын хөзөртэй ижил дүрстэй (♠ ♥ ♦ ♣) эсвэл ижил тоотой хөзөр дарна. Байхгүй бол овооноос нэгийг авна.","8 хэзээ ч дарж болно. Дарсан хүн дараагийн дүрсийг зарлана.","2 дарвал дараагийн хүн 2 хөзөр авна. Түүнд бас 2 байвал дарж, дараагийн хүн 4 авна.","Боол дарвал дараагийн хүн ээлжээ алгасна. Туз дарвал чиглэл эргэнэ.","Ганц хөзөр үлдэхэд «Ганц!» гэж хэлнэ. Мартсан бол хэн нэгэн барьж авбал 2 хөзөр аваад Зөөлөн шийтгэл.","Түрүүлж дуусгасан хүн бусдын гарт үлдсэн хөзрийг тоолно. Хамгийн олон хөзөртэй үлдсэн хүн Галзуу шийтгэл."]},
+ {id:"halbaga",name:"Халбага булаалдаан",players:"3–8",cards:true,desc:"Дөрвөн ижил хөзөр цуглуулаад халбага шүүрэн ав. Халбагагүй үлдсэн нь шийтгэл.",
+  rules:["Ширээний голд тоглогчоос нэгээр цөөн халбага тавь (6 хүн бол 5 халбага). Халбагагүй бол үзэг, чихэр, лааз ч болно.","Хүн бүрт 4 хөзөр тара. Зорилго: дөрвөн ижил тоо (жишээ нь 4 Хатан).","Тараагч овооноос нэг хөзөр аваад гартаа нэмэж, нэгийг баруун тийш дамжуулна. Хүн бүр хурдан авч, нэгийг дамжуулна. Хүн бүрийн гарт үргэлж 4 хөзөр байна.","Сүүлийн хүн хаясан хөзрөө хаягдал овоонд тавина.","Дөрвөн ижил цуглуулсан хүн чимээгүйхэн халбага авна. Хэн нэг нь авмагц бүгд шүүрэн авна!","Халбагагүй үлдсэн хүн Халуухан шийтгэл хийгээд дараагийн тойрогт нэг халбага хасагдана.","Дөрвөн ижилгүйгээр анхны халбагыг авсан хүн Галзуу шийтгэл авна."]},
+ {id:"haanbool",name:"Хаан ба Боол",players:"4–8",cards:true,desc:"Хөзрөө хамгийн түрүүнд дуусгасан нь Хаан, сүүлийнх нь Боол. Дараагийн тойрогт Хаан тушаана.",
+  rules:["Бүх хөзрийг тара. Хүч: 3 хамгийн бага, 4 ... Ноён, Туз, хамгийн их нь 2.","Эхний хүн нэг, хоёр эсвэл гурван ижил хөзөр тавина. Дараагийн хүн ижил тооны, илүү том хөзөр тавих эсвэл «Өнжлөө» гэнэ.","Бүгд өнжвөл сүүлд тавьсан хүн шинэ мөр эхлүүлнэ.","Түрүүлж дуусгасан хүн Хаан, хоёрдугаар нь Сайд. Сүүлийн хүн Боол.","Дараагийн тойргийн өмнө Боол хамгийн сайн 2 хөзрөө Хаанд өгнө. Хаан хүссэн 2 хөзрөө буцааж өгнө.","Хаан тойргийн турш нэг хууль тогтооно (жишээ нь «Хэн ч “би” гэж хэлэхгүй»). Зөрчсөн хүн Зөөлөн шийтгэл.","Тойрог бүрийн төгсгөлд Боол Хааны сонгосон нэг шийтгэлийг хийнэ."]},
+ {id:"gurvalsan",name:"Гурвалсан",players:"2–6",cards:true,desc:"Гурван ижил эсвэл гурван дараалсан хөзөр цуглуул. Гартаа үлдсэн оноо их бол шийтгэл.",
+  rules:["Хүн бүрт 7 хөзөр тара. Нэг хөзрийг нүүрээр нь дээш хаягдал болгож, үлдсэнийг овоо болго.","Ээлжээр овооноос эсвэл хаягдлын дээрээс нэг хөзөр аваад, нэгийг хаягдал руу хаяна.","Зорилго: гарт 3 ба 4 хөзрийн хоёр бүлэг бүрдүүлэх. Бүлэг нь ижил тоо (7 7 7) эсвэл нэг дүрсийн дараалал (♥5 ♥6 ♥7) байна.","Бүх 7 хөзөр бүлэгт орсон хүн «Гурвалсан!» гэж хөзрөө дэлгэнэ.","Бусад нь бүлэгт ороогүй хөзрийнхөө оноог тоолно: Туз = 1, 2–10 = тоо, Боол, Хатан, Ноён = 10.","Хамгийн өндөр оноотой хүн Халуухан шийтгэл, 50-аас дээш бол Галзуу шийтгэл.","Хаягдлаас авсан хөзрөө тэр даруйд нь буцааж хаяж болохгүй."]},
+ {id:"haralgan",name:"Харалган хөзөр",players:"3–8",cards:true,desc:"Өөрийн хөзрөө харалгүй духан дээрээ барина. Бусдынхыг харж, үлдэх үү гарах уу шийд.",
+  rules:["Хүн бүр нэг хөзөр сугалж, өөрөө харалгүй духан дээрээ нүүрийг нь гадагш харуулж барина.","Та бусдын хөзрийг харна, өөрийнхөө хөзрийг харахгүй. Бусад нь нүүрээрээ ч, үгээрээ ч хуурч болно.","Нэг минут ярилцсаны дараа бүгд «Гурав, хоёр, нэг» гэхэд зэрэг «Үлдэнэ» эсвэл «Гарна» гэнэ.","Гарсан хүн бүр Зөөлөн шийтгэл авна.","Үлдсэн хүмүүс хөзрөө үзнэ. Хамгийн бага хөзөртэй нь Галзуу шийтгэл, бусад нь чөлөөтэй.","Ганцхан хүн үлдвэл тэр хүн хожиж, гарсан нэг хүнд нэмэлт шийтгэл өгнө.","2 хамгийн бага, Туз хамгийн их."]},
+ {id:"uraldaan",name:"Тузын уралдаан",players:"3–12",cards:true,desc:"Дөрвөн туз морь болж уралдана. Аль дүрс хожихыг таа.",
+  rules:["4 Тузыг гаргаж эхлэлийн шугам дээр зэрэгцүүл. Эдгээр нь морьд: ♠ ♥ ♦ ♣.","Тузын хажууд 7 хөзрийг нүүрээр нь доош, барианы зам болгож хөндлөн эгнүүл.","Тоглогч бүр нэг дүрс сонгож, хэдэн шийтгэлээр мөрий тавихаа хэлнэ (1–3).","Тараагч овооноос нэг нэг хөзөр нээнэ. Гарсан дүрсийн Туз нэг алхам урагшилна.","Бүх морь нэг алхамд хүрэх бүрт замын хөзрийг нэгийг нээнэ. Нээсэн хөзрийн дүрсийн Туз нэг алхам ухарна.","Түрүүлж 8 дахь алхамд хүрсэн Туз хожно.","Хожсон дүрсэд мөрий тавьсан хүн бүр мөрийнхөө тоогоор бусдад шийтгэл тараана. Ялагдсан хүн бүр мөрийнхөө тоогоор шийтгэл авна. Тараагч уралдааныг тайлбарлагч шиг чанга дуугаар хөтөлнө."]},
+ {id:"hurdan",name:"Хурдан нэм",players:"2–8",cards:true,desc:"Хоёр хөзөр зэрэг нээгдэнэ. Нийлбэрийг хамгийн түрүүнд хэлсэн хүн авна.",
+  rules:["Нэг хүн хөтлөгч. Овооноос хоёр хөзрийг зэрэг нээнэ.","Утга: Туз = 1, 2–10 = тоо, Боол = 11, Хатан = 12, Ноён = 13.","Нийлбэрийг хамгийн түрүүнд зөв хэлсэн хүн хоёр хөзрийг авна.","Буруу хэлсэн хүн Зөөлөн шийтгэл аваад дараагийн нэг тойрогт хариулахгүй.","Хоёр хөзөр ижил дүрстэй бол нэмэхийн оронд үржүүлнэ! Жишээ нь ♥3 ба ♥7 = 21.","Хоёр хөзөр ижил тоотой бол хамгийн түрүүнд ширээ цохисон хүн авна.","Овоо дуусахад хамгийн цөөн хөзөртэй хүн Халуухан шийтгэл авна."]},
+ {id:"durs",name:"Дүрсний асуулт",players:"2–10",cards:true,desc:"Хөзрийн дүрс сэдвийг, тоо нь хүндийг заана. Хариул эсвэл шийтгэл ав.",
+  rules:["Ээлжээр нэг хөзөр сугалаад бүгдэд үзүүлнэ.","Дүрс сэдвийг заана: ♥ хайр дурлал, ♦ мөнгө ба мөрөөдөл, ♣ найзууд, ♠ нууц ба айдас.","Тоо хүндийг заана: Туз–5 = хялбар асуулт, 6–10 = гүнзгий асуулт, Боол, Хатан, Ноён = тухайн сэдвээр даалгавар.","Баруун талын хүн тэр сэдвээр асуулт эсвэл даалгавар зохиож өгнө. Жишээ: ♥8 бол «Хамгийн их санасан хайраа нэрлэ, яагаад?»","Хариулахгүй, хийхгүй байх эрхтэй. Тэгвэл Халуухан шийтгэл авна.","Хамгийн сонирхолтой хариулт өгсөн хүнд бүгд алга ташина. Тэр хүн дараагийн тойрогт нэг удаа шийтгэлээс чөлөөлөгдөнө.","Туз гарвал хариулагч асуултаа өөрөө сонгох эрхтэй."]},
+ {id:"baishin",name:"Хөзрийн байшин",players:"2–8",cards:true,desc:"Ээлжээр хөзрийн байшинд нэг нэг хөзөр нэм. Нураасан хүн шийтгэл.",
+  rules:["Тэгш ширээ эсвэл ном дээр тогло. Салхи, сэнс хаа.","Эхний хүн хоёр хөзрийг налуулж «Λ» хэлбэр хийнэ.","Ээлжээр нэг хөзөр нэмнэ: дахин нэг «Λ» эсвэл хоёр «Λ»-ийн дээгүүр хавтгай дээвэр.","Ээлж бүр 20 секундтэй. Хэтэрвэл Зөөлөн шийтгэл.","Байшинг нураасан хүн Галзуу шийтгэл хийнэ, дараа нь шинээр эхэлнэ.","Гурван давхарт хүрвэл байшинд хамгийн сүүлд хөзөр нэмсэн хүн хэн нэгэнд Халуухан шийтгэл өгнө.","Бусад нь зөвхөн ам, гараар бүжиглэж л саад хийж болно. Үлээх, хүрэх хориотой."]},
+ {id:"uleeh",name:"Үлээ!",players:"3–10",cards:true,desc:"Хөзрийг шилний аман дээр тавиад ээлжээр үлээ. Сүүлийн хөзрийг унагасан нь шийтгэл.",
+  rules:["Хоосон шил эсвэл лонхны аман дээр бүх хөзрийг тэнцүү тавь.","Ээлжээр нэг удаа үлээнэ. Ядаж нэг хөзөр унагах ёстой.","Нэг ч хөзөр унагаж чадаагүй бол дахин үлээнэ. Хоёр дахь удаад ч чадахгүй бол Зөөлөн шийтгэл.","Олон хөзөр зэрэг унагаж болно. Гэхдээ хамгийн сүүлийн хөзрийг унагасан хүн Галзуу шийтгэл авна.","Тиймээс тал нь дуусахад болгоомжтой үлээ: цөөн хөзөр үлдэх тусам хэцүү болно.","Хөзөр, шилэнд гараараа хүрсэн хүн Халуухан шийтгэл."]},
+ {id:"dohio",name:"Нууц дохио",players:"4–8",cards:true,desc:"Хосоороо нууц дохио тохиролц. Дөрвөн ижил хөзөр цуглуулаад хамтрагчдаа дохио өг.",
+  rules:["Хоёр хоёроороо хос бол. Хосууд нууцаар нэг дохио тохиролцоно: хамраа маажих, нүд ирмэх, хуруугаа товших гэх мэт.","Хүн бүрт 4 хөзөр тара. Голд 4 хөзрийг нүүрээр нь дээш тавь.","«Эхэл!» гэхэд бүгд нэгэн зэрэг гартаа байгаа хөзрөө голын хөзрөөр сольж болно. Нэг удаад нэг хөзөр.","Хэн ч солихгүй болбол тараагч голын 4 хөзрийг хаяж, шинэ 4 хөзөр тавина.","Хэн нэг нь дөрвөн ижил хөзөр цуглуулбал хамтрагчдаа нууц дохио өгнө. Хамтрагч нь «Дөрөв!» гэж хашгирвал тэр хос хожиж, нөгөө хосууд Халуухан шийтгэл авна.","Өрсөлдөгч хос дохиог таньж «Зогс!» гэж хашгирвал: үнэхээр дөрвөн ижил байсан бол дохио өгсөн хос Галзуу шийтгэл авна. Байгаагүй бол хашгирсан хос Галзуу шийтгэл авна.","Хуурамч дохио өгч бусдыг төөрөгдүүлэх нь сайн тактик."]},
  {id:"shagai-real",name:"Шагайн шүүх (жинхэнэ шагайгаар)",players:"2+",desc:"Гэртээ шагай байвал утасгүйгээр тогло.",
   rules:GAMES.find(g=>g.id==="shagai").rules}
 ];
 const BUILTIN_COUNT = GAMES.length;
-const OFFLOOK={wink:["#ff7a59","Цаас, үзэг эсвэл хөзөр","10–20 мин"],liar:["#f2f0e6","52 хөзөр","15–30 мин"],bus:["#ffcf5c","52 хөзөр","10–20 мин"],tower:["#b9a4ff","52 хөзөр","20–30 мин"],forbid:["#7fe0c0","Цаас, үзэг, скотч","Үдэшлэгийн турш"],story:["#ff9ec4","Юу ч хэрэггүй","5–15 мин"],seven:["#8fd0ff","Юу ч хэрэггүй","5–10 мин"],"shagai-real":["#efe2c8","4 шагай","10–20 мин"]};
-const COVER_OFF={wink:"ИРМЭЭД\nАЛ!",liar:"ХУД\nЛАА!",bus:"4 ШАТ",tower:"ЦАМ\nХАГ",forbid:"ХОРИО\nТОЙ!",story:"НЭГ\nҮГЭЭР",seven:"7 БУМ!","shagai-real":"ШАГАЙ\nШИД"};
+const OFFLOOK={wink:["#ff7a59","Цаас, үзэг эсвэл хөзөр","10–20 мин"],liar:["#f2f0e6","52 хөзөр","15–30 мин"],bus:["#ffcf5c","52 хөзөр","10–20 мин"],tower:["#b9a4ff","52 хөзөр","20–30 мин"],forbid:["#7fe0c0","Цаас, үзэг, скотч","Үдэшлэгийн турш"],story:["#ff9ec4","Юу ч хэрэггүй","5–15 мин"],seven:["#8fd0ff","Юу ч хэрэггүй","5–10 мин"],"shagai-real":["#efe2c8","4 шагай","10–20 мин"],sugalaa:["#ffd36e","52 хөзөр","5 мин"],zavsar:["#9fe7d0","52 хөзөр","10–20 мин"],alga:["#ff8f70","52 хөзөр","10–15 мин"],tulaan:["#ff6b81","52 хөзөр","10 мин"],"21":["#c8b6ff","52 хөзөр","10–20 мин"],hos:["#a8e6ff","52 хөзөр","15–25 мин"],naim:["#ffe08a","52 хөзөр","15–20 мин"],halbaga:["#f4c9a0","52 хөзөр, халбага","10–20 мин"],haanbool:["#ffd700","52 хөзөр","20–40 мин"],gurvalsan:["#b6f0a8","52 хөзөр","15–25 мин"],haralgan:["#ffa3c7","52 хөзөр","5–15 мин"],uraldaan:["#9ad0ff","52 хөзөр","10 мин"],hurdan:["#ffb86b","52 хөзөр","10 мин"],durs:["#f7a8b8","52 хөзөр","20–40 мин"],baishin:["#e8dcc0","52 хөзөр","10–20 мин"],uleeh:["#9ee6e0","52 хөзөр, шил","5–10 мин"],dohio:["#d4b0ff","52 хөзөр","15–25 мин"]};
+const COVER_OFF={wink:"ИРМЭЭД\nАЛ!",liar:"ХУД\nЛАА!",bus:"4 ШАТ",tower:"ЦАМ\nХАГ",forbid:"ХОРИО\nТОЙ!",story:"НЭГ\nҮГЭЭР",seven:"7 БУМ!","shagai-real":"ШАГАЙ\nШИД",sugalaa:"НЭГ\nСУГАЛ",zavsar:"ЗАВ\nСАРТ?",alga:"АЛГАА\nЦОХИ!",tulaan:"ТУЛ\nААН ♠","21":"21\nБҮҮ!",hos:"ХОС\nХАЙ",naim:"8 ♣\nСОЛИ",halbaga:"ХАЛ\nБАГА!",haanbool:"ХААН\nБООЛ",gurvalsan:"7 7 7",haralgan:"ДУХ\n♥ К",uraldaan:"А ♠ А\nУРАЛД",hurdan:"3+9\n=?",durs:"♥ ♦\n♣ ♠",baishin:"ΛΛΛ\nБАЙШИН",uleeh:"ҮЛЭЭ!",dohio:"ШИВ\nДОХИО"};
 const COVER={huzruur:"ШИЙТ\nГЭЛ!",imposter:"ХЭН\nБЭ?",bomb:"БУМ!",who:"ЧИ\nЧИ ЧИ",laws:"ХУУЛЬ\n№1",shagai:"МОРЬ\nТЭМЭЭ",act:"ДОХИО\nЗАНГАА",pairs:"ХОС\nХОС",sync:"1 = 1",talk:"ЯРЬЯ\nҮҮ?",cards:"♠ K\n♥ Q",hilo:"↑ ДЭЭШ\n↓ ДООШ",wyr:"ЭНЭ\nЭСВЭЛ",never:"ХЭЗЭЭ\nЧ ҮГҮЙ",hum:"МММ\nНА-НА",minute:"30\"",mission:"ШШШ…",guess:"??\nХЭД",duel:"ТУЛ\nААН!",impress:"ДУУ\nРАЙ",forehead:"ДУХ\nДЭЭР",kingcup:"ХУН\nДАГА",toast:"ТОСТ!"};
-const MINMAX={huzruur:[2,99],imposter:[3,12],bomb:[3,99],who:[3,99],laws:[3,99],shagai:[2,99],act:[4,99],pairs:[4,12],sync:[2,2],talk:[2,2],cards:[3,99],hilo:[2,99],wyr:[2,99],never:[3,99],hum:[3,99],minute:[2,99],mission:[3,12],guess:[2,99],duel:[2,99],impress:[3,99],forehead:[3,99],kingcup:[3,99],toast:[3,99],wink:[6,99],liar:[3,8],bus:[2,8],tower:[3,8],forbid:[3,99],story:[3,99],seven:[3,99],"shagai-real":[2,99]};
+const MINMAX={huzruur:[2,99],imposter:[3,12],bomb:[3,99],who:[3,99],laws:[3,99],shagai:[2,99],act:[4,99],pairs:[4,12],sync:[2,2],talk:[2,2],cards:[3,99],hilo:[2,99],wyr:[2,99],never:[3,99],hum:[3,99],minute:[2,99],mission:[3,12],guess:[2,99],duel:[2,99],impress:[3,99],forehead:[3,99],kingcup:[3,99],toast:[3,99],wink:[6,99],liar:[3,8],bus:[2,8],tower:[3,8],forbid:[3,99],story:[3,99],seven:[3,99],"shagai-real":[2,99],sugalaa:[2,12],zavsar:[2,10],alga:[3,8],tulaan:[2,4],"21":[2,8],hos:[2,6],naim:[2,6],halbaga:[3,8],haanbool:[4,8],gurvalsan:[2,6],haralgan:[3,8],uraldaan:[3,99],hurdan:[2,8],durs:[2,10],baishin:[2,8],uleeh:[3,10],dohio:[4,8]};
 [...GAMES,...OFFLINE].forEach(g=>{ const m=MINMAX[g.id]||[2,99]; g.min=m[0]; g.max=m[1]; g.cover=COVER[g.id]||COVER_OFF[g.id]||""; g.img=""; if(OFFLOOK[g.id]){ g.c=OFFLOOK[g.id][0]; g.needs=OFFLOOK[g.id][1]; g.time=OFFLOOK[g.id][2]; } });
 const GDEF={}; [...GAMES,...OFFLINE].forEach(g=>GDEF[g.id]={name:g.name,players:g.players,desc:g.desc,rules:g.rules.slice(),min:g.min,max:g.max,cover:g.cover,img:""});
 const fits=(g,n)=>!n||(g.min<=n&&g.max>=n);
@@ -545,57 +630,78 @@ const coverHTML = (g,idx) => { const rot=[-6,4,-3,7,-8,3][idx%6], tr=[3,-4,6,-2]
   return `<div class="art${g.img?" has-img":""}" aria-hidden="true" style="--rot:${rot}deg;--tr:${tr}deg;--mis:${MIS[idx%MIS.length]}">${g.img?`<img src="${esc(g.img)}" alt="" loading="lazy">`:""}<span class="tape"></span><span class="cover">${esc(g.cover||g.name)}</span><span class="num">${esc(g.players)}</span></div>`; };
 
 /* ---------- home ---------- */
+const PRIM={kingcup:"drink",toast:"drink",cards:"cards",hilo:"cards",shagai:"cards",sync:"2",talk:"2",wyr:"2",guess:"2",minute:"2"};
+const SECTIONS=[["2","Хоёулаа","Хоёр найз, хосууд"],["group","Олуулаа","3–8+ хүн, нэг утсыг дамжуулна"],["cards","Хөзөр ба шагай","Ширээн дээр хөзөр, шагай гаргаад"],["drink","Уух","Ус, ундаагаар ч болно"],["mine","Миний тоглоомууд","Таны нэмсэн тоглоомууд"]];
+const primOf = g => g.custom ? "mine" : (PRIM[g.id]||"group");
+const gameCard = (g,idx) => `<button type="button" class="game" style="--c:${g.c};--i:${idx}" data-g="${g.id}">${coverHTML(g,idx)}<div class="body"><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p></div></button>`;
+const offCard = (g,idx) => `<button type="button" class="game off" style="--c:${g.c};--i:${idx}" data-o="${g.id}">${coverHTML(g,idx+2)}<div class="body"><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p><div class="meta"><span class="tag">${esc(g.needs||"")}</span></div></div></button>`;
+function openSettings(){
+  const ov=$("#ov"); ov.hidden=false;
+  const draw=()=>{ ov.innerHTML=`<div class="overlay" id="ovbg"><div class="sheet setsheet">
+    <div class="row" style="justify-content:space-between"><h2 style="font-size:20px">Тохиргоо</h2><button class="mini" id="sclose" type="button">Болсон</button></div>
+    <div class="stack"><div class="label">Тоглогчид · ${S.players.length}</div>
+      <div class="chips">${S.players.map((p,i)=>`<span class="chip">${esc(p)}<button type="button" data-rm="${i}" aria-label="${esc(p)}-г хасах">×</button></span>`).join("")}</div>
+      <form class="addrow" id="addf"><input type="text" id="pname" placeholder="Нэр нэмэх" maxlength="16" autocomplete="off"><button class="btn" style="width:auto;padding:10px 16px" type="submit">Нэмэх</button></form></div>
+    <div class="stack"><div class="label">Шийтгэлийн түвшин</div>
+      <div class="seg">${[1,2,3].map(l=>`<button type="button" data-l="${l}" aria-pressed="${S.level===l}">${LEVEL_NAME[l]}</button>`).join("")}</div></div>
+    <div class="toggle"><div><b>Уух горим</b><div class="small muted">Шийтгэл бүрт «эсвэл балга» сонголт нэмнэ.</div></div>
+      <button class="switch" id="drink" type="button" role="switch" aria-checked="${S.drink}" aria-label="Уух горим"></button></div>
+  </div></div>`;
+    ov.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{S.players.splice(+b.dataset.rm,1);save();draw();});
+    $("#addf").onsubmit=e=>{e.preventDefault();const v=$("#pname").value.trim();if(v){S.players.push(v);save();draw();setTimeout(()=>$("#pname")&&$("#pname").focus(),0);}};
+    ov.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{S.level=+b.dataset.l;save();draw();});
+    $("#drink").onclick=()=>{S.drink=!S.drink;save();draw();};
+    const close=()=>{ closeHZ(); home(); };
+    $("#sclose").onclick=close; $("#ovbg").onclick=e=>{ if(e.target.id==="ovbg") close(); }; };
+  draw();
+}
 function home(){
   const ok = g => !g.hidden && fits(g,S.count);
+  const all = GAMES.filter(ok);
   const show = g => ok(g) && (filter==="all" || g.modes.includes(filter) || (filter==="mine" && g.custom));
   const list = GAMES.filter(show);
   const offl = (filter==="cards" ? OFFLINE.filter(g=>g.cards) : OFFLINE).filter(ok);
+  const deco = shuffle(all).slice(0,3);
+  const canEdit = MODE==="local"||ADMIN;
+  const sec = (key,title,sub,items,render,more) => items.length?`<section class="sec"><div class="sechead"><div><h2>${title} <span class="cnt">${items.length}</span></h2><p>${sub}</p></div>${more?`<button class="seeall" type="button" data-f="${more}">Бүгд →</button>`:""}</div><div class="rail">${items.map(render).join("")}</div></section>`:"";
   $("#app").innerHTML=`
-  <header class="hero">
-    <div class="hero-top"><div class="logo">Пид <span>Пад</span></div>${MODE==="local"||ADMIN?`<button class="editbtn" id="edit" type="button">Засах</button>`:""}</div>
-    <p>Найзуудтайгаа цуглахад тоглох тоглоомууд. Нэг утсыг дамжуулж тогло, хөзөр шагайгаа гаргаад тогло, эсвэл дүрмийг нь хараад утасгүй тогло.</p>
+  <header class="hero2">
+    <div class="hero-deco" aria-hidden="true">${deco.map((g,i)=>`<div class="hm m${i}" style="--c:${g.c}">${coverHTML(g,i)}</div>`).join("")}</div>
+    <div class="hero-txt">
+      <div class="row" style="justify-content:space-between;align-items:flex-start"><div class="eyebrow">Үдэшлэгийн тоглоом</div>${canEdit?`<button class="editbtn" id="edit" type="button">Засах</button>`:""}</div>
+      <h1 class="logo2">Пид<br><span>Пад</span></h1>
+      <p>${GAMES.filter(g=>!g.hidden).length} тоглоом, ${OFFLINE.filter(g=>!g.hidden).length} утасгүй дүрэм. Нэг утсыг дамжуулаад л эхэл.</p>
+      <button type="button" class="pickbtn" id="pick">${ART.spinner}<span><b id="pickt">Юу тоглох вэ?</b><small id="picks">Дараад хүрд эргүүл</small></span></button>
+    </div>
   </header>
-  <section class="panel" aria-label="Тохиргоо">
-    <div class="stack">
-      <div class="label">Хэдүүлээ тоглох вэ?</div>
-      <div class="seg" id="cnt">${[[0,"Бүгд"],[2,"2"],[3,"3"],[4,"4"],[5,"5"],[6,"6"],[7,"7"],[8,"8+"]].map(([n,t])=>`<button type="button" data-n="${n}" aria-pressed="${(S.count||0)===n}">${t}</button>`).join("")}</div>
-      <div class="small muted">${S.count?`${S.count===8?"8 ба түүнээс олон":S.count} хүнд тохирох ${GAMES.filter(ok).length} тоглоом, ${OFFLINE.filter(ok).length} утасгүй дүрэм байна.`:"Тоогоо сонговол зөвхөн тохирох тоглоомууд харагдана."}</div>
-    </div>
-    <div class="stack">
-      <div class="label">Тоглогчид · ${S.players.length}${S.count&&S.count<8&&S.players.length>S.count?` · эхний ${S.count} нь тоглоно`:""}${S.count&&S.players.length<S.count?` · ${S.count-S.players.length} нэрийг «Тоглогч» гэж нөхнө`:""}</div>
-      <div class="chips" id="chips">${S.players.map((p,i)=>`<span class="chip">${esc(p)}<button type="button" data-rm="${i}" aria-label="${esc(p)}-г хасах">×</button></span>`).join("")}</div>
-      <form class="addrow" id="addf"><input type="text" id="pname" placeholder="Нэр нэмэх" maxlength="16" autocomplete="off"><button class="btn" style="width:auto;padding:10px 16px" type="submit">Нэмэх</button></form>
-    </div>
-    <div class="stack">
-      <div class="label">Шийтгэлийн түвшин</div>
-      <div class="seg" id="lvl">${[1,2,3].map(l=>`<button type="button" data-l="${l}" aria-pressed="${S.level===l}">${LEVEL_NAME[l]}</button>`).join("")}</div>
-    </div>
-    <div class="toggle"><div><b>Уух горим</b><div class="small muted">Шийтгэл бүрт «эсвэл балга» сонголт нэмнэ. Ундаа, усаар ч болно.</div></div>
-      <button class="switch" id="drink" type="button" role="switch" aria-checked="${S.drink}" aria-label="Уух горим"></button></div>
+  <section class="quick" aria-label="Тохиргоо">
+    <div class="qrow"><span class="qlabel">Хэдүүлээ?</span><div class="seg" id="cnt">${[[0,"Бүгд"],[2,"2"],[3,"3"],[4,"4"],[5,"5"],[6,"6"],[7,"7"],[8,"8+"]].map(([n,t])=>`<button type="button" data-n="${n}" aria-pressed="${(S.count||0)===n}">${t}</button>`).join("")}</div></div>
+    <button type="button" class="qset" id="sets"><span><b>${players().length} тоглогч</b> · ${LEVEL_NAME[S.level]}${S.drink?" · Уух горим":""}</span><span class="muted small">${esc(players().slice(0,4).join(", "))}${players().length>4?"…":""}</span><span class="qedit">Тохируулах</span></button>
   </section>
   <nav class="filters" aria-label="Шүүлтүүр">
-    ${[["all","Бүгд"],["2","Хоёулаа"],["pair","Хосоороо"],["group","Олуулаа 3–8+"],["cards","Хөзөр"],["drink","Уух"],["mine","Миний"],["offline","Утасгүй"]].map(([k,t])=>`<button type="button" data-f="${k}" aria-pressed="${filter===k}">${t}</button>`).join("")}
+    ${[["all","Бүгд"],["2","Хоёулаа"],["pair","Хосоороо"],["group","Олуулаа"],["cards","Хөзөр"],["drink","Уух"],["offline","Утасгүй"],["mine","Миний"]].map(([k,t])=>`<button type="button" data-f="${k}" aria-pressed="${filter===k}">${t}</button>`).join("")}
   </nav>
-  ${filter!=="offline"&&list.length?`<button type="button" class="pickbox" id="pick">${ART.spinner}<div><b id="pickt">Юу тоглох вэ?</b><span id="picks">Дараад хүрд эргүүл. ${list.length} тоглоомоос нэгийг сонгоно.</span></div></button>`:""}
-  ${filter!=="offline"?`<div class="grid">${list.map((g,idx)=>`<button type="button" class="game" style="--c:${g.c};--i:${idx}" data-g="${g.id}">${coverHTML(g,idx)}<div class="body"><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p>${g.custom||g.modes.includes("cards")?`<div class="meta">${g.custom?`<span class="tag">Миний</span>`:""}${g.modes.includes("cards")?`<span class="tag">Хөзөр</span>`:""}</div>`:""}</div></button>`).join("")}
-    ${(MODE==="local"||ADMIN)&&(filter==="mine"||filter==="all")?`<button type="button" class="game" style="--c:#3a3060" id="addgame"><div class="art" aria-hidden="true" style="--rot:-4deg;--mis:rgba(255,194,61,.8)"><span class="cover" style="color:var(--sun);text-shadow:none">+ ШИНЭ</span></div><div class="body"><h3>Өөрийн тоглоом нэмэх</h3><p>Нэр, дүрэм, карт бичээд л болно.</p></div></button>`:""}</div>`:""}
-  ${offl.length?`<div class="offhead"><div><h2 class="section-title" style="margin:0">${filter==="cards"?"Хөзрөөр, утасгүй":"Утасгүй тоглоом"}</h2><p class="muted small" style="margin:4px 0 0">Утсаа хажуудаа тавь. Дүрмийг нь нэг уншаад л тогло.</p></div><span class="offbadge">УТАС<br>ХЭРЭГГҮЙ</span></div>
-  <div class="grid">${offl.map((g,idx)=>`<button type="button" class="game off" style="--c:${g.c};--i:${idx}" data-o="${g.id}">${coverHTML(g,idx+2)}<div class="body"><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p><div class="meta"><span class="tag">${esc(g.needs||"")}</span></div></div></button>`).join("")}</div>`:""}
-  ${filter==="offline"?`<h2 class="section-title">Утсан дээрх тоглоомуудын дүрэм</h2><p class="muted small" style="margin:0 0 12px">Эдгээрийг ч утасгүйгээр, цаас үзгээр тоглож болно.</p><div class="grid">${GAMES.filter(g=>!g.hidden&&fits(g,S.count)&&g.id!=="shagai").map((g,idx)=>`<button type="button" class="game off" style="--c:${g.c};--i:${idx}" data-o="${g.id}">${coverHTML(g,idx)}<div class="body"><h3>${esc(g.name)}</h3><p>Дүрмийг харах</p></div></button>`).join("")}</div>`:""}
-  <p class="note" style="margin-top:24px">Хэмжээгээ мэдэж, бие биеэ хүндэл. Хэн ч хүсээгүй зүйлээ хийх албагүй.</p>
+  ${filter==="all"
+    ? SECTIONS.map(([k,t,sub])=>sec(k,t,sub,all.filter(g=>primOf(g)===k),gameCard,k==="mine"?"mine":k)).join("")
+      + sec("offc","Хөзрөөр, утасгүй","Нэг баглаа хөзөр л хэрэгтэй. Утсаа хажуудаа тавь",offl.filter(g=>g.cards),offCard,"cards")
+      + sec("off","Утасгүй тоглоом","Юу ч хэрэггүй, эсвэл цаас үзэг л болно",offl.filter(g=>!g.cards),offCard,"offline")
+      + (canEdit?`<button type="button" class="addline" id="addgame">+ Өөрийн тоглоом нэмэх</button>`:"")
+    : `${filter!=="offline"?`<div class="grid">${list.map(gameCard).join("")}</div>${!list.length?`<p class="note">Энэ хэсэгт ${S.count?S.count+" хүнд тохирох ":""}тоглоом алга.</p>`:""}`:""}
+       ${(filter==="offline"||filter==="cards")&&offl.length?`<div class="offhead"><div><h2 class="section-title" style="margin:0">${filter==="cards"?"Хөзрөөр, утасгүй":"Утасгүй тоглоом"}</h2><p class="muted small" style="margin:4px 0 0">Утсаа хажуудаа тавь. Дүрмийг нь нэг уншаад л тогло.</p></div><span class="offbadge">УТАС<br>ХЭРЭГГҮЙ</span></div><div class="grid">${offl.map(offCard).join("")}</div>`:""}
+       ${filter==="offline"?`<h2 class="section-title">Утсан дээрх тоглоомуудын дүрэм</h2><div class="grid">${GAMES.filter(g=>ok(g)&&g.id!=="shagai").map((g,idx)=>`<button type="button" class="game off" style="--c:${g.c};--i:${idx}" data-o="${g.id}">${coverHTML(g,idx)}<div class="body"><h3>${esc(g.name)}</h3><p>Дүрмийг харах</p></div></button>`).join("")}</div>`:""}
+       ${filter==="mine"&&canEdit?`<button type="button" class="addline" id="addgame">+ Өөрийн тоглоом нэмэх</button>`:""}`}
+  <p class="note" style="margin-top:28px">Хэмжээгээ мэдэж, бие биеэ хүндэл. Хэн ч хүсээгүй зүйлээ хийх албагүй.</p>
   ${MODE==="server"&&!ADMIN?`<button class="adminlink" id="adm" type="button">Админ</button>`:""}`;
   const adm=$("#adm"); if(adm) adm.onclick=()=>go("admin");
-  document.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{S.players.splice(+b.dataset.rm,1);save();home();});
-  $("#addf").onsubmit=e=>{e.preventDefault();const v=$("#pname").value.trim();if(v){S.players.push(v);save();home();setTimeout(()=>$("#pname")&&$("#pname").focus(),0);}};
-  document.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{S.level=+b.dataset.l;save();home();});
   document.querySelectorAll("[data-n]").forEach(b=>b.onclick=()=>{S.count=+b.dataset.n||0;save();home();});
-  $("#drink").onclick=()=>{S.drink=!S.drink;save();home();};
-  document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{filter=b.dataset.f;home();});
+  document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{filter=b.dataset.f;home(); const n=$(".filters"); n&&n.scrollIntoView({block:"start"});});
   document.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>go(b.dataset.g));
   document.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>go("rules-"+b.dataset.o));
+  $("#sets").onclick=openSettings;
   const eb=$("#edit"); if(eb) eb.onclick=()=>go("edit");
-  const pk=$("#pick"); if(pk) pk.onclick=()=>{ if(pk.classList.contains("spin")) return; pk.classList.add("spin"); let k=0, steps=14+Math.floor(Math.random()*8), pickG;
-    const tick=()=>{ pickG=list[Math.floor(Math.random()*list.length)]; $("#pickt").textContent=pickG.name; beep(400+k*30,.04); k++; if(k<steps) timers.push(setTimeout(tick,60+k*k*2)); else { pk.classList.remove("spin"); beep(990,.2); buzz(60); $("#picks").textContent="Дахин дарвал энэ тоглоом нээгдэнэ"; pk.onclick=()=>go(pickG.id); } };
+  const pool = filter==="all"||filter==="offline" ? all : list;
+  const pk=$("#pick"); if(pk) pk.onclick=()=>{ if(!pool.length||pk.classList.contains("spin")) return; pk.classList.add("spin"); let k=0, steps=14+Math.floor(Math.random()*8), pickG;
+    const tick=()=>{ pickG=pool[Math.floor(Math.random()*pool.length)]; $("#pickt").textContent=pickG.name; beep(400+k*30,.04); k++; if(k<steps) timers.push(setTimeout(tick,60+k*k*2)); else { pk.classList.remove("spin"); beep(990,.2); buzz(60); $("#picks").textContent="Дахин дарвал нээгдэнэ"; pk.onclick=()=>go(pickG.id); } };
     tick(); };
   const ag=$("#addgame"); if(ag) ag.onclick=()=>{ go("edit"); gameForm(); };
 }
