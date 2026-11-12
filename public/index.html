@@ -1023,7 +1023,7 @@ try{
   fetch("api/content",{cache:"no-store"}).then(r=>{ if(!r.ok||!(r.headers.get("content-type")||"").includes("json")) throw 0; return r.json(); })
   .then(d=>{ MODE="server"; SHARED={content:{},games:[],gedits:{}}; BUNDLE={content:d.content||{},games:d.games||[],gedits:d.gedits||{}};
     const pw=getPw(); if(pw) checkPw(pw).then(st=>{ ADMIN=st===200; if(!ADMIN) setPw(""); rerender(); }).catch(()=>{});
-    rebuildContent(); rerender(); if(location.hash==="#admin") go("admin"); })
+    rebuildContent(); rerender(); if(location.hash==="#admin"||/^\/admin\/?$/.test(location.pathname)) go("admin"); })
   .catch(localMode);
 }catch(e){ localMode(); }
 </script>

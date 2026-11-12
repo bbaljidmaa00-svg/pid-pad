@@ -15,6 +15,10 @@ export default {
       if (request.method === "POST") return login.onRequestPost(ctx);
       return new Response("Method not allowed", { status: 405 });
     }
+    if (pathname === "/admin" || pathname === "/admin/") {
+      // Admin login lives in the single-page app; serve it at /admin too.
+      return env.ASSETS.fetch(new Request(new URL("/", request.url), request));
+    }
     return env.ASSETS.fetch(request);
   },
 };
