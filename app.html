@@ -173,7 +173,7 @@ function buzz(p){ try{ navigator.vibrate && navigator.vibrate(p); }catch(e){} }
 let timers=[]; function clearTimers(){ timers.forEach(t=>{clearInterval(t);clearTimeout(t)}); timers=[]; }
 
 /* ---------- settings ---------- */
-const S = Object.assign({ players:["Бат","Сараа","Тэмүүжин","Номин"], drink:false, level:2 }, store("tg-settings")||{});
+const S = Object.assign({ players:["Бат","Сараа","Тэмүүжин","Номин"], drink:false, level:2, count:0 }, store("tg-settings")||{});
 const save = () => store("tg-settings",S);
 
 /* ---------- forfeits (шийтгэл) ---------- */
@@ -300,6 +300,12 @@ const ACT_STYLES = ["Зөвхөн дохио зангаагаар","Зөвхөн
 const LAWS = ["«Үгүй» гэж хэлж болохгүй.","Ярихаасаа өмнө «Эрхэм ээ» гэж эхэлнэ.","Хундага, аягаа зөвхөн зүүн гараараа барина.","Хэн нэгнийг нэрээр нь дуудаж болохгүй, зөвхөн хочоор.","Ширээнд хүрэх бүрт «ухх» гэж хэлнэ.","Хэн инээвэл гараа өргөх ёстой.","Утсаа гартаа барьж болохгүй (тоглоомын утаснаас бусад).","Асуулт асуухдаа заавал дуулна.","Үг бүрийн төгсгөлд «-даа» залгана.","Бүгд хамгийн сүүлд ярьсан хүний хэлсэн сүүлийн үгийг давтдаг.","«Би» гэхийн оронд «энэ хүн» гэнэ.","Хэн нэгэн хамраа маажвал бүгд хамраа маажина. Хамгийн сүүлийнх нь шийтгэл.","Нэг хүн «Шагай!» гэж хашгирвал бүгд нүдээ аниад байх ёстой. Хамгийн сүүлд аньсан нь шийтгэл.","Англи үг хэлж болохгүй.","Тоо хэлэхдээ хуруугаараа үзүүлнэ, амаар хэлж болохгүй.","Шийтгэл хийж буй хүнийг бүгд алга ташиж дэмжинэ. Ташаагүй нь дараагийн шийтгэл.","Ярьж байгаа хүн рүүгээ шууд харж болохгүй.","Хоёр хүн зэрэг ярьж эхэлбэл хоёулаа шийтгэл.","Шинэ хууль гаргасан хүн «Хаан» болно. Хаантай ярихдаа бөхийнө.","Хэн нэгэн «Хөлдөө!» гэвэл бүгд 5 секунд хөдлөхгүй."];
 
 /* ---------- game registry ---------- */
+const WYR = ["Хэзээ ч кофе уухгүй | Хэзээ ч цай уухгүй","Бүх хүний бодлыг сонсдог | Хүссэн үедээ үл үзэгдэх","Жилийн турш өвөл | Жилийн турш зун","Ээжийнхээ утсыг 1 өдөр барих | Ээж чиний утсыг 1 өдөр барих","Үргэлж 10 минут хоцордог | Үргэлж 1 цаг эрт ирдэг","Хуучин хайртайгаа нэг гэрт | Хадам ээжтэйгээ нэг өрөөнд","Гэрт интернэтгүй 1 сар | Гэрт халуун усгүй 1 сар","Алдартай боловч ядуу | Баян боловч хэн ч танихгүй","Хуушуур дахиж хэзээ ч идэхгүй | Бууз дахиж хэзээ ч идэхгүй","Бодсон бүхнээ чангаар хэлдэг | Хэзээ ч юу ч хэлж чаддаггүй","Хэлсэн бүхэнд чинь хөгжим дагалддаг | Алхам бүрт чинь алга ташдаг","Говьд 1 долоо хоног ганцаараа | Хотод 1 долоо хоног утасгүй","Найзуудын бүх чат чамд харагддаг | Чиний бүх чат найзуудад харагддаг","10 жилийн өмнө рүү буцах | 10 жилийн дараа руу үсрэх","Үргэлж үнэнээ хэлдэг | Хэзээ ч баригддаггүй худалч","Мэлхийн дуугаар инээдэг | Тахианы дуугаар найтаадаг","Аавынхаа хувцсыг 1 сар өмсөх | Үсээ ногоон болгож 1 сар явах","Хамгийн сайн найзынхаа нууцыг мэдэх | Өөрийн нууцаа нэгэнд хэлэх","Ажилгүй баян | Дуртай ажилтай дундаж цалинтай","Бүх хэлээр ярьдаг | Бүх амьтантай ярьдаг"];
+const NEVER = ["Би хэзээ ч шалгалтанд хуулж байгаагүй.","Би хэзээ ч өөр хүний мессежийг нууцаар уншиж байгаагүй.","Би хэзээ ч ажил, хичээлээс худлаа өвчтэй гээд тасалж байгаагүй.","Би хэзээ ч хоолоо шалан дээр унагаад идэж байгаагүй.","Би хэзээ ч хуучин хайртдаа шөнө мессеж бичиж байгаагүй.","Би хэзээ ч дуртай цувралаа нэг шөнийн дотор дуусгаж байгаагүй.","Би хэзээ ч автобусанд унтаж зогсоолоо өнгөрөөж байгаагүй.","Би хэзээ ч бэлгийг нь дахин бэлэглэж байгаагүй.","Би хэзээ ч хүний нэрийг мартаад шууд асууж чадахгүй байгаагүй.","Би хэзээ ч толинд өөртэйгөө ярьж байгаагүй.","Би хэзээ ч ширээний хөлд хөлөө цохиод уйлмаар болж байгаагүй.","Би хэзээ ч хүнийг блоклож байгаагүй.","Би хэзээ ч тэнэг шалтгаанаар хэн нэгэнтэй муудалцаж байгаагүй.","Би хэзээ ч гэрээсээ түлхүүргүй гарч түгжигдэж байгаагүй.","Би хэзээ ч хэн нэгнийг дагаж нууцаар профайлыг нь гүйлгэж байгаагүй.","Би хэзээ ч хурим дээр уйлж байгаагүй.","Би хэзээ ч хайрын захидал бичиж байгаагүй.","Би хэзээ ч гэрийн даалгавраа өөр хүнээр хийлгэж байгаагүй.","Би хэзээ ч өөрийгөө өөр нэрээр танилцуулж байгаагүй.","Би хэзээ ч хоол хийж байгаад гал гаргаж байгаагүй.","Би хэзээ ч шүршүүрт дуулж байгаагүй.","Би хэзээ ч таксинд мөнгөө мартаж байгаагүй."];
+const HUM = ["Хайрын дуу","Хүүхдийн дуу","Сурталчилгааны аялгуу","Киноны дуу","Монгол ардын дуу","Сургуулийн үеийн хит","Үгэнд нь «хайр» орсон дуу","Үгэнд нь өнгө орсон дуу","Үгэнд нь амьтан орсон дуу","Хурим дээр тоглодог дуу","Бүжгийн дуу","Уйлмаар дуу","Англи хэлтэй дуу","Хүүхэлдэйн киноны дуу","Утасны хонхны аялгуу"];
+const TOPICS = ["Миний хамгийн муу үс засалт","Яагаад оймс алга болдог вэ","Хэрэв би ерөнхийлөгч бол","Миний мөрөөдлийн гэр","Хамгийн хэцүү өглөө","Би яагаад муур (эсвэл нохой) хүн бэ","Хадам ээжтэй танилцах заавар","Зомбины үед амьд үлдэх төлөвлөгөө","Миний дуртай хоолны нууц жор","Анхны ажлын өдөр","Яагаад бууз хуушуураас дээр (эсвэл эсрэгээрээ)","Хамгийн сонин зүүд","Миний супер хүч","Миний 80 настай хувилбар","Хамгийн ичмээр мөч","Хэрвээ амьтад ярьдаг бол","Ирээдүйн технологи","Монгол дахь хамгийн гоё газар","Миний хуучин утас","Яагаад даваа гараг муу вэ"];
+const MISSIONS = ["Хэн нэгнийг «тийм» гэж 3 удаа хэлүүл.","Ярианд «тэмээ» гэдэг үгийг 2 удаа анзааруулахгүй оруул.","Хэн нэгэнтэй гараараа таван хуруугаа цохилцох.","Хэн нэгнийг сандлаас нь босгож, буцааж суулга.","Хэн нэгний аягыг анзааруулалгүй өөр газар зөө.","Хэн нэгнээс төрсөн өдрийг нь сэжиг төрүүлэлгүй асуу.","Хэн нэгнээр өөрийн хувцсыг магтуул.","Нэг хүнд утсаа 1 минут бариулж байлга.","Хэн нэгний хэлсэн өгүүлбэрийг 3 удаа давт.","Бүгдийг нэгэн зэрэг хундага, аяга өргүүл.","Нэг хүнээр чамд юм авчруул.","Хоёр хүнийг нэг сэдвээр маргалдуул.","Бусдыг «шагай» гэдэг үг хэлүүл.","Нэг хүнд хуурамч баримт итгүүл.","Хэн нэгнийг чамтай байраа солиулах.","Хэн нэгнээр дууны нэг мөр дуулуул.","Ярианд нэг удаа өвөөгийн хоолойгоор ярь, хэн ч анзаарахгүй байх ёстой.","Хэн нэгнийг чиний хоч болох шинэ үг гаргуул."];
+const ESTIMATE = ["Монгол Улс хэдэн аймагтай вэ? | 21","Улаанбаатар хэдэн дүүрэгтэй вэ? | 9","Чингис хаан Их Монгол Улсыг хэдэн онд байгуулсан бэ? | 1206","Монгол кирилл цагаан толгой хэдэн үсэгтэй вэ? | 35","Насанд хүрсэн хүний биед хэдэн яс байдаг вэ? | 206","Нэг жилд хэдэн цаг байдаг вэ? | 8760","Эверест уул хэдэн метр өндөр вэ? | 8849","Монгол Улсын нутаг дэвсгэр хэдэн мянган км² вэ? | 1564","Шатрын самбар хэдэн нүдтэй вэ? | 64","Жокергүй хөзрийн багц хэдэн хөзөртэй вэ? | 52","Хөлбөмбөгт нэг баг талбай дээр хэдэн тоглогчтой байдаг вэ? | 11","Дэлхийн хүн ам ойролцоогоор хэдэн тэрбум вэ? | 8","Улаанбаатар далайн түвшнээс ойролцоогоор хэдэн метр өндөрт оршдог вэ? | 1350","Нэг өдөрт хэдэн секунд байдаг вэ? | 86400","Энд байгаа бүх хүний насны нийлбэр хэд вэ? | Тоолж шалга","Энд байгаа бүх хүний утсан дахь нийт апп хэд вэ? | Тоолж шалга","Энэ өрөөнд хэдэн хаалга, цонх байна вэ? | Тоолж шалга","Таны утасны зургийн цомогт хэдэн зураг байгаа вэ? (эзэн нь хариулна) | Утсаа шалга"];
 const GAMES = [
  {id:"huzruur",name:"Шийтгэлийн хайрцаг",glyph:"!",c:"var(--rose)",players:"2+",modes:["2","pair","group"],desc:"Ердийн биш, бүтээлч шийтгэлүүд. Аль ч тоглоомтой хослуулна.",
   rules:["Аль ч тоглоомд хожигдсон хүн энд шийтгэл сугална.","Түвшингээ сонго: Зөөлөн, Халуун, Галзуу.","«Хараал» гэсэн шийтгэл хэд хэдэн эргэлт үргэлжилнэ, бүгд хянана.","Хийж чадахгүй бол «Өөрийг сугал»-ыг бүгд зөвшөөрвөл л дарна.","Уух горим асаалттай бол шийтгэл бүр уух сонголттой гарна."]},
@@ -324,7 +330,19 @@ const GAMES = [
  {id:"cards",name:"Хөзрийн шүүх",glyph:"♠",c:"#fffdf8",players:"3+",modes:["group","cards"],desc:"Хөзөр сугал. Тоо бүр өөр даалгавартай, 4 дэх хаанаас болгоомжил.",
   rules:["Утсыг ширээний голд тавь. Ээлжээрээ нэг хөзөр сугална. Жинхэнэ хөзрөөр ч тоглож болно: хөзрөө холиод нүүрээр нь доош нь дэлгэ.","Хөзрийн тоо бүр өөрийн даалгавартай (доорх жагсаалт). «Засах» хэсгээс өөрчилж болно.","4 дэх Хааныг (K) гаргасан хүн Галзуу шийтгэл хийнэ.","52 хөзөр дуусахад тоглолт дуусна."].concat(CARD_RULES)},
  {id:"hilo",name:"Дээш үү, доош уу",glyph:"↕",c:"#ffd98a",players:"2+",modes:["2","pair","group","cards"],desc:"Дараагийн хөзөр том уу, жижиг үү? Зөв таах бүрт сав өснө.",
-  rules:["Нэг хөзөр нээлттэй байна. Ээлжийн хүн дараагийн хөзөр том уу, жижиг үү гэдгийг таана. A хамгийн бага, K хамгийн том.","Зөв таах бүрт «сав» 1-ээр өснө. 3 удаа зөв таасны дараа савыг дараагийн хүнд дамжуулж болно.","Буруу таавал сав дахь бүх оноогоор шийтгэл авна: 1–2 Зөөлөн, 3–4 Халуун, 5+ Галзуу.","Ижил тоо гарвал аюулгүй, дахин таана.","Жинхэнэ хөзрөөр ч яг ийм дүрмээр тоглоно."]}
+  rules:["Нэг хөзөр нээлттэй байна. Ээлжийн хүн дараагийн хөзөр том уу, жижиг үү гэдгийг таана. A хамгийн бага, K хамгийн том.","Зөв таах бүрт «сав» 1-ээр өснө. 3 удаа зөв таасны дараа савыг дараагийн хүнд дамжуулж болно.","Буруу таавал сав дахь бүх оноогоор шийтгэл авна: 1–2 Зөөлөн, 3–4 Халуун, 5+ Галзуу.","Ижил тоо гарвал аюулгүй, дахин таана.","Жинхэнэ хөзрөөр ч яг ийм дүрмээр тоглоно."]},
+ {id:"wyr",name:"Аль нь дээр",glyph:"⇄",c:"#7fe0ff",players:"2+",modes:["2","pair","group"],desc:"Хоёр хэцүү сонголт. Цөөнх нь шийтгэл.",
+  rules:["Хоёр сонголт гарна. «Нэг, хоёр, гурав» гэхэд бүгд зэрэг нэг эсвэл хоёр хуруу гаргана.","Цөөнх болсон тал шийтгэл. Тэнцвэл хоёр тал хоёулаа хамгаалалтын үг хэлэх ба бусад санал хураана.","Хоёулаа тоглож байвал: өөр сонголт хийвэл хоёулаа 10 секундэд сонголтоо хамгаалж, ятгаж чадаагүй нь шийтгэл."]},
+ {id:"never",name:"Хэзээ ч үгүй",glyph:"✕",c:"#ffb3c7",players:"3+",modes:["group"],desc:"«Би хэзээ ч ...» Хийж байсан хүн шийтгэл.",
+  rules:["Утсан дээрх өгүүлбэрийг чангаар унш.","Тэр зүйлийг хийж байсан бүх хүн гараа өргөнө.","Гар өргөсөн хүн бүр шийтгэл, эсвэл түүхээ 30 секундэд ярьж бусдыг инээлгэвэл чөлөөлөгдөнө.","Ганцаараа гар өргөсөн бол Галзуу шийтгэл."]},
+ {id:"hum",name:"Аялгуу",glyph:"♪",c:"#c6f36b",players:"3+",modes:["pair","group"],desc:"Сэдэвт таарсан дууг үггүй аялж таалга.",
+  rules:["Ээлжийн хүн сэдвийг хараад тэр сэдэвт тохирох дууг үггүй (ммм, на-на) аялна.","30 секундэд хэн нэгэн таавал таасан хүн аялагчтай хамт хүссэн хүндээ шийтгэл өгнө.","Хэн ч таахгүй бол аялагч шийтгэл.","Үг хэлэх, нэр зааж өгөхийг хориглоно."]},
+ {id:"minute",name:"Зогсолтгүй",glyph:"30",c:"#ffcf5c",players:"2+",modes:["2","pair","group"],desc:"Сэдвээр 30 секунд зогсохгүй ярь. «Ээ», «аан» гэвэл шийтгэл.",
+  rules:["Ээлжийн хүн сэдвийг хараад 30 секунд тасралтгүй ярина.","2 секундээс удаан зогсох, «ээ», «аан» гэх, сэдвээс хазайх хориотой.","Бусад нь алдааг сонсоод «Зогс!» гэнэ. Алдаа үнэн бол ярьж буй хүн шийтгэл, худлаа бол хашгирсан хүн.","30 секундийг амжилттай дуусгавал хүссэн хүндээ шийтгэл өгнө."]},
+ {id:"mission",name:"Нууц даалгавар",glyph:"✉",c:"#9ad0ff",players:"3–12",modes:["group"],desc:"Хүн бүр нууц даалгавартай. Шөнөжингөө баригдалгүй биелүүл.",
+  rules:["Утсыг ээлжлэн дамжуулж хүн бүр өөрийн нууц даалгаврыг харна.","Үдэшлэгийн турш даалгавраа бусдад анзааруулалгүй биелүүлнэ.","Хэн нэгний даалгаврыг таасан бол «Би мэдлээ!» гээд хэл. Зөв бол даалгавартай хүн шийтгэл, буруу бол таасан хүн шийтгэл.","Даалгавраа биелүүлсэн хүн бусдад зарлаад хүссэн хүндээ Галзуу шийтгэл өгнө."]},
+ {id:"guess",name:"Тоо таа",glyph:"#",c:"#e3c4ff",players:"2+",modes:["2","pair","group"],desc:"Тоон асуулт. Хамгийн хол таасан нь шийтгэл.",
+  rules:["Асуултыг уншаад бүгд хариултаа цаасан дээр бичих эсвэл зэрэг хэлнэ.","Хариуг нээнэ. Хамгийн ойр таасан хүн хамгийн хол таасан хүндээ шийтгэл өгнө.","Яг зөв таасан бол бусад бүгд шийтгэл."]}
 ];
 const OFFLINE = [
  {id:"wink",name:"Нүдээр ал",players:"6+",desc:"Нэг нь нууц алуурчин. Нүд ирмээд «ална».",
@@ -345,6 +363,10 @@ const OFFLINE = [
   rules:GAMES.find(g=>g.id==="shagai").rules}
 ];
 const BUILTIN_COUNT = GAMES.length;
+const MINMAX={huzruur:[2,99],imposter:[3,12],bomb:[3,99],who:[3,99],laws:[3,99],shagai:[2,99],act:[4,99],pairs:[4,12],sync:[2,2],talk:[2,2],cards:[3,99],hilo:[2,99],wyr:[2,99],never:[3,99],hum:[3,99],minute:[2,99],mission:[3,12],guess:[2,99],wink:[6,99],liar:[3,8],bus:[2,8],tower:[3,8],forbid:[3,99],story:[3,99],seven:[3,99],"shagai-real":[2,99]};
+[...GAMES,...OFFLINE].forEach(g=>{ const m=MINMAX[g.id]||[2,99]; g.min=m[0]; g.max=m[1]; });
+const GDEF={}; [...GAMES,...OFFLINE].forEach(g=>GDEF[g.id]={name:g.name,players:g.players,desc:g.desc,rules:g.rules.slice(),min:g.min,max:g.max});
+const fits=(g,n)=>!n||(g.min<=n&&g.max>=n);
 
 /* ---------- editable content ---------- */
 const EDIT_SETS = [
@@ -362,6 +384,12 @@ const EDIT_SETS = [
  {k:"cats",n:"Ангиллууд (Тэсрэх бөмбөг, Нэг санаа)",a:CATS},
  {k:"actWords",n:"Хязгаартай тайлбар: үгс",a:ACT_WORDS},
  {k:"actStyles",n:"Хязгаартай тайлбар: хязгаарууд",a:ACT_STYLES},
+ {k:"wyr",n:"Аль нь дээр: «сонголт | сонголт» мөр бүрт",a:WYR},
+ {k:"never",n:"Хэзээ ч үгүй: өгүүлбэрүүд",a:NEVER},
+ {k:"hum",n:"Аялгуу: сэдвүүд",a:HUM},
+ {k:"topics",n:"Зогсолтгүй: сэдвүүд",a:TOPICS},
+ {k:"missions",n:"Нууц даалгавар: даалгаврууд",a:MISSIONS},
+ {k:"estimate",n:"Тоо таа: «асуулт | хариулт» мөр бүрт",a:ESTIMATE},
  {k:"imposter",n:"Хуурамч: «Ангилал: үг, үг, үг» мөр бүрт",obj:IMPOSTER}
 ];
 const setLines = s => s.obj ? Object.entries(s.obj).map(([c,w])=>c+": "+w.join(", ")) : s.a.slice();
@@ -371,7 +399,8 @@ function applyLines(s,lines){
   else s.a.splice(0,s.a.length,...lines);
 }
 const DEFAULTS = {}; EDIT_SETS.forEach(s=>DEFAULTS[s.k]=setLines(s));
-let SHARED = {content:{},games:[]};               /* from custom.json next to the site, if any */
+let SHARED = {content:{},games:[],gedits:{}};
+const localEdits = () => store("pp-gedits")||{};               /* from custom.json next to the site, if any */
 const local = () => store("pp-content")||{};
 const localGames = () => store("pp-games")||[];
 function slug(n){ return "c-"+Array.from(n).map(c=>c.charCodeAt(0).toString(36)).join("").slice(0,24); }
@@ -379,10 +408,12 @@ function rebuildContent(){
   const ov = Object.assign({}, SHARED.content||{}, local());
   EDIT_SETS.forEach(s=>applyLines(s, ov[s.k] || DEFAULTS[s.k]));
   GAMES.splice(BUILTIN_COUNT);
+  const ed=Object.assign({},SHARED.gedits||{},localEdits());
+  [...GAMES,...OFFLINE].forEach(g=>{ Object.assign(g,GDEF[g.id],{hidden:false},ed[g.id]||{}); g.rules=(g.rules||[]).slice(); });
   const seen=new Set();
   [...(SHARED.games||[]),...localGames()].reverse().forEach(c=>{ if(!c||!c.name) return; const id=c.id||slug(c.name); if(seen.has(id)) return; seen.add(id);
-    GAMES.push({id,custom:true,mine:localGames().some(x=>x.id===id),name:c.name,glyph:(c.name.trim()[0]||"★"),c:"#b9f18c",players:c.players||"2+",modes:(c.modes&&c.modes.length?c.modes:["group"]),desc:c.desc||"",rules:(c.rules&&c.rules.length?c.rules:["Дүрэм оруулаагүй байна."]),cards:c.cards||[]}); });
-  const cg=GAMES.find(g=>g.id==="cards"); cg.rules=cg.rules.slice(0,4).concat(CARD_RULES);
+    GAMES.push({id,custom:true,mine:localGames().some(x=>x.id===id),name:c.name,glyph:(c.name.trim()[0]||"★"),c:"#b9f18c",players:c.players||"2+",modes:(c.modes&&c.modes.length?c.modes:["group"]),min:+c.min||2,max:+c.max||99,hidden:!!(ed[id]&&ed[id].hidden),desc:c.desc||"",rules:(c.rules&&c.rules.length?c.rules:["Дүрэм оруулаагүй байна."]),cards:c.cards||[]}); });
+  const cg=GAMES.find(g=>g.id==="cards"); if(!(ed.cards&&ed.cards.rules)) cg.rules=GDEF.cards.rules.slice(0,4).concat(CARD_RULES);
   CV++;
 }
 
@@ -401,9 +432,10 @@ const offlineCard = g => `<div class="panel" style="gap:8px"><div class="row" st
 
 /* ---------- home ---------- */
 function home(){
-  const show = g => filter==="all" || g.modes.includes(filter) || (filter==="mine" && g.custom);
+  const ok = g => !g.hidden && fits(g,S.count);
+  const show = g => ok(g) && (filter==="all" || g.modes.includes(filter) || (filter==="mine" && g.custom));
   const list = GAMES.filter(show);
-  const offl = filter==="cards" ? OFFLINE.filter(g=>g.cards) : OFFLINE;
+  const offl = (filter==="cards" ? OFFLINE.filter(g=>g.cards) : OFFLINE).filter(ok);
   $("#app").innerHTML=`
   <header class="hero">
     <div class="hero-top"><div class="logo">Пид <span>Пад</span></div><button class="editbtn" id="edit" type="button">Засах</button></div>
@@ -411,7 +443,12 @@ function home(){
   </header>
   <section class="panel" aria-label="Тохиргоо">
     <div class="stack">
-      <div class="label">Тоглогчид · ${S.players.length}</div>
+      <div class="label">Хэдүүлээ тоглох вэ?</div>
+      <div class="seg" id="cnt">${[[0,"Бүгд"],[2,"2"],[3,"3"],[4,"4"],[5,"5"],[6,"6"],[7,"7"],[8,"8+"]].map(([n,t])=>`<button type="button" data-n="${n}" aria-pressed="${(S.count||0)===n}">${t}</button>`).join("")}</div>
+      <div class="small muted">${S.count?`${S.count===8?"8 ба түүнээс олон":S.count} хүнд тохирох ${GAMES.filter(ok).length} тоглоом, ${OFFLINE.filter(ok).length} утасгүй дүрэм байна.`:"Тоогоо сонговол зөвхөн тохирох тоглоомууд харагдана."}</div>
+    </div>
+    <div class="stack">
+      <div class="label">Тоглогчид · ${S.players.length}${S.count&&S.count<8&&S.players.length>S.count?` · эхний ${S.count} нь тоглоно`:""}${S.count&&S.players.length<S.count?` · ${S.count-S.players.length} нэрийг «Тоглогч» гэж нөхнө`:""}</div>
       <div class="chips" id="chips">${S.players.map((p,i)=>`<span class="chip">${esc(p)}<button type="button" data-rm="${i}" aria-label="${esc(p)}-г хасах">×</button></span>`).join("")}</div>
       <form class="addrow" id="addf"><input type="text" id="pname" placeholder="Нэр нэмэх" maxlength="16" autocomplete="off"><button class="btn" style="width:auto;padding:10px 16px" type="submit">Нэмэх</button></form>
     </div>
@@ -437,6 +474,7 @@ function home(){
   document.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{S.players.splice(+b.dataset.rm,1);save();home();});
   $("#addf").onsubmit=e=>{e.preventDefault();const v=$("#pname").value.trim();if(v){S.players.push(v);save();home();setTimeout(()=>$("#pname")&&$("#pname").focus(),0);}};
   document.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{S.level=+b.dataset.l;save();home();});
+  document.querySelectorAll("[data-n]").forEach(b=>b.onclick=()=>{S.count=+b.dataset.n||0;save();home();});
   $("#drink").onclick=()=>{S.drink=!S.drink;save();home();};
   document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{filter=b.dataset.f;home();});
   document.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>go(b.dataset.g));
@@ -455,6 +493,12 @@ function editor(){
       <div class="row" style="justify-content:space-between"><h3 style="font-size:17px">Миний тоглоомууд</h3><button class="mini" id="newg" type="button">+ Шинэ тоглоом</button></div>
       ${mine.length?mine.map((c,i)=>`<div class="row" style="justify-content:space-between;border-top:1px solid var(--line);padding-top:10px"><span style="min-width:0"><b>${esc(c.name)}</b> <span class="muted small">· ${esc(c.players||"")}</span></span><span class="row"><button class="mini" type="button" data-eg="${i}">Засах</button><button class="mini rose" type="button" data-dg="${i}">Устгах</button></span></div>`).join(""):`<div class="muted small">Одоогоор алга. «Шинэ тоглоом» дарж өөрийн санасан тоглоомоо нэмээрэй. Карт бичвэл утсаар сугалдаг тоглоом болно.</div>`}
       <div id="gform"></div>
+    </section>
+    <section class="panel">
+      <h3 style="font-size:17px">Бүх тоглоом</h3>
+      <div class="muted small">Нэр, тайлбар, дүрэм, хэдэн хүнтэй тоглохыг нь засна. Хэрэггүй тоглоомоо нууж болно.</div>
+      ${[...GAMES.filter(g=>!g.custom),...OFFLINE].map(g=>`<div class="row" style="justify-content:space-between;border-top:1px solid var(--line);padding-top:10px"><span style="min-width:0;flex:1"><b style="${g.hidden?"opacity:.5;text-decoration:line-through":""}">${esc(g.name)}</b> <span class="muted small">· ${g.min}–${g.max>=99?"∞":g.max} хүн${OFFLINE.includes(g)?" · утасгүй":""}${localEdits()[g.id]&&!(Object.keys(localEdits()[g.id]).length===1&&"hidden" in localEdits()[g.id])?" · өөрчилсөн":""}</span></span><span class="row"><button class="mini" type="button" data-ge="${g.id}">Засах</button><button class="mini${g.hidden?"":" rose"}" type="button" data-gh="${g.id}">${g.hidden?"Харуулах":"Нуух"}</button></span></div>`).join("")}
+      <div id="geform"></div>
     </section>
     <section class="panel">
       <h3 style="font-size:17px">Асуулт, шийтгэл, үгс засах</h3>
@@ -479,12 +523,14 @@ function editor(){
   $("#setk").onchange=e=>{ editKey=e.target.value; fill(); $("#ok").textContent=""; };
   $("#sv").onclick=()=>{ const o=local(); o[editKey]=$("#setv").value.split("\n").map(s=>s.trim()).filter(Boolean); store("pp-content",o); rebuildContent(); $("#ok").textContent="Хадгаллаа"; exp(); };
   $("#rs").onclick=()=>{ const o=local(); delete o[editKey]; store("pp-content",o); rebuildContent(); fill(); $("#ok").textContent="Анхных руу буцаалаа"; exp(); };
-  const exp=()=>{ $("#exp").value=JSON.stringify({content:local(),games:localGames()},null,1); }; exp();
+  const exp=()=>{ $("#exp").value=JSON.stringify({content:local(),games:localGames(),gedits:localEdits()},null,1); }; exp();
   $("#cp").onclick=()=>{ const t=$("#exp").value; const done=()=>$("#cpok").textContent="Хууллаа"; try{ navigator.clipboard.writeText(t).then(done,()=>{ $("#exp").select(); $("#cpok").textContent="Сонгосон, хуулаарай"; }); }catch(e){ $("#exp").select(); } };
-  $("#im").onclick=()=>{ try{ const d=JSON.parse($("#imp").value); const o=Object.assign(local(),d.content||{}); store("pp-content",o);
+  $("#im").onclick=()=>{ try{ const d=JSON.parse($("#imp").value); const o=Object.assign(local(),d.content||{}); store("pp-content",o); store("pp-gedits",Object.assign(localEdits(),d.gedits||{}));
       const gs=localGames(); (d.games||[]).forEach(g=>{ if(!g||!g.name) return; g.id=g.id||slug(g.name); const i=gs.findIndex(x=>x.id===g.id); if(i>=0) gs[i]=g; else gs.push(g); }); store("pp-games",gs);
       rebuildContent(); editor(); $("#imok").textContent="Орууллаа"; }catch(e){ $("#imok").textContent="Текст буруу байна. Бүтнээр нь хуулж буулгаарай."; } };
   $("#newg").onclick=()=>gameForm();
+  document.querySelectorAll("[data-ge]").forEach(b=>b.onclick=()=>gameEditForm(b.dataset.ge));
+  document.querySelectorAll("[data-gh]").forEach(b=>b.onclick=()=>{ const e=localEdits(), id=b.dataset.gh, g=[...GAMES,...OFFLINE].find(x=>x.id===id); e[id]=Object.assign(e[id]||{},{hidden:!g.hidden}); store("pp-gedits",e); rebuildContent(); editor(); });
   document.querySelectorAll("[data-eg]").forEach(b=>b.onclick=()=>gameForm(+b.dataset.eg));
   document.querySelectorAll("[data-dg]").forEach(b=>b.onclick=()=>{ const i=+b.dataset.dg;
     b.outerHTML=`<button class="mini rose" type="button" id="cf${i}">Тийм, устга</button>`; $("#cf"+i).onclick=()=>{ const gs=localGames(); gs.splice(i,1); store("pp-games",gs); rebuildContent(); editor(); }; });
@@ -494,7 +540,8 @@ function gameForm(i){
   const M=[["2","Хоёулаа"],["pair","Хосоороо"],["group","Олуулаа"],["cards","Хөзөр"]];
   $("#gform").innerHTML=`<div class="stack" style="border-top:1px solid var(--line);padding-top:14px">
     <label class="stack"><span class="label">Тоглоомын нэр</span><input type="text" id="gn" maxlength="40" value="${esc(c.name)}" placeholder="Жишээ: Аяга тойрог"></label>
-    <label class="stack"><span class="label">Хэдэн хүн</span><input type="text" id="gp" maxlength="16" value="${esc(c.players||"")}" placeholder="3+"></label>
+    <div class="row"><label class="stack" style="flex:1"><span class="label">Хамгийн цөөн</span><input type="number" id="gmin" min="1" max="99" value="${+c.min||2}"></label><label class="stack" style="flex:1"><span class="label">Хамгийн олон</span><input type="number" id="gmax" min="1" max="99" value="${+c.max||99}"></label></div>
+    <label class="stack"><span class="label">Хэдэн хүн (харагдах бичиг)</span><input type="text" id="gp" maxlength="16" value="${esc(c.players||"")}" placeholder="3+"></label>
     <div class="stack"><span class="label">Аль хэсэгт харагдах</span><div class="checks">${M.map(([k,t])=>`<label><input type="checkbox" value="${k}"${(c.modes||[]).includes(k)?" checked":""}>${t}</label>`).join("")}</div></div>
     <label class="stack"><span class="label">Товч тайлбар</span><input type="text" id="gd" maxlength="90" value="${esc(c.desc||"")}" placeholder="Нэг өгүүлбэрээр"></label>
     <label class="stack"><span class="label">Дүрэм (мөр бүр нэг алхам)</span><textarea class="short" id="gr">${esc((c.rules||[]).join("\n"))}</textarea></label>
@@ -505,13 +552,13 @@ function gameForm(i){
   $("#gx").onclick=()=>{ $("#gform").innerHTML=""; };
   $("#gs").onclick=()=>{ const name=$("#gn").value.trim(); if(!name){ $("#gok").textContent="Нэр оруулна уу"; return; }
     const lines=id=>$(id).value.split("\n").map(s=>s.trim()).filter(Boolean);
-    const g={id:c.id||slug(name+Date.now()),name,players:$("#gp").value.trim()||"2+",modes:[...document.querySelectorAll("#gform .checks input:checked")].map(x=>x.value),desc:$("#gd").value.trim(),rules:lines("#gr"),cards:lines("#gc")};
+    const g={id:c.id||slug(name+Date.now()),name,players:$("#gp").value.trim()||"2+",modes:[...document.querySelectorAll("#gform .checks input:checked")].map(x=>x.value),min:Math.max(1,+$("#gmin").value||2),max:Math.max(1,+$("#gmax").value||99),desc:$("#gd").value.trim(),rules:lines("#gr"),cards:lines("#gc")};
     const all=localGames(); if(i!==undefined) all[i]=g; else all.push(g); store("pp-games",all); rebuildContent(); editor(); };
 }
 
 /* ---------- screens ---------- */
 const SCREENS = {};
-const players = () => S.players.length?S.players:["Тоглогч 1","Тоглогч 2"];
+const players = () => { const n=S.count; let ps=S.players.slice(); if(n){ if(n<8) ps=ps.slice(0,n); while(ps.length<n) ps.push("Тоглогч "+(ps.length+1)); } return ps.length>=2?ps:ps.concat(["Тоглогч 1","Тоглогч 2"]).slice(0,2); };
 
 SCREENS.huzruur = g => {
   frame(g);
@@ -753,8 +800,77 @@ function customScreen(g){
   r();
 }
 
+/* ---------- more games ---------- */
+function cardLoop(g,data,render){ /* generic: draw from list, show card, Шийтгэл + Next */
+  frame(g); const d=deck(data); let n=0;
+  const r=()=>{ n++; const item=d(); stage(render(item,n)+`<div class="btns"><button class="btn rose" id="hz" type="button">Шийтгэл</button><button class="btn" id="nx" type="button">Дараагийнх</button></div>`); $("#nx").onclick=r; $("#hz").onclick=()=>openHZ(); };
+  r();
+}
+SCREENS.wyr = g => cardLoop(g,WYR,(t,n)=>{ const [a,b]=t.split("|").map(s=>s.trim()); return `<div class="card sun flip" style="min-height:0"><div class="kicker">Асуулт ${n} · Нэг хуруу</div><div class="big">${esc(a||t)}</div></div><div class="note" style="font-family:var(--display);font-weight:900;font-size:18px">эсвэл</div><div class="card mint flip" style="min-height:0"><div class="kicker">Хоёр хуруу</div><div class="big">${esc(b||"…")}</div></div>`; });
+SCREENS.never = g => cardLoop(g,NEVER,(t,n)=>`<div class="card flip" style="background:#ffb3c7"><div class="kicker">${n} · Хийж байсан бол гараа өргө</div><div class="big">${esc(t)}</div></div>`);
+function timedTopic(g,list,secs,kicker,fail){
+  frame(g); const d=deck(list), ps=players(); let turn=0;
+  const ready=()=>{ const t=d(); stage(`<div class="card sun flip"><div class="kicker">${esc(ps[turn%ps.length])} · ${kicker}</div><div class="big">${esc(t)}</div></div>
+    <div class="btns"><button class="btn ghost" id="sk" type="button">Өөр сэдэв</button><button class="btn" id="st" type="button">${secs} секунд эхлүүлэх</button></div>`);
+    $("#sk").onclick=ready; $("#st").onclick=()=>run(t); };
+  const run=t=>{ let s=secs; stage(`<div class="card sun" style="min-height:0"><div class="kicker">${esc(ps[turn%ps.length])}</div><div class="big">${esc(t)}</div></div><div class="timer" id="tm">${s}</div>
+    <div class="btns"><button class="btn rose" id="fl" type="button">${fail}</button><button class="btn mint" id="ok" type="button">Амжилттай</button></div>`);
+    const end=(bad)=>{ clearTimers(); beep(bad?150:990,.3); stage(`<div class="card ${bad?"rose":"mint"} flip"><div class="huge">${bad?"Шийтгэл!":"Гоё!"}</div><div class="big">${bad?esc(ps[turn%ps.length])+" шийтгэл хийнэ.":esc(ps[turn%ps.length])+" хүссэн хүндээ шийтгэл өгнө."}</div></div>
+      <div class="btns"><button class="btn ghost" id="hz" type="button">Шийтгэл сугал</button><button class="btn" id="nx" type="button">Дараагийн хүн</button></div>`);
+      $("#hz").onclick=()=>openHZ(); $("#nx").onclick=()=>{turn++;ready();}; };
+    $("#fl").onclick=()=>end(true); $("#ok").onclick=()=>end(false);
+    timers.push(setInterval(()=>{ s--; const e=$("#tm"); if(e) e.textContent=s; if(s<=5&&s>0) beep(700,.05); if(s<=0){ buzz([200,80,200]); end(g.id==="hum"); } },1000)); };
+  ready();
+}
+SCREENS.hum = g => timedTopic(g,HUM,30,"Үггүй аялж таалга","Хэн ч таасангүй");
+SCREENS.minute = g => timedTopic(g,TOPICS,30,"30 секунд зогсохгүй ярь","Алдлаа");
+SCREENS.mission = g => {
+  frame(g); const ps=players();
+  if(ps.length<3){ stage(`<div class="card dark"><div class="big">Дор хаяж 3 тоглогч хэрэгтэй.</div></div>`); return; }
+  const ms=shuffle(MISSIONS); const my=ps.map((p,i)=>ms[i%ms.length]); let i=0;
+  const turn=()=>{ stage(`<div class="card sun"><div class="kicker">${i+1} / ${ps.length}</div><div class="huge">${esc(ps[i])}</div><div>Утсаа аваад бусдаас нуугаад хар.</div></div><button class="btn" id="see" type="button">Даалгавраа харах</button>`); $("#see").onclick=show; };
+  const show=()=>{ stage(`<div class="card mint flip"><div class="kicker">${esc(ps[i])}-ийн нууц даалгавар</div><div class="big">${esc(my[i])}</div></div><button class="btn ghost" id="hd" type="button">Нуугаад дараагийн хүнд өг</button>`); $("#hd").onclick=()=>{ i++; i<ps.length?turn():board(); }; };
+  const done=new Set();
+  const board=()=>{ stage(`<div class="card dark" style="min-height:0"><div class="big">Бүгд даалгавраа авлаа. Үдэшлэг эхэлж байна!</div><div class="small muted">Хэн нэгэн баригдах эсвэл биелүүлэх үед энд дарна.</div></div>
+    <div class="score">${ps.map((p,k)=>`<div class="${done.has(k)?"":"on"}"><span>${esc(p)}${done.has(k)?` · <span class="muted small">${esc(my[k])}</span>`:""}</span>${done.has(k)?"<b>✓</b>":`<span class="row"><button class="mini rose" type="button" data-c="${k}">Баригдсан</button><button class="mini" type="button" data-w="${k}">Биелүүлсэн</button></span>`}</div>`).join("")}</div>
+    <button class="btn ghost" id="rs" type="button">Шинэ даалгаврууд</button>`);
+    document.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{ const k=+b.dataset.c; done.add(k); board(); openHZ(ps[k]); });
+    document.querySelectorAll("[data-w]").forEach(b=>b.onclick=()=>{ const k=+b.dataset.w; done.add(k); board(); const l=S.level; S.level=3; openHZ(); S.level=l; });
+    $("#rs").onclick=()=>SCREENS.mission(g); };
+  turn();
+};
+SCREENS.guess = g => {
+  frame(g); const d=deck(ESTIMATE); let n=0;
+  const r=()=>{ n++; const [q,a]=d().split("|").map(s=>s.trim());
+    stage(`<div class="card sun flip"><div class="kicker">Асуулт ${n}</div><div class="big">${esc(q)}</div><div class="small">Бүгд хариултаа бичих эсвэл зэрэг хэлнэ.</div></div>
+      <div id="ans"></div><div class="btns"><button class="btn ghost" id="sh" type="button">Хариуг харах</button><button class="btn" id="nx" type="button">Дараагийн асуулт</button><button class="btn rose full" id="hz" type="button">Хамгийн хол таасан нь шийтгэл</button></div>`);
+    $("#sh").onclick=()=>{ $("#ans").innerHTML=`<div class="card mint flip" style="min-height:0;text-align:center"><div class="kicker">Хариу</div><div class="huge">${esc(a||"?")}</div></div>`; beep(880,.15); };
+    $("#nx").onclick=r; $("#hz").onclick=()=>openHZ(); };
+  r();
+};
+
+/* ---------- game editor (built-in and offline games) ---------- */
+function gameEditForm(id){
+  const g=[...GAMES,...OFFLINE].find(x=>x.id===id); if(!g) return;
+  const box=$("#geform"); box.scrollIntoView&&box.scrollIntoView({block:"nearest"});
+  box.innerHTML=`<div class="stack" style="border-top:1px solid var(--line);padding-top:14px">
+    <div class="label">«${esc(g.name)}» засах</div>
+    <label class="stack"><span class="label">Нэр</span><input type="text" id="en" maxlength="40" value="${esc(g.name)}"></label>
+    <div class="row"><label class="stack" style="flex:1"><span class="label">Хамгийн цөөн</span><input type="number" id="emin" min="1" max="99" value="${g.min}"></label><label class="stack" style="flex:1"><span class="label">Хамгийн олон</span><input type="number" id="emax" min="1" max="99" value="${g.max}"></label></div>
+    <label class="stack"><span class="label">Тоглогчийн тоо (харагдах бичиг)</span><input type="text" id="ep" maxlength="20" value="${esc(g.players)}"></label>
+    <label class="stack"><span class="label">Товч тайлбар</span><input type="text" id="ed" maxlength="100" value="${esc(g.desc)}"></label>
+    <label class="stack"><span class="label">Дүрэм (мөр бүр нэг алхам)</span><textarea id="er">${esc(g.rules.join("\n"))}</textarea></label>
+    <div class="row"><button class="btn" style="width:auto" id="es" type="button">Хадгалах</button><button class="mini" id="erst" type="button">Анхных руу</button><button class="mini" id="ex" type="button">Хаах</button></div>
+  </div>`;
+  $("#ex").onclick=()=>{box.innerHTML="";};
+  $("#erst").onclick=()=>{ const e=localEdits(); delete e[id]; store("pp-gedits",e); rebuildContent(); editor(); };
+  $("#es").onclick=()=>{ const e=localEdits(); const lines=$("#er").value.split("\n").map(s=>s.trim()).filter(Boolean);
+    e[id]=Object.assign(e[id]||{},{name:$("#en").value.trim()||g.name,players:$("#ep").value.trim()||g.players,desc:$("#ed").value.trim(),rules:lines,min:Math.max(1,+$("#emin").value||1),max:Math.max(1,+$("#emax").value||99)});
+    store("pp-gedits",e); rebuildContent(); editor(); };
+}
+
 /* ---------- boot ---------- */
 rebuildContent();
 home();
-try{ fetch("custom.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(d=>{ if(d&&typeof d==="object"){ SHARED={content:d.content||{},games:d.games||[]}; rebuildContent(); if(current==="home") home(); } }).catch(()=>{}); }catch(e){}
+try{ fetch("custom.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(d=>{ if(d&&typeof d==="object"){ SHARED={content:d.content||{},games:d.games||[],gedits:d.gedits||{}}; rebuildContent(); if(current==="home") home(); } }).catch(()=>{}); }catch(e){}
 </script>
