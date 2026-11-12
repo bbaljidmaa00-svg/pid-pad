@@ -138,11 +138,12 @@ details.rules ol,details.rules ul{margin:10px 0 4px;padding-left:20px;display:fl
 .bomb{width:180px;height:180px;margin:10px auto;border-radius:50%;background:radial-gradient(circle at 35% 30%,#4b3f7a,#120d24 70%);border:3px solid var(--line);display:grid;place-items:center;font-family:var(--display);font-weight:900;font-size:22px;color:var(--sun)}
 .bomb.live{animation:pulse var(--beat,1s) infinite}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07);box-shadow:0 0 50px rgba(255,92,122,.55)}}
-.bones{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.bone{aspect-ratio:3/4;max-width:100%;border-radius:40% 40% 46% 46%/34% 34% 60% 60%;background:#efe2c8;color:#3b2a16;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:13px;box-shadow:inset 0 -8px 0 rgba(0,0,0,.12)}
-.bone svg{width:60%;height:auto}
-.bone.roll{animation:roll .5s ease-out}
-@keyframes roll{0%{transform:rotate(-200deg) translateY(-30px);opacity:.2}100%{transform:none;opacity:1}}
+.bones{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:16px 10px 12px;border-radius:22px;background:radial-gradient(ellipse at 50% 40%,#3f6b4a,#1f3a2a 75%);box-shadow:inset 0 0 0 3px #6b4a2b,inset 0 0 30px rgba(0,0,0,.5)}
+.bone{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+.bone svg{width:100%;max-width:92px;height:auto;filter:drop-shadow(0 6px 4px rgba(0,0,0,.45));transform:rotate(var(--r,0deg))}
+.bone span{font-weight:800;font-size:13px;color:#fff;background:rgba(0,0,0,.35);border-radius:99px;padding:2px 10px}
+.bone.roll svg{animation:roll .55s cubic-bezier(.2,.8,.3,1.2) backwards;animation-delay:var(--d,0s)}
+@keyframes roll{0%{transform:rotate(-220deg) translateY(-40px) scale(.6);opacity:.2}100%{transform:rotate(var(--r,0deg));opacity:1}}
 .reveal{user-select:none;-webkit-user-select:none;touch-action:manipulation}
 .pill{display:inline-block;font-size:12px;font-weight:800;padding:4px 10px;border-radius:99px;background:var(--felt-2);border:1px solid var(--line)}
 .offline-list{display:flex;flex-direction:column;gap:10px}
@@ -736,11 +737,21 @@ SCREENS.laws = g => {
 };
 
 const BONES=[{k:"horse",n:"Морь",p:.12},{k:"camel",n:"Тэмээ",p:.12},{k:"sheep",n:"Хонь",p:.38},{k:"goat",n:"Ямаа",p:.38}];
-function boneSVG(k){ const s={horse:'<path d="M20 70 Q20 30 50 22 Q80 30 80 70" fill="none" stroke="#3b2a16" stroke-width="7" stroke-linecap="round"/><circle cx="50" cy="52" r="6" fill="#3b2a16"/>',
-  camel:'<path d="M18 62 Q34 28 50 50 Q66 28 82 62" fill="none" stroke="#3b2a16" stroke-width="7" stroke-linecap="round"/>',
-  sheep:'<circle cx="50" cy="50" r="22" fill="none" stroke="#3b2a16" stroke-width="7"/>',
-  goat:'<path d="M30 30 L50 70 L70 30" fill="none" stroke="#3b2a16" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>'}[k];
-  return `<svg viewBox="0 0 100 100" aria-hidden="true">${s}</svg>`; }
+function boneSVG(k,uid){
+  const id="b"+k+(uid||0);
+  const outline="M24 22C12 30 8 50 12 66C14 80 10 94 18 108C26 122 42 126 52 124C64 126 80 120 88 106C96 92 90 78 92 64C96 46 90 28 78 20C68 13 60 18 52 17C42 16 34 14 24 22Z";
+  const face={
+   sheep:`<ellipse cx="52" cy="70" rx="30" ry="40" fill="url(#hl${id})"/><path d="M28 52Q52 36 76 52M26 88Q52 104 78 88" fill="none" stroke="#a88a5c" stroke-width="2" opacity=".55"/>`,
+   goat:`<path d="M26 70Q30 44 52 42Q74 44 78 70Q74 96 52 98Q30 96 26 70Z" fill="url(#pit${id})"/><path d="M30 64Q52 50 74 64" fill="none" stroke="#fff6e4" stroke-width="2" opacity=".6"/>`,
+   horse:`<path d="M30 40L74 40Q82 70 74 104L30 104Q22 70 30 40Z" fill="#f3e6cb" stroke="#b8996a" stroke-width="1.5"/><ellipse cx="52" cy="50" rx="9" ry="6" fill="url(#hl${id})" stroke="#9c7c4c" stroke-width="1.5"/><path d="M40 78h24" stroke="#b8996a" stroke-width="2" stroke-linecap="round" opacity=".7"/>`,
+   camel:`<path d="M24 74Q32 40 46 58Q52 66 58 58Q72 40 80 74" fill="none" stroke="#9c7c4c" stroke-width="3" stroke-linecap="round"/><path d="M30 92Q40 78 56 84Q70 90 76 102Q60 112 44 106Q32 102 30 92Z" fill="url(#pit${id})"/><path d="M34 70Q44 62 52 70" fill="none" stroke="#fff6e4" stroke-width="2.5" opacity=".6"/>`
+  }[k];
+  return `<svg viewBox="0 0 104 140" aria-hidden="true"><defs>
+   <radialGradient id="g${id}" cx="38%" cy="30%" r="80%"><stop offset="0" stop-color="#fffaf0"/><stop offset=".55" stop-color="#ecdcbc"/><stop offset="1" stop-color="#b8956a"/></radialGradient>
+   <radialGradient id="hl${id}" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#fffdf7"/><stop offset="1" stop-color="#fffdf7" stop-opacity="0"/></radialGradient>
+   <radialGradient id="pit${id}" cx="50%" cy="60%" r="65%"><stop offset="0" stop-color="#7a5a32"/><stop offset=".6" stop-color="#b8956a"/><stop offset="1" stop-color="#e6d3ae" stop-opacity="0"/></radialGradient></defs>
+   <path d="${outline}" fill="url(#g${id})" stroke="#7d5e36" stroke-width="2.5"/>${face}
+   <path d="M30 28C40 22 50 24 58 22" fill="none" stroke="#fffdf7" stroke-width="3" stroke-linecap="round" opacity=".7"/></svg>`; }
 function rollBone(){ let x=Math.random(),a=0; for(const b of BONES){a+=b.p; if(x<a) return b;} return BONES[3]; }
 SCREENS.shagai = g => {
   frame(g); const ps=players(); let turn=0;
@@ -755,7 +766,7 @@ SCREENS.shagai = g => {
       else { const parts=[]; if(c.horse) parts.push(`${c.horse} шийтгэлийг хүссэн хүндээ илгээ`); if(c.camel) parts.push(`бусад бүгд ${c.camel} шийтгэл`); if(c.goat) parts.push(`чи өөрөө ${c.goat} шийтгэл`); verdict = parts.length? parts.join(", ")+"." : "Тайван. Энэ удаа юу ч болохгүй."; verdict=verdict.charAt(0).toUpperCase()+verdict.slice(1); }
     }
     stage(`<div class="card dark" style="min-height:0"><div class="kicker">Ээлж</div><div class="huge" style="color:var(--sun)">${esc(name)}</div></div>
-      <div class="bones">${(res||BONES).map(b=>`<div class="bone${res?" roll":""}">${boneSVG(b.k)}<span>${b.n}</span></div>`).join("")}</div>
+      <div class="bones">${(res||BONES).map((b,ix)=>`<div class="bone${res?" roll":""}" style="--r:${res?Math.round(Math.random()*50-25):0}deg;--d:${ix*0.07}s">${boneSVG(b.k,ix)}<span>${b.n}</span></div>`).join("")}</div>
       ${res?`<div class="card sun flip"><div class="kicker">Шүүхийн шийдвэр</div><div class="big">${esc(verdict)}</div></div>`:`<p class="note">Морь: илгээнэ · Тэмээ: бусад авна · Хонь: тайван · Ямаа: өөрөө авна</p>`}
       <div class="btns">${res?`<button class="btn ghost" id="hz" type="button">Шийтгэл сугал</button><button class="btn" id="nx" type="button">Дараагийн хүн</button>`:`<button class="btn full" id="th" type="button">Шагай шидэх</button>`}</div>`);
     if(res){ $("#hz").onclick=()=>openHZ(); $("#nx").onclick=()=>{turn++;r();}; }
