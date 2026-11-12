@@ -6,6 +6,6 @@ compatibility_date = "2024-09-23"
 directory = "./public"
 binding = "ASSETS"
 
+# No id: Wrangler creates the KV namespace in this Cloudflare account on first deploy.
 [[kv_namespaces]]
 binding = "PP"
-id = "156d4422b9b04b4da600e795a6e2765b"
