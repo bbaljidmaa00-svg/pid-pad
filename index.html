@@ -1,0 +1,771 @@
+<!doctype html>
+<html lang="mn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Пид Пад</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Manrope:wght@400;600;800&display=swap">
+<style>
+/* Layout: one-column phone app; home = game catalogue on a night-felt table, game = full-screen card stage */
+:root{
+  --ink:#16112a;      /* night background */
+  --felt:#211a3b;     /* panels */
+  --felt-2:#2c2350;   /* raised */
+  --line:#3d3268;
+  --text:#f7f0e4;
+  --muted:#b5abd3;
+  --sun:#ffc23d;      /* saffron, main accent */
+  --rose:#ff5c7a;     /* forfeit / danger */
+  --mint:#45d3ad;     /* success */
+  --sky:#6fb6ff;
+  --on-accent:#1a1330;
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --body:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --r:18px;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{background:var(--ink);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  -webkit-tap-highlight-color:transparent;
+  background-image:radial-gradient(circle at 15% -10%,rgba(255,194,61,.12),transparent 45%),radial-gradient(circle at 110% 30%,rgba(255,92,122,.10),transparent 40%);
+  background-attachment:fixed}
+*{box-sizing:border-box}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+#app{max-width:560px;margin:0 auto;padding-block:20px 120px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.stack{display:flex;flex-direction:column;gap:12px}
+
+/* hero */
+.hero{display:flex;flex-direction:column;gap:10px;padding-block:8px 18px}
+.logo{font-family:var(--display);font-weight:900;font-size:clamp(34px,11vw,52px);letter-spacing:-.02em;line-height:1}
+.logo span{color:var(--sun)}
+.hero p{margin:0;color:var(--muted);max-width:42ch}
+
+/* setup panel */
+.panel{background:var(--felt);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:14px}
+.label{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--felt-2);border:1px solid var(--line);border-radius:99px;padding:6px 6px 6px 12px;font-weight:600;font-size:14px}
+.chip button{border:0;background:transparent;color:var(--muted);width:24px;height:24px;border-radius:50%;line-height:1}
+.chip button:hover{background:var(--line);color:var(--text)}
+.addrow{display:flex;gap:8px}
+input[type=text],input[type=number],select{flex:1;min-width:0;background:var(--ink);border:1px solid var(--line);color:var(--text);border-radius:12px;padding:10px 12px;font:inherit}
+.seg{display:flex;background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px}
+.seg button{flex:1;border:0;background:transparent;padding:8px 6px;border-radius:9px;font-weight:700;font-size:14px;color:var(--muted)}
+.seg button[aria-pressed=true]{background:var(--sun);color:var(--on-accent)}
+.toggle{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.switch{width:52px;height:30px;border-radius:99px;border:1px solid var(--line);background:var(--ink);position:relative;flex:none}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--muted);transition:transform .2s}
+.switch[aria-checked=true]{background:var(--rose);border-color:var(--rose)}
+.switch[aria-checked=true]::after{transform:translateX(22px);background:#fff}
+
+/* filters + catalogue */
+.filters{display:flex;gap:6px;overflow-x:auto;padding-block:20px 12px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filters button{flex:none;border:1px solid var(--line);background:transparent;border-radius:99px;padding:8px 14px;font-weight:700;font-size:14px;color:var(--muted)}
+.filters button[aria-pressed=true]{background:var(--text);color:var(--on-accent);border-color:var(--text)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:360px){.grid{grid-template-columns:1fr}}
+.game{position:relative;text-align:left;border:0;border-radius:var(--r);padding:14px;min-height:150px;display:flex;flex-direction:column;gap:6px;background:var(--c,var(--felt-2));color:var(--on-accent);overflow:hidden;transition:transform .15s}
+.game:active{transform:scale(.97)}
+.game h3{font-size:16px;font-weight:700}
+.game p{margin:0;font-size:13px;line-height:1.35;opacity:.85}
+.game .meta{margin-top:auto;display:flex;gap:4px;flex-wrap:wrap}
+.tag{font-size:11px;font-weight:800;letter-spacing:.04em;padding:3px 8px;border-radius:99px;background:rgba(26,19,48,.16)}
+.game.offline{background:var(--felt);color:var(--text);border:1px dashed var(--line)}
+.game.offline .tag{background:var(--felt-2)}
+.game .glyph{position:absolute;right:-6px;top:-10px;font-family:var(--display);font-weight:900;font-size:64px;opacity:.13;line-height:1;pointer-events:none}
+.section-title{font-size:20px;margin-block:28px 4px}
+
+/* game screen */
+.topbar{display:flex;align-items:center;gap:10px;padding-bottom:14px}
+.back{border:1px solid var(--line);background:var(--felt);border-radius:12px;width:44px;height:44px;font-size:20px;flex:none}
+.topbar h2{font-size:20px;flex:1;min-width:0}
+details.rules{background:var(--felt);border:1px solid var(--line);border-radius:var(--r);padding:12px 16px}
+details.rules summary{font-weight:800;cursor:pointer;list-style:none;display:flex;justify-content:space-between}
+details.rules summary::after{content:"＋";color:var(--sun)}
+details.rules[open] summary::after{content:"－"}
+details.rules ol,details.rules ul{margin:10px 0 4px;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.stage{margin-top:14px;display:flex;flex-direction:column;gap:14px}
+.card{background:var(--text);color:var(--on-accent);border-radius:24px;padding:24px 20px;min-height:220px;display:flex;flex-direction:column;justify-content:center;gap:12px;box-shadow:0 18px 40px rgba(0,0,0,.35);position:relative}
+.card .kicker{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;opacity:.6}
+.card .big{font-family:var(--display);font-weight:700;font-size:clamp(20px,6vw,27px);line-height:1.25}
+.card .huge{font-family:var(--display);font-weight:900;font-size:clamp(34px,12vw,56px);line-height:1.05}
+.card.dark{background:var(--felt-2);color:var(--text);border:1px solid var(--line)}
+.card.rose{background:var(--rose);color:#fff}
+.card.sun{background:var(--sun)}
+.card.mint{background:var(--mint)}
+.drinkalt{border-top:1px dashed currentColor;padding-top:10px;font-weight:700;opacity:.85;font-size:14px}
+.btn{border:0;border-radius:16px;padding:16px 18px;font-weight:800;font-size:17px;background:var(--sun);color:var(--on-accent);width:100%}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+.btn.rose{background:var(--rose);color:#fff}
+.btn.mint{background:var(--mint);color:var(--on-accent)}
+.btn:disabled{opacity:.4}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btns .full{grid-column:1/-1}
+.score{display:flex;flex-direction:column;gap:6px}
+.score div{display:flex;justify-content:space-between;background:var(--felt);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-weight:700}
+.score div.on{border-color:var(--sun)}
+.score b{font-variant-numeric:tabular-nums;color:var(--sun)}
+.timer{font-family:var(--display);font-weight:900;font-size:44px;text-align:center;font-variant-numeric:tabular-nums}
+.laws{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.laws li{display:flex;gap:10px;align-items:flex-start;background:var(--felt);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.laws li span{flex:1;min-width:0}
+.laws li b{color:var(--sun);font-family:var(--display);font-size:14px}
+.laws li button{border:0;background:transparent;color:var(--muted);font-size:18px}
+.bomb{width:180px;height:180px;margin:10px auto;border-radius:50%;background:radial-gradient(circle at 35% 30%,#4b3f7a,#120d24 70%);border:3px solid var(--line);display:grid;place-items:center;font-family:var(--display);font-weight:900;font-size:22px;color:var(--sun)}
+.bomb.live{animation:pulse var(--beat,1s) infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07);box-shadow:0 0 50px rgba(255,92,122,.55)}}
+.bones{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.bone{aspect-ratio:3/4;max-width:100%;border-radius:40% 40% 46% 46%/34% 34% 60% 60%;background:#efe2c8;color:#3b2a16;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:13px;box-shadow:inset 0 -8px 0 rgba(0,0,0,.12)}
+.bone svg{width:60%;height:auto}
+.bone.roll{animation:roll .5s ease-out}
+@keyframes roll{0%{transform:rotate(-200deg) translateY(-30px);opacity:.2}100%{transform:none;opacity:1}}
+.reveal{user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.pill{display:inline-block;font-size:12px;font-weight:800;padding:4px 10px;border-radius:99px;background:var(--felt-2);border:1px solid var(--line)}
+.offline-list{display:flex;flex-direction:column;gap:10px}
+.note{font-size:13px;color:var(--muted);text-align:center}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.editbtn{flex:none;border:1px solid var(--line);background:var(--felt);border-radius:12px;padding:10px 14px;font-weight:800;font-size:14px}
+textarea{width:100%;min-height:180px;background:var(--ink);border:1px solid var(--line);color:var(--text);border-radius:12px;padding:10px 12px;font:inherit;font-size:14px;line-height:1.45;resize:vertical}
+textarea.short{min-height:90px}
+.checks{display:flex;flex-wrap:wrap;gap:8px}
+.checks label{display:flex;gap:6px;align-items:center;background:var(--felt-2);border:1px solid var(--line);border-radius:99px;padding:6px 12px;font-weight:700;font-size:14px}
+.mini{border:1px solid var(--line);background:var(--felt-2);border-radius:10px;padding:8px 12px;font-weight:700;font-size:13px}
+.mini.rose{background:transparent;color:var(--rose);border-color:var(--rose)}
+.saved{color:var(--mint);font-weight:800;font-size:13px}
+.pcard{width:min(200px,60%);aspect-ratio:5/7;max-width:100%;margin:0 auto;background:#fffdf8;color:#1d1830;border-radius:16px;box-shadow:0 18px 40px rgba(0,0,0,.4);display:flex;flex-direction:column;justify-content:space-between;padding:12px 14px;font-family:var(--display);font-weight:900}
+.pcard.red{color:#d8203f}
+.pcard .c{font-size:clamp(56px,18vw,84px);text-align:center;line-height:1}
+.pcard .t{font-size:22px;line-height:1}
+.pcard .b{font-size:22px;line-height:1;transform:rotate(180deg)}
+.pcard.back{background:repeating-linear-gradient(45deg,var(--rose) 0 10px,#e2486a 10px 20px);border:6px solid #fffdf8}
+
+/* floating forfeit button + overlay */
+.fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));border:0;border-radius:99px;background:var(--rose);color:#fff;font-family:var(--display);font-weight:700;font-size:15px;padding:14px 20px;box-shadow:0 10px 30px rgba(255,92,122,.4);z-index:5}
+.overlay{position:fixed;inset:0;background:rgba(10,7,22,.82);backdrop-filter:blur(4px);z-index:20;display:flex;align-items:flex-end;justify-content:center;padding:16px max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.sheet{width:100%;max-width:520px;display:flex;flex-direction:column;gap:12px;animation:up .25s ease-out}
+@keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.flip{animation:flip .4s ease-out}
+@keyframes flip{0%{transform:rotateX(70deg);opacity:0}100%{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div id="app"></div>
+<button class="fab" id="fab" type="button">Шийтгэл!</button>
+<div id="ov" hidden></div>
+
+<script>
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a; };
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let CV=0; /* content version: bump after edits so decks reshuffle */
+function deck(arr){ let pool=[],v=-1; return ()=>{ if(v!==CV||!pool.length){ pool=shuffle(arr.length?arr:["(Жагсаалт хоосон байна. «Засах» хэсгээс нэмээрэй.)"]); v=CV; } return pool.pop(); }; }
+function store(k,v){ try{ if(v===undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k,JSON.stringify(v)); }catch(e){ return null; } }
+let actx=null;
+function beep(f=880,d=.06,v=.15){ try{ actx=actx||new (window.AudioContext||window.webkitAudioContext)(); const o=actx.createOscillator(),g=actx.createGain(); o.frequency.value=f; g.gain.value=v; o.connect(g); g.connect(actx.destination); o.start(); g.gain.exponentialRampToValueAtTime(.0001,actx.currentTime+d); o.stop(actx.currentTime+d+.02);}catch(e){} }
+function buzz(p){ try{ navigator.vibrate && navigator.vibrate(p); }catch(e){} }
+let timers=[]; function clearTimers(){ timers.forEach(t=>{clearInterval(t);clearTimeout(t)}); timers=[]; }
+
+/* ---------- settings ---------- */
+const S = Object.assign({ players:["Бат","Сараа","Тэмүүжин","Номин"], drink:false, level:2 }, store("tg-settings")||{});
+const save = () => store("tg-settings",S);
+
+/* ---------- forfeits (шийтгэл) ---------- */
+const HZ = {
+ 1:[
+  "Дараагийн 2 тойрог зөвхөн асуултаар ярь. Энгийн өгүүлбэр хэлбэл дахин шийтгэл.",
+  "Баруун гар талын хүнээ 30 секунд тасралтгүй магтаарай. Нэг үгээ давтаж болохгүй.",
+  "Өөрийнхөө нэрээр 4 мөр шүлэг зохиож, уран уншлагаар уншаад өг.",
+  "Мэдээний хөтлөгч болж, яг одоо энд болж буй үдэшлэгийг 20 секунд шууд мэдээл.",
+  "Нэг минутын турш зүүн талын хүнийхээ сүүдэр бол: түүний бүх хөдөлгөөнийг дуурай.",
+  "Хамгийн дуртай хоолоо дуурийн дуучин шиг дуулж магт.",
+  "Дараагийн 3 эргэлт өөрийгөө гуравдагч биеэр дурдаж ярь. «Бат одоо их баяртай байна» гэх мэт.",
+  "Ширээн дээрх нэг юмыг сонгоод 30 секунд түүнд хайраа илчил.",
+  "Өвөө эсвэл эмээгийн хоолойгоор дараагийн шийтгэл унах хүртэл ярь.",
+  "Хүн бүрт нэг шинэ хоч өг. Тэд түүнийг нь шөнөжин хэрэглэнэ.",
+  "Бүх тоглогчийн нэрийг цагаан толгойн эсрэг дарааллаар 10 секундэд хэл.",
+  "Дуртай дуугаа зөвхөн «на-на-на»-гаар аялж, бусдыг таалга. Таахгүй бол дахин.",
+  "Робот шиг хөдөлж, ширээ тойрон нэг удаа алх. Дуу авиатай нь.",
+  "Чиний ард суугаа (эсвэл хамгийн хол байгаа) хүн чамд 5 секундийн бүжгийн хөдөлгөөн зааж өгнө. Давт.",
+  "Өнөөдөр хийсэн хамгийн уйтгартай зүйлээ кино трейлер шиг ярь."
+ ],
+ 2:[
+  "Утасныхаа зургийн цомгийн яг 7 дахь зургийг бүгдэд үзүүлж, түүхийг нь ярь.",
+  "Хамгийн сүүлд ирсэн мессежээ (нэргүйгээр) жүжигчин шиг чангаар уншаад өг.",
+  "Тоглоом дуустал баруун талын хүнээ «Эрхэм дээдэс минь» гэж дууд. Мартвал шийтгэл.",
+  "Бүгд чамаас нэг нэг асуулт асууна. Зөвхөн үнэнээ хэлнэ.",
+  "Нүдээ аниад бүх хүнийг өндрөөр нь эгнүүл. Хоёроос илүү алдвал дахин.",
+  "Хамгийн ичмээр дуртай дуугаа хэлээд, хоруусыг нь дуул.",
+  "Ширээн дээрх 3 юмаар «урлагийн бүтээл» хийгээд, үнийг нь хэлж 1 минут худалдаал.",
+  "Хажуугийн хүндээ үзэг (эсвэл ойрхон байгаа юм)-ийг худалдаал. Тэр авахгүй бол дахин.",
+  "Дараагийн тойрогт «би», «үгүй» гэдэг үгийг хэлж болохгүй. Хэлэх бүрт шийтгэл.",
+  "Хамгийн сүүлд хайсан 3 зүйлээ (интернэт хайлт) уншаад өг.",
+  "Чиний эсрэг талын хүн чамд 1 минутын «хувцас загварын шүүмж» хийнэ. Чи «баярлалаа» л гэж хэлж болно.",
+  "Хамгийн их хэлдэг худлаагаа хүлээгээд, ам тангараг өргө.",
+  "Бусад чамд 3 үг өгнө. Тэр 3 үгийг ашиглан 30 секундэд хайрын захидал зохио.",
+  "Сонгосон хүнтэйгээ байраа солиод, дараагийн 2 эргэлт түүний дүрд тогло.",
+  "Хараал: дараагийн 2 шийтгэл авсан хүн бүрийг дагаж, чи ч бас хамт хийнэ."
+ ],
+ 3:[
+  "Хамгийн сүүлийн чатаа нээ. Дараагийн мессежийг бусад зохионо. Илгээхээс өмнө чи зөвшөөрөх эрхтэй, татгалзвал 2 шийтгэл.",
+  "Ээж эсвэл аав руугаа залгаж, «Би чамд хайртай» гэж хэлээд дор хаяж 1 минут ярь.",
+  "Хамгийн сүүлд дурласан хүнээ 3 үгээр тодорхойл. Нэрийг нь хэлэхгүй байж болно.",
+  "Бүгдийн өмнө 30 секунд загвар өмсөгч шиг явж, гарахдаа өөрийгөө танилцуул.",
+  "Баруун гар талын хүн чамд нэг үүрэг өгнө. Татгалзвал бүгдэд нэг нэг шийтгэл чамаас болж унана.",
+  "1 минут тасралтгүй «Тэд мэдэхгүй байсан» гэдэг үгээр эхэлсэн нууцаа ярь. Худлаа бол бусад санал хураана.",
+  "Тоглогчдыг нэг бүрчлэн харж, «Чамаас би ... сурсан» гэж хэл.",
+  "Утсаа ширээн дээр нүүрээр нь доош нь тавь. Дараагийн 10 минутад дуугарвал хэн хүссэн нь хариулна.",
+  "Бусад чиний Аватар зургийг 1 цагаар сонгоно. Сонголтоо хамт хийнэ.",
+  "Чиний хамгийн хачин зуршлыг бусад санал нэгтэй таах хүртэл ярь.",
+  "Тоглоом дуустал чи «ахлах үйлчлэгч»: хэн нэгэн юм хүсвэл чи авчирч өгнө.",
+  "Хоёр тоглогч сонго. Тэд чиний тухай 1 үнэн 1 худлаа хэлнэ. Аль нь үнэн болохыг чи бусдад батлах ёстой.",
+  "Хараал: шөнийн турш хэн нэгэн чиний нэрийг хэлэх бүрт чи сандлаасаа босоод суух ёстой."
+ ]
+};
+const DRINK_EXTRA = [
+  "Хундагаа өргөөд яагаад уух болсон шалтгаанаа шүлгээр хэл. Дараа нь балга.",
+  "«Хамт уугч» сонго: үдэшлэгийн турш чи уух бүрт тэр ч хамт ууна.",
+  "Чиний хундага хоосортол бүгд чимээгүй байна. Хэн дуугарна, тэр балгана.",
+  "Ширээн дээрх хамгийн хачин хослол (жүүс + цай?) уух эсвэл 2 балга."
+];
+const SIPS = {1:"1 балга",2:"2 балга",3:"хундагаа хагасла"};
+const CARD_RULES = [
+  "A · Шүүгч: хүссэн хүндээ нэг шийтгэл өг.",
+  "2 · Хоёулаа: өөрөө болон хүссэн нэг хүнтэйгээ хамт шийтгэл хий.",
+  "3 · Гурван дуу: зүүн талын 3 хүн 3 өөр дууны нэг мөрийг дуулна. Гацсан нь шийтгэл.",
+  "4 · Шал: бүгд гараа шалан дээр (эсвэл ширээнд) хүргэ. Хамгийн сүүлийнх нь шийтгэл.",
+  "5 · Тэнгэр: бүгд гараа дээш өргө. Хамгийн сүүлийнх нь шийтгэл.",
+  "6 · Би хэзээ ч: «Би хэзээ ч ... байгаагүй» гэж хэл. Хийж байсан бүх хүн шийтгэл.",
+  "7 · Ангилал: ангилал сонго, тойргоор үг хэл. Гацсан эсвэл давтсан нь шийтгэл.",
+  "8 · Хань: хань сонго. Энэ тоглолтын турш чамд шийтгэл унах бүрт тэр хамт хийнэ.",
+  "9 · Холбоо үг: нэг үг хэл. Бусад нь түүнтэй холбоотой үг ээлжлэн хэлнэ. Гацсан нь шийтгэл.",
+  "10 · Хууль: шинэ хууль тогтоо. Зөрчсөн хүн шийтгэл.",
+  "J · Асуултын хаан: дараагийн J гарах хүртэл чиний асуултанд хариулсан хүн шийтгэл.",
+  "Q · Хатан: хүссэн хүнээсээ нэг үнэн асуулт асуу. Хариулахгүй бол шийтгэл.",
+  "K · Хаан: шинэ шийтгэл зохиож, хүссэн хүндээ өг. 4 дэх Хааныг гаргасан хүн Галзуу шийтгэл."
+];
+const hzDecks = {1:deck(HZ[1]),2:deck(HZ[2]),3:deck(HZ[3])};
+const drinkDeck = deck(DRINK_EXTRA);
+function drawHZ(level){
+  level = level||S.level;
+  if(S.drink && Math.random()<.18) return {text:drinkDeck(),level,drink:true};
+  return {text:hzDecks[level](),level};
+}
+const LEVEL_NAME = {1:"Зөөлөн",2:"Халуун",3:"Галзуу"};
+function hzCardHTML(h,who){
+  return `<div class="card rose flip">
+    <div class="kicker">Шийтгэл · ${LEVEL_NAME[h.level]}${who?` · ${esc(who)}`:""}</div>
+    <div class="big">${esc(h.text)}</div>
+    ${S.drink && !h.drink ? `<div class="drinkalt">Хийж чадахгүй бол: ${SIPS[h.level]}</div>`:""}
+  </div>`;
+}
+function openHZ(who){
+  const ov=$("#ov"); let h=drawHZ();
+  const draw=()=>{ ov.innerHTML=`<div class="overlay" id="ovbg"><div class="sheet">${hzCardHTML(h,who)}
+    <div class="btns"><button class="btn ghost" id="ovNew" type="button">Өөрийг сугал</button><button class="btn" id="ovClose" type="button">Хийлээ</button></div></div></div>`;
+    $("#ovNew").onclick=()=>{h=drawHZ();draw()}; $("#ovClose").onclick=closeHZ;
+    $("#ovbg").onclick=e=>{ if(e.target.id==="ovbg") closeHZ(); }; };
+  ov.hidden=false; draw(); buzz(80);
+}
+function closeHZ(){ $("#ov").hidden=true; $("#ov").innerHTML=""; }
+$("#fab").onclick=()=>openHZ();
+
+/* ---------- content ---------- */
+const CATS = ["Монгол хоолны нэр","Улаанбаатарын дүүрэг, газар","Мал, амьтан","Кино эсвэл цуврал","Монгол дуучин, хамтлаг","Гал тогооны хэрэгсэл","Хувцасны төрөл","Спортын төрөл","Аймгийн нэр","Ундааны төрөл","Мэргэжил","Сүүлийн үеийн апп","Улсын нэр","Өнгө","Бие махбодын хэсэг","Сургуульд байдаг юм","Хайрцагт багтах юм","Цагаан сарын зүйл","Наадмын зүйл","Хүүхэлдэйн киноны баатар","Брэнд нэр","Хөгжмийн зэмсэг","Хайртай хүнд өгөх бэлэг","Шөнө дуулддаг чимээ","Аялалд авч явах юм"];
+const IMPOSTER = {
+  "Хоол":["Бууз","Хуушуур","Цуйван","Хорхог","Банш","Гурилтай шөл","Пицца","Бургер","Суши","Боодог"],
+  "Газар":["Хөвсгөл нуур","Говь","Сургууль","Эмнэлэг","Караоке","Онгоц","Их дэлгүүр","Наадмын талбай","Кино театр","Фитнесс"],
+  "Үйл явдал":["Хурим","Цагаан сар","Төрсөн өдөр","Төгсөлт","Шалгалт","Анхны болзоо","Ажлын ярилцлага","Аялал"],
+  "Амьтан":["Тэмээ","Ирвэс","Мэлхий","Оцон шувуу","Муур","Морь","Матар","Зөгий"],
+  "Мэргэжил":["Эмч","Багш","Тогооч","Нисгэгч","Цагдаа","Үсчин","Програмист","Малчин"],
+  "Юм":["Шүхэр","Цүнх","Толь","Түлхүүр","Дэр","Шүдний сойз","Чихэвч","Галын хайрцаг"]
+};
+const WHO = [
+ "Хэн нь хамгийн түрүүнд зомбид идэгдэх вэ?","Хэн нь сая төгрөг олбол нэг өдрийн дотор үрэх вэ?","Хэн нь хуримандаа хоцрох вэ?","Хэн нь нууцаар хүүхэлдэйн кино үздэг вэ?","Хэн нь хамгийн муу жолооч вэ?","Хэн нь цөлд хаягдсан ч амьд гарах вэ?","Хэн нь алдартай болоод бүгдийг мартах вэ?","Хэн нь ээжийнхээ хоолыг хамгийн их санадаг вэ?","Хэн нь хэзээ ч уучлалт гуйдаггүй вэ?","Хэн нь 5 минутын дотор шинэ найз олох вэ?","Хэн нь хамгийн сайн нууц хадгалдаг вэ?","Хэн нь согтоод хамгийн гүн ухаантан болдог вэ?","Хэн нь өглөө 5 цагт босож чадах вэ?","Хэн нь хуучин хайртдаа шөнө мессеж бичдэг вэ?","Хэн нь хамгийн хачин хоол иддэг вэ?","Хэн нь тагнуулч байсан ч бид мэдэхгүй байх вэ?","Хэн нь утсаа хамгийн удаан унтраалгүй байх вэ?","Хэн нь хуриман дээр хамгийн түрүүнд бүжиглэх вэ?","Хэн нь кино үзэж байгаад уйлдаг вэ?","Хэн нь хамгийн олон удаа «маргааш эхэлнэ» гэдэг вэ?","Хэн нь хамгийн сайн ээж/аав болох вэ?","Хэн нь хүнд ороод гарах хамгийн хурдан шалтаг олдог вэ?","Хэн нь 80 настайдаа ч клубээр явах вэ?","Хэн нь хамгийн түрүүнд гэрлэх вэ?","Хэн нь амьтантай ярьдаг вэ?","Хэн нь бусдын хоолноос хамгийн их иддэг вэ?","Хэн нь хамгийн тэнэг шалтгаанаар бэртэх вэ?","Хэн нь өнөө орой хамгийн түрүүнд унтах вэ?"
+];
+const TALK = {
+ 1:["Хүүхэд байхдаа хэн болохыг мөрөөддөг байсан бэ?","Хамгийн сүүлд чангаар инээсэн зүйл юу вэ?","Хэрэв өнөөдөр 3 цагийн чөлөөтэй цаг гарвал юу хийх вэ?","Миний тухай анх ямар бодол төрж байсан бэ?","Чамд хэзээ ч уйддаггүй ганц хоол юу вэ?","Ямар ур чадварыг нэг шөнийн дотор сурмаар байна?","Хамгийн сайхан аялал чинь хаана байсан бэ?","Чиний хамгийн хачин зуршил юу вэ?"],
+ 2:["Сүүлийн нэг жилд чамайг хамгийн их өөрчилсөн зүйл юу вэ?","Чи хэзээ хамгийн ганцаардаж байсан бэ?","Хэнд хэлж амжаагүй баярлалаа байна?","Хүмүүс чамайг буруу ойлгодог нэг зүйл юу вэ?","Миний юуг нь чи хамгийн их үнэлдэг вэ?","5 жилийн дараа чи хаана амьдарч байна гэж бодож байна?","Чамайг юу хамгийн их айлгадаг вэ?","Хэрэв чи нэг шийдвэрээ буцааж чадах бол юуг нь?"],
+ 3:["Надад одоо хэлж чадахгүй байгаа нэг зүйлээ хагасыг нь хэл.","Чиний хамгийн том нууц хайр хэн байсан бэ?","Хамгийн сүүлд хэнийг хардаж байсан бэ?","Миний нэг зуршлыг сольж чадах бол юуг нь?","Чи хэзээ хамгийн их ичиж байсан бэ?","Найз нөхдийн дунд чи хэнийг хамгийн их атаархдаг вэ?","Хамгийн гэнэтийн болзоо чинь ямар байсан бэ?","Өнөөдөр хэлсэн хамгийн том худлаа чинь юу вэ?"]
+};
+const PAIRQ = ["Хамтрагчийн чинь хамгийн дуртай хоол?","Хамтрагч чинь мөнгө олбол хамгийн түрүүнд юу авах вэ?","Хамтрагч чинь уурласан үедээ юу хийдэг вэ?","Хамтрагчийн чинь хамгийн их айдаг зүйл?","Хамтрагч чинь ямар амьтан байх байсан бэ?","Хамтрагчийн чинь мөрөөдлийн улс?","Хамтрагч чинь караоке дээр ямар дуу дуулах вэ?","Хамтрагчийн чинь хамгийн муу зуршил?","Хамтрагч чинь амралтын өдөр хэдэн цагт босдог вэ?","Хамтрагч чинь утсандаа хамгийн их ямар апп хэрэглэдэг вэ?","Хамтрагч чинь хамгийн их ямар өнгийн хувцас өмсдөг вэ?","Хамтрагч чинь ямар супер хүчтэй байхыг хүсэх вэ?","Хамтрагчийн чинь анхны ажил юу байсан бэ?","Хамтрагч чинь зомбины үед хамгийн түрүүнд юу шүүрэх вэ?","Хамтрагчийн чинь ид хоол хийх үеийн хоол?","Хамтрагч чинь ямар кинонд гол дүрд тоглох вэ?","Хамтрагч чинь ямар насандаа гэрлэхийг хүсдэг вэ?","Хамтрагч чинь цаг агаар ямар байхад хамгийн их баярладаг вэ?","Хамтрагчийн чинь хамгийн их давтдаг үг?","Хамтрагч чинь хэний дүрд нэг өдөр байхыг хүсэх вэ?"];
+const ACT_WORDS = ["Хуушуур","Морин хуур","Цагаан сар","Шагай харвах","Бөх","Нисдэг тэрэг","Хөргөгч","Селфи","Мөсөн гулгуур","Шүдний эмч","Сонгууль","Гэрийн даалгавар","Түгжрэл","Цахилгаан шат","Хурим","Гэрэл зурагчин","Шөнийн клуб","Зүрхний шигдээс","Үс засалт","Ширээний теннис","Оцон шувуу","Гал унтраагч","Хоол хүргэлт","Онлайн хурал","Тэмээ","Цасан хүн","Барилга","Сагсан бөмбөг","Телевизийн мэдээ","Гэр нүүх","Тэнэг дэлгүүр","Хурдан морь","Сүүтэй цай","Алим","Унадаг дугуй","Машин угаалга","Зомби","Хүүхэд асрагч","Шуудан","Нүүдэл"];
+const ACT_STYLES = ["Зөвхөн дохио зангаагаар","Зөвхөн нэг үг хэлж болно","Дуулж тайлбарла","Робот шиг","Нүдээ аниад","Хоёр гараа ардаа барьж","Өвөө шиг хоолойгоор","Мэдээний хөтлөгч шиг","Шивнэж","Зөвхөн «тиймээ / үгүй» асуултанд хариулж","Хажуугийн хүнээ хүүхэлдэй болгож","Энгийнээр (азтай байна)"];
+const LAWS = ["«Үгүй» гэж хэлж болохгүй.","Ярихаасаа өмнө «Эрхэм ээ» гэж эхэлнэ.","Хундага, аягаа зөвхөн зүүн гараараа барина.","Хэн нэгнийг нэрээр нь дуудаж болохгүй, зөвхөн хочоор.","Ширээнд хүрэх бүрт «ухх» гэж хэлнэ.","Хэн инээвэл гараа өргөх ёстой.","Утсаа гартаа барьж болохгүй (тоглоомын утаснаас бусад).","Асуулт асуухдаа заавал дуулна.","Үг бүрийн төгсгөлд «-даа» залгана.","Бүгд хамгийн сүүлд ярьсан хүний хэлсэн сүүлийн үгийг давтдаг.","«Би» гэхийн оронд «энэ хүн» гэнэ.","Хэн нэгэн хамраа маажвал бүгд хамраа маажина. Хамгийн сүүлийнх нь шийтгэл.","Нэг хүн «Шагай!» гэж хашгирвал бүгд нүдээ аниад байх ёстой. Хамгийн сүүлд аньсан нь шийтгэл.","Англи үг хэлж болохгүй.","Тоо хэлэхдээ хуруугаараа үзүүлнэ, амаар хэлж болохгүй.","Шийтгэл хийж буй хүнийг бүгд алга ташиж дэмжинэ. Ташаагүй нь дараагийн шийтгэл.","Ярьж байгаа хүн рүүгээ шууд харж болохгүй.","Хоёр хүн зэрэг ярьж эхэлбэл хоёулаа шийтгэл.","Шинэ хууль гаргасан хүн «Хаан» болно. Хаантай ярихдаа бөхийнө.","Хэн нэгэн «Хөлдөө!» гэвэл бүгд 5 секунд хөдлөхгүй."];
+
+/* ---------- game registry ---------- */
+const GAMES = [
+ {id:"huzruur",name:"Шийтгэлийн хайрцаг",glyph:"!",c:"var(--rose)",players:"2+",modes:["2","pair","group"],desc:"Ердийн биш, бүтээлч шийтгэлүүд. Аль ч тоглоомтой хослуулна.",
+  rules:["Аль ч тоглоомд хожигдсон хүн энд шийтгэл сугална.","Түвшингээ сонго: Зөөлөн, Халуун, Галзуу.","«Хараал» гэсэн шийтгэл хэд хэдэн эргэлт үргэлжилнэ, бүгд хянана.","Хийж чадахгүй бол «Өөрийг сугал»-ыг бүгд зөвшөөрвөл л дарна.","Уух горим асаалттай бол шийтгэл бүр уух сонголттой гарна."]},
+ {id:"imposter",name:"Хуурамч",glyph:"?",c:"var(--sun)",players:"3–12",modes:["group"],desc:"Бүгд нэг үгтэй, нэг нь л мэдэхгүй. Хэн бэ?",
+  rules:["Хүн бүр утсаа ээлжлэн аваад нууц үгээ харна. Нэг хүн нь «Хуурамч», тэр зөвхөн ангиллыг мэднэ.","Тойргоор хүн бүр үгээ нэг үгээр тайлбарлана. Хэт ил гаргаж болохгүй, Хуурамч таачихна.","2 тойргийн дараа бүгд нэг хүн рүү заан санал хураана.","Хуурамчийг олбол тэр нэг удаа үгийг таах эрхтэй. Таавал бусад бүгд шийтгэл, тааж чадахгүй бол Хуурамч өөрөө шийтгэл (Галзуу түвшин).","Буруу хүнийг сонгосон бол сонгогдсон хүн болон бүх сонгогчид шийтгэл.","Өөр өөрийн утсаар: нэг хүн код гаргаад хэлнэ, бүгд ижил код, тоглогчийн тоо, өөрийн дугаараа оруулна."]},
+ {id:"bomb",name:"Тэсрэх бөмбөг",glyph:"*",c:"var(--sky)",players:"3+",modes:["group"],desc:"Ангилалд үг хэлээд утсаа дамжуул. Хэний гарт тэсрэх вэ?",
+  rules:["Тойрог болж суу. Ангилал гарч ирнэ.","Эхлүүлээд утсаа барьж буй хүн тухайн ангиллын нэг үг хэлээд хажуугийн хүндээ дамжуулна.","Давтсан үг, 5 секундээс удаан бодох хориотой. Тэгвэл бусад шууд шийтгэл зарлана.","Бөмбөг санамсаргүй хугацаанд (15–55 секунд) тэсэрнэ. Чимээ нь сүүлдээ хурдасна.","Тэсрэх үед гартаа барьж байсан хүн шийтгэл."]},
+ {id:"who",name:"Хэн нь хамгийн",glyph:"☝",c:"var(--mint)",players:"3+",modes:["group"],desc:"«Хэн нь хамгийн түрүүнд...» Гурав гэхэд бүгд заана.",
+  rules:["Асуултыг чангаар уншина.","«Нэг, хоёр, гурав» гэхэд бүгд зэрэг нэг хүн рүү заана. Өөрийгөө заахыг хориглоно.","Хамгийн олон хүн заасан хүн шийтгэл.","Тэнцвэл тэнцсэн бүгд шийтгэл. Хэн ч санал нэгтэй заагдвал Галзуу түвшин."]},
+ {id:"laws",name:"Хуулийн ном",glyph:"§",c:"#c9a7ff",players:"3+",modes:["pair","group"],desc:"Тойрог бүрт шинэ хууль нэмэгдэнэ. Зөрчвөл шийтгэл.",
+  rules:["Үдэшлэгийн турш ард нь ажиллуулдаг тоглоом. Өөр тоглоомтой хамт тогло.","Шийтгэл авсан хүн бүр шинэ хууль сугална. Хууль хуримтлагдаад үлдэнэ.","Хэн нэгэн хууль зөрчсөнийг анзаарсан хүн «Хууль!» гэж хашгирна. Зөрчсөн хүн шийтгэл.","Буруу бурууглавал бурууглагч өөрөө шийтгэл.","5-аас олон хууль хуримтлагдвал хамгийн хуучныг нь хасаж болно."]},
+ {id:"shagai",name:"Шагайн шүүх",glyph:"◒",c:"#efe2c8",players:"2+",modes:["2","pair","group"],desc:"4 шагай шид. Морь, тэмээ, хонь, ямаа таны хувь заяаг шийднэ.",
+  rules:["Ээлжээрээ 4 шагай шиднэ (утсаар эсвэл жинхэнэ шагайгаар).","Морь: чи хүссэн хүндээ нэг шийтгэл илгээнэ.","Тэмээ: чамаас бусад бүгд нэг шийтгэл (эсвэл бүгд хамт хундага өргөнө).","Хонь: тайван, юу ч болохгүй.","Ямаа: чи өөрөө нэг шийтгэл.","4 морь: чи шинэ хууль тогтооно. 4 тэмээ: бүгд Галзуу шийтгэл. 4 хонь: бүгд чамайг магтана. 4 ямаа: чи Галзуу шийтгэл. Бүгд өөр: дараагийн ээлж эсрэг чиглэлд."]},
+ {id:"act",name:"Хязгаартай тайлбар",glyph:"✋",c:"#ff9b5c",players:"4+ (2 баг)",modes:["pair","group"],desc:"Үгийг тайлбарла, гэхдээ тавьсан хязгаарын дагуу.",
+  rules:["Хоёр баг болно. Баг бүрээс нэг хүн ээлжлэн тайлбарлагч болно.","60 секундэд аль болох олон үгийг багтаа таалга. Үг бүр «хэв маяг»-тай: дохиогоор, дуулж, робот шиг гэх мэт.","Хэв маягийг зөрчвөл тухайн үг тооцогдохгүй.","Алгасах бүрт 1 оноо хасна.","Тойргийн дараа ялагдсан баг бүхэлдээ шийтгэл."]},
+ {id:"pairs",name:"Хосын шалгалт",glyph:"∞",c:"#ff8fb6",players:"4–12 (хосоороо)",modes:["pair"],desc:"Хамтрагчаа хэр сайн мэдэх вэ? Хос хосоороо өрсөлд.",
+  rules:["Тоглогчид хос болно (жагсаалтын дарааллаар 2 2-оор).","Асуулт гарахад хосын хоёр гишүүн «гурав» гэхэд зэрэг хариулна.","Таарвал хос 1 оноо. Таараагүй бол хоёулаа шийтгэл.","5 тойргийн дараа хамгийн бага оноотой хос Галзуу шийтгэл хамт хийнэ."]},
+ {id:"sync",name:"Нэг санаа",glyph:"=",c:"var(--sky)",players:"2",modes:["2"],desc:"Хоёулаа зэрэг нэг үг хэлэх гэж оролд. Сэтгэл нийлэх үү?",
+  rules:["Ангилал гарна. «Нэг, хоёр, гурав» гэхэд хоёулаа зэрэг нэг үг хэлнэ.","Ижил үг хэлбэл таарсан. Ялгаатай бол алдаа.","3 удаа алдвал хоёулаа шийтгэл. 5 удаа таарвал хамгийн бага алдсан нь нөгөөдөө шийтгэл өгнө."]},
+ {id:"talk",name:"Хоёулаа ярья",glyph:"…",c:"var(--sun)",players:"2",modes:["2","pair"],desc:"Халаалтаас гүн рүү ордог асуултууд. Алгасвал шийтгэл.",
+  rules:["Ээлжлэн асуулт сугалж, нөгөөдөө асууна.","Түвшин: Халаалт, Гүн, Халуун. Хүссэн үедээ ахиул.","Хариулахгүй бол алгасаж болно, гэхдээ шийтгэл авна.","Худлаа хариулсныг нотолбол хоёр шийтгэл."]},
+ {id:"cards",name:"Хөзрийн шүүх",glyph:"♠",c:"#fffdf8",players:"3+",modes:["group","cards"],desc:"Хөзөр сугал. Тоо бүр өөр даалгавартай, 4 дэх хаанаас болгоомжил.",
+  rules:["Утсыг ширээний голд тавь. Ээлжээрээ нэг хөзөр сугална. Жинхэнэ хөзрөөр ч тоглож болно: хөзрөө холиод нүүрээр нь доош нь дэлгэ.","Хөзрийн тоо бүр өөрийн даалгавартай (доорх жагсаалт). «Засах» хэсгээс өөрчилж болно.","4 дэх Хааныг (K) гаргасан хүн Галзуу шийтгэл хийнэ.","52 хөзөр дуусахад тоглолт дуусна."].concat(CARD_RULES)},
+ {id:"hilo",name:"Дээш үү, доош уу",glyph:"↕",c:"#ffd98a",players:"2+",modes:["2","pair","group","cards"],desc:"Дараагийн хөзөр том уу, жижиг үү? Зөв таах бүрт сав өснө.",
+  rules:["Нэг хөзөр нээлттэй байна. Ээлжийн хүн дараагийн хөзөр том уу, жижиг үү гэдгийг таана. A хамгийн бага, K хамгийн том.","Зөв таах бүрт «сав» 1-ээр өснө. 3 удаа зөв таасны дараа савыг дараагийн хүнд дамжуулж болно.","Буруу таавал сав дахь бүх оноогоор шийтгэл авна: 1–2 Зөөлөн, 3–4 Халуун, 5+ Галзуу.","Ижил тоо гарвал аюулгүй, дахин таана.","Жинхэнэ хөзрөөр ч яг ийм дүрмээр тоглоно."]}
+];
+const OFFLINE = [
+ {id:"wink",name:"Нүдээр ал",players:"6+",desc:"Нэг нь нууц алуурчин. Нүд ирмээд «ална».",
+  rules:["Цаасан дээр тоглогчийн тоогоор тасалбар бэлд. Нэг дээр нь «А» (алуурчин), нэг дээр нь «Ч» (мөрдөгч) гэж бич. Хөзрөөр бол: Хар туз = алуурчин, Улаан туз = мөрдөгч.","Мөрдөгч өөрийгөө зарлана. Алуурчин нууц хэвээр.","Алуурчин хэн нэгэнд нүд ирмэхэд тэр хүн 5 секунд хүлээгээд жүжиглэн «үхнэ».","Мөрдөгч алуурчинг 3 оролдлогоор олох ёстой. Олбол алуурчин шийтгэл, олохгүй бол мөрдөгч.","Үхсэн хүмүүс бүгд нэг нэг шийтгэл хийнэ."]},
+ {id:"liar",name:"Худлаа хөзөр",players:"3–8",cards:true,desc:"Хөзрөө нүүрээр нь доош хаяад худлаа ч хэлж болно. Баригдвал шийтгэл.",
+  rules:["Хөзрийг бүгдэд тэнцүү тарааж өг.","Эхний хүн 1–4 хөзрийг нүүрээр нь доош хаяад «Хоёр туз» гэх мэт хэлнэ. Дараагийн хүн дараагийн тоог (2, 3, 4 ...) хаяна.","Үнэн ч, худлаа ч хэлж болно. Хэн ч «Худлаа!» гэж хашгирч болно.","Нээж үзээд худлаа байвал хаясан хүн бүх овоог авч, шийтгэл хийнэ. Үнэн байвал хашгирсан хүн авч, шийтгэл хийнэ.","Хамгийн түрүүнд хөзрөө дуусгасан хүн хүссэн хүндээ Галзуу шийтгэл өгнө."]},
+ {id:"bus",name:"Дөрвөн шат",players:"2–8",cards:true,desc:"Дөрвөн асуулт, дөрвөн шат. Алдах бүрт шийтгэл.",
+  rules:["Хүн бүрт ээлжлэн 4 асуулт тавьж, хариулт бүрийн дараа хөзөр нээнэ.","1-р шат: Улаан уу, хар уу?","2-р шат: Өмнөх хөзрөөс том уу, жижиг үү?","3-р шат: Өмнөх хоёр хөзрийн дунд уу, гадна уу?","4-р шат: Ямар дүрс вэ? (♠ ♥ ♦ ♣)","Алдсан шат бүрт тухайн шатны тоогоор шийтгэл (1-р шат = 1 Зөөлөн ... 4-р шат = Галзуу). 4 шатыг бүгдийг давсан хүн бүх хүнд шийтгэл тараана."]},
+ {id:"tower",name:"Хөзрийн цамхаг",players:"3–8",cards:true,desc:"Пирамид хөзөр нээх бүрт тохирох хөзөртэй хүн шийтгэл илгээнэ.",
+  rules:["Хүн бүрт 4 хөзөр тарааж, өөрөө харна. Үлдсэнээр нүүрээр нь доош 4-3-2-1 гэсэн пирамид өрнө.","Доод мөрөөс эхлэн нэг нэгээр нээнэ.","Нээгдсэн хөзөртэй ижил тоотой хөзөртэй хүн түүнийгээ тавиад хэн нэгэнд шийтгэл илгээнэ. Мөрийн дугаараар шийтгэлийн тоо: доод мөр 1, дээд мөр 4.","Худлаа хэлж ч болно. Шийтгэл илгээгдсэн хүн «Үзүүл!» гэвэл хөзрөө харуулна. Худлаа байсан бол илгээгч нь 2 дахин шийтгэл авна."]},
+ {id:"forbid",name:"Хориотой үг",players:"3+",desc:"Хүн бүр өөрийн хориотой үгтэй. Тэр нь мэдэхгүй.",
+  rules:["Хүн бүр баруун талын хүндээ нэг энгийн үг (жишээ нь «тийм», «за», «өнөөдөр») цаасан дээр бичиж, тэр хүний духан дээр наана. Эзэн нь харахгүй.","Энгийн ярилцаарай. Бусдыг өөрийнх нь хориотой үгийг хэлүүлэх гэж хууртай асуулт тавь.","Хориотой үгээ хэлсэн хүн шийтгэл хийгээд шинэ үг авна.","Өөрийн үгээ таасан хүн шийтгэлээс 1 удаа чөлөөлөгдөнө."]},
+ {id:"story",name:"Үлгэрийн гинж",players:"3+",desc:"Нэг нэг үгээр үлгэр зохио. Гацвал шийтгэл.",
+  rules:["Тойргоор хүн бүр зөвхөн нэг үг нэмж үлгэр зохионо.","2 секундээс удаан бодох, утгагүй үг хэлэх, өгүүлбэрийг эвдэх хориотой.","Гацсан хүн шийтгэл хийгээд үлгэрийг шинээр эхлүүлнэ.","Нэмэлт: хүн бүр нууц үгтэй. Тэр үгээ үлгэрт оруулж чадвал бусад нь шийтгэл."]},
+ {id:"seven",name:"Долоон бум",players:"3+",desc:"Тоол, гэхдээ 7-той тоонд «бум» гэ.",
+  rules:["Тойргоор 1-ээс эхэлж дараалан тоолно.","7-д хуваагддаг эсвэл 7 орсон тоо (7, 14, 17, 21...) дээр тоо биш «Бум!» гэнэ.","«Бум» гэсний дараа чиглэл эсрэгээр эргэнэ.","Алдсан хүн шийтгэл хийгээд 1-ээс шинээр эхэлнэ. 50 хүрвэл бүгд хундага өргөнө."]},
+ {id:"shagai-real",name:"Шагайн шүүх (жинхэнэ шагайгаар)",players:"2+",desc:"Гэртээ шагай байвал утасгүйгээр тогло.",
+  rules:GAMES.find(g=>g.id==="shagai").rules}
+];
+const BUILTIN_COUNT = GAMES.length;
+
+/* ---------- editable content ---------- */
+const EDIT_SETS = [
+ {k:"hz1",n:"Шийтгэл · Зөөлөн",a:HZ[1]},
+ {k:"hz2",n:"Шийтгэл · Халуун",a:HZ[2]},
+ {k:"hz3",n:"Шийтгэл · Галзуу",a:HZ[3]},
+ {k:"drink",n:"Уух горимын нэмэлт шийтгэл",a:DRINK_EXTRA},
+ {k:"cardRules",n:"Хөзрийн шүүх: 13 хөзрийн даалгавар (A, 2 ... K дарааллаар)",a:CARD_RULES},
+ {k:"who",n:"Хэн нь хамгийн: асуултууд",a:WHO},
+ {k:"talk1",n:"Хоёулаа ярья: Халаалт",a:TALK[1]},
+ {k:"talk2",n:"Хоёулаа ярья: Гүн",a:TALK[2]},
+ {k:"talk3",n:"Хоёулаа ярья: Халуун",a:TALK[3]},
+ {k:"pairq",n:"Хосын шалгалт: асуултууд",a:PAIRQ},
+ {k:"laws",n:"Хуулийн ном: хуулиуд",a:LAWS},
+ {k:"cats",n:"Ангиллууд (Тэсрэх бөмбөг, Нэг санаа)",a:CATS},
+ {k:"actWords",n:"Хязгаартай тайлбар: үгс",a:ACT_WORDS},
+ {k:"actStyles",n:"Хязгаартай тайлбар: хязгаарууд",a:ACT_STYLES},
+ {k:"imposter",n:"Хуурамч: «Ангилал: үг, үг, үг» мөр бүрт",obj:IMPOSTER}
+];
+const setLines = s => s.obj ? Object.entries(s.obj).map(([c,w])=>c+": "+w.join(", ")) : s.a.slice();
+function applyLines(s,lines){
+  lines = lines.map(l=>String(l).trim()).filter(Boolean);
+  if(s.obj){ Object.keys(s.obj).forEach(k=>delete s.obj[k]); lines.forEach(l=>{ const i=l.indexOf(":"); if(i<1) return; const words=l.slice(i+1).split(",").map(w=>w.trim()).filter(Boolean); if(words.length) s.obj[l.slice(0,i).trim()]=words; }); }
+  else s.a.splice(0,s.a.length,...lines);
+}
+const DEFAULTS = {}; EDIT_SETS.forEach(s=>DEFAULTS[s.k]=setLines(s));
+let SHARED = {content:{},games:[]};               /* from custom.json next to the site, if any */
+const local = () => store("pp-content")||{};
+const localGames = () => store("pp-games")||[];
+function slug(n){ return "c-"+Array.from(n).map(c=>c.charCodeAt(0).toString(36)).join("").slice(0,24); }
+function rebuildContent(){
+  const ov = Object.assign({}, SHARED.content||{}, local());
+  EDIT_SETS.forEach(s=>applyLines(s, ov[s.k] || DEFAULTS[s.k]));
+  GAMES.splice(BUILTIN_COUNT);
+  const seen=new Set();
+  [...(SHARED.games||[]),...localGames()].reverse().forEach(c=>{ if(!c||!c.name) return; const id=c.id||slug(c.name); if(seen.has(id)) return; seen.add(id);
+    GAMES.push({id,custom:true,mine:localGames().some(x=>x.id===id),name:c.name,glyph:(c.name.trim()[0]||"★"),c:"#b9f18c",players:c.players||"2+",modes:(c.modes&&c.modes.length?c.modes:["group"]),desc:c.desc||"",rules:(c.rules&&c.rules.length?c.rules:["Дүрэм оруулаагүй байна."]),cards:c.cards||[]}); });
+  const cg=GAMES.find(g=>g.id==="cards"); cg.rules=cg.rules.slice(0,4).concat(CARD_RULES);
+  CV++;
+}
+
+/* ---------- routing ---------- */
+let filter = "all", current = "home";
+function go(id){ clearTimers(); closeHZ(); window.scrollTo(0,0); current=id||"home"; if(!id) return home(); if(id==="edit") return editor(); const g=GAMES.find(x=>x.id===id); if(!g) return home(); (SCREENS[id]||customScreen)(g); }
+
+function rulesHTML(g,open){ return `<details class="rules"${open?" open":""}><summary>Яаж тоглох вэ</summary><ol>${g.rules.map(r=>`<li>${esc(r)}</li>`).join("")}</ol></details>`; }
+function frame(g,inner){
+  $("#app").innerHTML=`<div class="topbar"><button class="back" type="button" aria-label="Буцах" id="back">←</button><h2>${esc(g.name)}</h2><span class="pill">${esc(g.players)}</span></div>
+  ${rulesHTML(g)}<div class="stage" id="stage">${inner||""}</div>`;
+  $("#back").onclick=()=>go();
+}
+const stage = h => { $("#stage").innerHTML=h; };
+const offlineCard = g => `<div class="panel" style="gap:8px"><div class="row" style="justify-content:space-between"><h3 style="font-size:16px">${esc(g.name)}</h3><span class="pill">${esc(g.players)}</span></div><div class="muted small">${esc(g.desc)}</div>${rulesHTML(g)}</div>`;
+
+/* ---------- home ---------- */
+function home(){
+  const show = g => filter==="all" || g.modes.includes(filter) || (filter==="mine" && g.custom);
+  const list = GAMES.filter(show);
+  const offl = filter==="cards" ? OFFLINE.filter(g=>g.cards) : OFFLINE;
+  $("#app").innerHTML=`
+  <header class="hero">
+    <div class="hero-top"><div class="logo">Пид <span>Пад</span></div><button class="editbtn" id="edit" type="button">Засах</button></div>
+    <p>Найзуудтайгаа цуглахад тоглох тоглоомууд. Нэг утсыг дамжуулж тогло, хөзөр шагайгаа гаргаад тогло, эсвэл дүрмийг нь хараад утасгүй тогло.</p>
+  </header>
+  <section class="panel" aria-label="Тохиргоо">
+    <div class="stack">
+      <div class="label">Тоглогчид · ${S.players.length}</div>
+      <div class="chips" id="chips">${S.players.map((p,i)=>`<span class="chip">${esc(p)}<button type="button" data-rm="${i}" aria-label="${esc(p)}-г хасах">×</button></span>`).join("")}</div>
+      <form class="addrow" id="addf"><input type="text" id="pname" placeholder="Нэр нэмэх" maxlength="16" autocomplete="off"><button class="btn" style="width:auto;padding:10px 16px" type="submit">Нэмэх</button></form>
+    </div>
+    <div class="stack">
+      <div class="label">Шийтгэлийн түвшин</div>
+      <div class="seg" id="lvl">${[1,2,3].map(l=>`<button type="button" data-l="${l}" aria-pressed="${S.level===l}">${LEVEL_NAME[l]}</button>`).join("")}</div>
+    </div>
+    <div class="toggle"><div><b>Уух горим</b><div class="small muted">Шийтгэл бүрт «эсвэл балга» сонголт нэмнэ. Ундаа, усаар ч болно.</div></div>
+      <button class="switch" id="drink" type="button" role="switch" aria-checked="${S.drink}" aria-label="Уух горим"></button></div>
+  </section>
+  <nav class="filters" aria-label="Шүүлтүүр">
+    ${[["all","Бүгд"],["2","Хоёулаа"],["pair","Хосоороо"],["group","Олуулаа 3–8+"],["cards","Хөзөр"],["mine","Миний"],["offline","Утасгүй"]].map(([k,t])=>`<button type="button" data-f="${k}" aria-pressed="${filter===k}">${t}</button>`).join("")}
+  </nav>
+  ${filter!=="offline"?`<div class="grid">${list.map(g=>`<button type="button" class="game" style="--c:${g.c}" data-g="${g.id}"><span class="glyph" aria-hidden="true">${esc(g.glyph)}</span><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p><div class="meta"><span class="tag">${esc(g.players)}</span>${g.custom?`<span class="tag">Миний</span>`:""}</div></button>`).join("")}
+    ${filter==="mine"||filter==="all"?`<button type="button" class="game offline" id="addgame"><span class="glyph" aria-hidden="true">+</span><h3>Өөрийн тоглоом нэмэх</h3><p>Нэр, дүрэм, карт бичээд л болно.</p></button>`:""}</div>`:""}
+  <h2 class="section-title">${filter==="cards"?"Хөзрөөр утасгүй тоглох":"Утасгүй тоглох дүрмүүд"}</h2>
+  <p class="muted small" style="margin:0 0 12px">Дүрмийг нь уншаад шууд тогло. ${filter==="cards"?"Ердийн 52 хөзөр л хэрэгтэй.":"Дээрх тоглоомуудын дүрмийг ч «Утасгүй» шүүлтүүрээс харж болно."}</p>
+  <div class="offline-list">
+    ${offl.map(offlineCard).join("")}
+    ${filter==="offline"?GAMES.filter(g=>g.id!=="shagai").map(offlineCard).join(""):""}
+  </div>
+  <p class="note" style="margin-top:24px">Хэмжээгээ мэдэж, бие биеэ хүндэл. Хэн ч хүсээгүй зүйлээ хийх албагүй.</p>`;
+  document.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{S.players.splice(+b.dataset.rm,1);save();home();});
+  $("#addf").onsubmit=e=>{e.preventDefault();const v=$("#pname").value.trim();if(v){S.players.push(v);save();home();setTimeout(()=>$("#pname")&&$("#pname").focus(),0);}};
+  document.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{S.level=+b.dataset.l;save();home();});
+  $("#drink").onclick=()=>{S.drink=!S.drink;save();home();};
+  document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{filter=b.dataset.f;home();});
+  document.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>go(b.dataset.g));
+  $("#edit").onclick=()=>go("edit");
+  const ag=$("#addgame"); if(ag) ag.onclick=()=>{ go("edit"); gameForm(); };
+}
+
+/* ---------- editor ---------- */
+let editKey = "hz1";
+function editor(){
+  const mine = localGames();
+  $("#app").innerHTML=`<div class="topbar"><button class="back" type="button" aria-label="Буцах" id="back">←</button><h2>Засах</h2></div>
+  <div class="stack">
+    <p class="muted small" style="margin:0">Энд хийсэн өөрчлөлт энэ утсанд хадгалагдана. Найзууддаа өгөх бол доорх «Хуваалцах» хэсгийг ашигла.</p>
+    <section class="panel" id="gamesec">
+      <div class="row" style="justify-content:space-between"><h3 style="font-size:17px">Миний тоглоомууд</h3><button class="mini" id="newg" type="button">+ Шинэ тоглоом</button></div>
+      ${mine.length?mine.map((c,i)=>`<div class="row" style="justify-content:space-between;border-top:1px solid var(--line);padding-top:10px"><span style="min-width:0"><b>${esc(c.name)}</b> <span class="muted small">· ${esc(c.players||"")}</span></span><span class="row"><button class="mini" type="button" data-eg="${i}">Засах</button><button class="mini rose" type="button" data-dg="${i}">Устгах</button></span></div>`).join(""):`<div class="muted small">Одоогоор алга. «Шинэ тоглоом» дарж өөрийн санасан тоглоомоо нэмээрэй. Карт бичвэл утсаар сугалдаг тоглоом болно.</div>`}
+      <div id="gform"></div>
+    </section>
+    <section class="panel">
+      <h3 style="font-size:17px">Асуулт, шийтгэл, үгс засах</h3>
+      <select id="setk" aria-label="Жагсаалт сонгох">${EDIT_SETS.map(s=>`<option value="${s.k}"${s.k===editKey?" selected":""}>${esc(s.n)}${local()[s.k]?" · өөрчилсөн":""}</option>`).join("")}</select>
+      <div class="muted small">Мөр бүр нэг карт. Шинэ мөр нэмэх, устгах, засах боломжтой.</div>
+      <textarea id="setv" aria-label="Жагсаалтын агуулга"></textarea>
+      <div class="row"><button class="btn" style="width:auto" id="sv" type="button">Хадгалах</button><button class="mini" id="rs" type="button">Анхных руу буцаах</button><span class="saved" id="ok"></span></div>
+    </section>
+    <section class="panel">
+      <h3 style="font-size:17px">Хуваалцах</h3>
+      <div class="muted small">«Хуулах» дарж бүх өөрчлөлтөө текст болгоод найздаа явуул. Тэр «Оруулах» хэсэгт буулгана. GitHub дээрх <b>custom.json</b> файлд хийвэл сайтад орсон бүх хүнд харагдана.</div>
+      <textarea class="short" id="exp" aria-label="Экспорт" readonly></textarea>
+      <div class="row"><button class="mini" id="cp" type="button">Хуулах</button><span class="saved" id="cpok"></span></div>
+      <textarea class="short" id="imp" aria-label="Оруулах" placeholder="Найзаасаа авсан текстээ энд буулга"></textarea>
+      <div class="row"><button class="mini" id="im" type="button">Оруулах</button><span class="saved" id="imok"></span></div>
+    </section>
+  </div>`;
+  $("#back").onclick=()=>go();
+  const sel=()=>EDIT_SETS.find(s=>s.k===editKey);
+  const fill=()=>{ $("#setv").value=setLines(sel()).join("\n"); };
+  fill();
+  $("#setk").onchange=e=>{ editKey=e.target.value; fill(); $("#ok").textContent=""; };
+  $("#sv").onclick=()=>{ const o=local(); o[editKey]=$("#setv").value.split("\n").map(s=>s.trim()).filter(Boolean); store("pp-content",o); rebuildContent(); $("#ok").textContent="Хадгаллаа"; exp(); };
+  $("#rs").onclick=()=>{ const o=local(); delete o[editKey]; store("pp-content",o); rebuildContent(); fill(); $("#ok").textContent="Анхных руу буцаалаа"; exp(); };
+  const exp=()=>{ $("#exp").value=JSON.stringify({content:local(),games:localGames()},null,1); }; exp();
+  $("#cp").onclick=()=>{ const t=$("#exp").value; const done=()=>$("#cpok").textContent="Хууллаа"; try{ navigator.clipboard.writeText(t).then(done,()=>{ $("#exp").select(); $("#cpok").textContent="Сонгосон, хуулаарай"; }); }catch(e){ $("#exp").select(); } };
+  $("#im").onclick=()=>{ try{ const d=JSON.parse($("#imp").value); const o=Object.assign(local(),d.content||{}); store("pp-content",o);
+      const gs=localGames(); (d.games||[]).forEach(g=>{ if(!g||!g.name) return; g.id=g.id||slug(g.name); const i=gs.findIndex(x=>x.id===g.id); if(i>=0) gs[i]=g; else gs.push(g); }); store("pp-games",gs);
+      rebuildContent(); editor(); $("#imok").textContent="Орууллаа"; }catch(e){ $("#imok").textContent="Текст буруу байна. Бүтнээр нь хуулж буулгаарай."; } };
+  $("#newg").onclick=()=>gameForm();
+  document.querySelectorAll("[data-eg]").forEach(b=>b.onclick=()=>gameForm(+b.dataset.eg));
+  document.querySelectorAll("[data-dg]").forEach(b=>b.onclick=()=>{ const i=+b.dataset.dg;
+    b.outerHTML=`<button class="mini rose" type="button" id="cf${i}">Тийм, устга</button>`; $("#cf"+i).onclick=()=>{ const gs=localGames(); gs.splice(i,1); store("pp-games",gs); rebuildContent(); editor(); }; });
+}
+function gameForm(i){
+  const gs=localGames(); const c = i!==undefined ? gs[i] : {name:"",players:"3+",modes:["group"],desc:"",rules:[],cards:[]};
+  const M=[["2","Хоёулаа"],["pair","Хосоороо"],["group","Олуулаа"],["cards","Хөзөр"]];
+  $("#gform").innerHTML=`<div class="stack" style="border-top:1px solid var(--line);padding-top:14px">
+    <label class="stack"><span class="label">Тоглоомын нэр</span><input type="text" id="gn" maxlength="40" value="${esc(c.name)}" placeholder="Жишээ: Аяга тойрог"></label>
+    <label class="stack"><span class="label">Хэдэн хүн</span><input type="text" id="gp" maxlength="16" value="${esc(c.players||"")}" placeholder="3+"></label>
+    <div class="stack"><span class="label">Аль хэсэгт харагдах</span><div class="checks">${M.map(([k,t])=>`<label><input type="checkbox" value="${k}"${(c.modes||[]).includes(k)?" checked":""}>${t}</label>`).join("")}</div></div>
+    <label class="stack"><span class="label">Товч тайлбар</span><input type="text" id="gd" maxlength="90" value="${esc(c.desc||"")}" placeholder="Нэг өгүүлбэрээр"></label>
+    <label class="stack"><span class="label">Дүрэм (мөр бүр нэг алхам)</span><textarea class="short" id="gr">${esc((c.rules||[]).join("\n"))}</textarea></label>
+    <label class="stack"><span class="label">Картууд (заавал биш, мөр бүр нэг карт)</span><textarea class="short" id="gc" placeholder="Карт бичвэл утсаар нэг нэгээр сугалж тоглоно">${esc((c.cards||[]).join("\n"))}</textarea></label>
+    <div class="row"><button class="btn" style="width:auto" id="gs" type="button">Тоглоомыг хадгалах</button><button class="mini" id="gx" type="button">Болих</button><span class="saved" id="gok"></span></div>
+  </div>`;
+  $("#gn").focus();
+  $("#gx").onclick=()=>{ $("#gform").innerHTML=""; };
+  $("#gs").onclick=()=>{ const name=$("#gn").value.trim(); if(!name){ $("#gok").textContent="Нэр оруулна уу"; return; }
+    const lines=id=>$(id).value.split("\n").map(s=>s.trim()).filter(Boolean);
+    const g={id:c.id||slug(name+Date.now()),name,players:$("#gp").value.trim()||"2+",modes:[...document.querySelectorAll("#gform .checks input:checked")].map(x=>x.value),desc:$("#gd").value.trim(),rules:lines("#gr"),cards:lines("#gc")};
+    const all=localGames(); if(i!==undefined) all[i]=g; else all.push(g); store("pp-games",all); rebuildContent(); editor(); };
+}
+
+/* ---------- screens ---------- */
+const SCREENS = {};
+const players = () => S.players.length?S.players:["Тоглогч 1","Тоглогч 2"];
+
+SCREENS.huzruur = g => {
+  frame(g);
+  let who=null, h=drawHZ();
+  const r=()=>{ stage(`
+    ${hzCardHTML(h,who)}
+    <div class="btns"><button class="btn" id="n" type="button">Дараагийн шийтгэл</button><button class="btn ghost" id="p" type="button">Хэнд унах вэ?</button></div>
+    <div class="seg" id="lv">${[1,2,3].map(l=>`<button type="button" data-l="${l}" aria-pressed="${S.level===l}">${LEVEL_NAME[l]}</button>`).join("")}</div>`);
+    $("#n").onclick=()=>{h=drawHZ();r();};
+    $("#p").onclick=()=>{who=pick(players());h=drawHZ();beep(520,.15);r();};
+    document.querySelectorAll("#lv [data-l]").forEach(b=>b.onclick=()=>{S.level=+b.dataset.l;save();h=drawHZ();r();});
+  }; r();
+};
+
+/* seeded RNG for own-phone mode */
+function seedRng(str){ let h=1779033703^str.length; for(let i=0;i<str.length;i++){h=Math.imul(h^str.charCodeAt(i),3432918353);h=h<<13|h>>>19;} let a=h>>>0; return ()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}; }
+function imposterRound(rand){ const cats=Object.keys(IMPOSTER); const cat=cats[Math.floor(rand()*cats.length)]; const word=IMPOSTER[cat][Math.floor(rand()*IMPOSTER[cat].length)]; return {cat,word}; }
+
+SCREENS.imposter = g => {
+  frame(g);
+  const menu=()=>{ stage(`
+    <div class="card dark"><div class="kicker">Хэрхэн тоглох вэ</div><div class="big">Нэг утсыг дамжуулах уу, эсвэл хүн бүр өөрийн утсаар уу?</div></div>
+    <button class="btn" id="m1" type="button">Нэг утсыг дамжуулна (${players().length} хүн)</button>
+    <button class="btn ghost" id="m2" type="button">Хүн бүр өөрийн утсаар</button>`);
+    $("#m1").onclick=passPlay; $("#m2").onclick=ownPhone; };
+  const passPlay=()=>{
+    const ps=players(); if(ps.length<3){ stage(`<div class="card dark"><div class="big">Дор хаяж 3 тоглогч хэрэгтэй.</div><div>Нүүр хуудаснаас нэр нэмээрэй.</div></div><button class="btn" id="bk" type="button">Буцах</button>`); $("#bk").onclick=menu; return; }
+    const {cat,word}=imposterRound(Math.random); const spy=Math.floor(Math.random()*ps.length); let i=0;
+    const turn=()=>{ stage(`<div class="card sun"><div class="kicker">${i+1} / ${ps.length}</div><div class="huge">${esc(ps[i])}</div><div>Утсаа аваад бусдаас нуугаад харна уу.</div></div>
+      <button class="btn reveal" id="see" type="button">Үгээ харах</button>`); $("#see").onclick=show; };
+    const show=()=>{ const me=i===spy; stage(`<div class="card ${me?"rose":"mint"} flip"><div class="kicker">${esc(ps[i])} · Ангилал: ${esc(cat)}</div>
+      <div class="huge">${me?"Чи ХУУРАМЧ":esc(word)}</div><div>${me?"Бусдыг ажиглаад үгийг тааж, өөрийгөө бүү илчил.":"Үгээ бусдад бүү үзүүл. Хуурамчийг ол."}</div></div>
+      <button class="btn ghost" id="hide" type="button">Нуугаад дараагийн хүнд өг</button>`);
+      $("#hide").onclick=()=>{ i++; if(i<ps.length) turn(); else talk(); }; };
+    const talk=()=>{ let t=180; stage(`<div class="card dark"><div class="kicker">Ярилцах цаг</div><div class="big">Тойргоор хүн бүр үгээ нэг үгээр тайлбарла. ${esc(pick(ps))} эхэлнэ.</div><div class="timer" id="tm">3:00</div></div>
+      <button class="btn rose" id="vote" type="button">Санал хураалаа, Хуурамчийг илчил</button>`);
+      timers.push(setInterval(()=>{t--; const e=$("#tm"); if(e) e.textContent=`${Math.floor(Math.max(t,0)/60)}:${String(Math.max(t,0)%60).padStart(2,"0")}`; if(t===0){beep(300,.4);buzz([200,100,200]);}},1000));
+      $("#vote").onclick=()=>{ clearTimers(); stage(`<div class="card rose flip"><div class="kicker">Хуурамч нь</div><div class="huge">${esc(ps[spy])}</div><div class="big">Үг: ${esc(word)}</div></div>
+        <div class="btns"><button class="btn ghost" id="hz" type="button">Шийтгэл сугал</button><button class="btn" id="again" type="button">Дахин тоглох</button></div>`);
+        $("#hz").onclick=()=>openHZ(); $("#again").onclick=passPlay; }; };
+    turn();
+  };
+  const ownPhone=()=>{ const code=String(Math.floor(1000+Math.random()*9000)); stage(`
+    <div class="card dark"><div class="kicker">Өөр өөрийн утсаар</div><div>Нэг хүн кодоо хэлнэ. Бусад нь энэ сайтыг нээгээд яг ижил код, тоглогчийн тоо, өөрийн дугаараа оруулна. Дугаарыг суусан дарааллаар өг.</div></div>
+    <div class="panel">
+      <label class="stack"><span class="label">Тоглоомын код</span><input type="number" id="cd" inputmode="numeric" value="${code}"></label>
+      <label class="stack"><span class="label">Нийт тоглогч</span><input type="number" id="nn" inputmode="numeric" min="3" max="20" value="${Math.max(3,players().length)}"></label>
+      <label class="stack"><span class="label">Миний дугаар</span><input type="number" id="me" inputmode="numeric" min="1" max="20" value="1"></label>
+    </div>
+    <button class="btn" id="go" type="button">Үгээ харах</button>
+    <p class="note">Шинэ тойрог тоглох бол кодоо 1-ээр нэмэгдүүл.</p>`);
+    $("#go").onclick=()=>{ const cd=$("#cd").value.trim(), n=+$("#nn").value, me=+$("#me").value;
+      if(!cd||n<3||me<1||me>n){ $("#go").textContent="Тоо, дугаараа шалгаарай"; return; }
+      const rand=seedRng("tg"+cd+"/"+n); const {cat,word}=imposterRound(rand); const spy=1+Math.floor(rand()*n); const isSpy=me===spy;
+      stage(`<div class="card ${isSpy?"rose":"mint"} flip"><div class="kicker">Код ${esc(cd)} · ${me}-р тоглогч · Ангилал: ${esc(cat)}</div><div class="huge">${isSpy?"Чи ХУУРАМЧ":esc(word)}</div></div>
+        <button class="btn ghost" id="hide" type="button">Нуух</button>
+        <button class="btn rose" id="rev" type="button">Тоглолт дууссан: хариуг харах</button>`);
+      $("#hide").onclick=ownPhone;
+      $("#rev").onclick=()=>stage(`<div class="card sun"><div class="kicker">Код ${esc(cd)}</div><div class="huge">${spy}-р тоглогч</div><div class="big">Хуурамч байлаа. Үг: ${esc(word)}</div></div><button class="btn" id="bk" type="button">Шинэ тойрог</button>`) || ($("#bk").onclick=ownPhone);
+    };
+  };
+  menu();
+};
+
+SCREENS.bomb = g => {
+  frame(g); const cd=deck(CATS);
+  const ready=(cat)=>{ cat=cat||cd(); stage(`<div class="card sun"><div class="kicker">Ангилал</div><div class="big">${esc(cat)}</div></div>
+    <div class="bomb" id="bm">Бэлэн</div>
+    <div class="btns"><button class="btn ghost" id="sk" type="button">Өөр ангилал</button><button class="btn rose" id="st" type="button">Асаах</button></div>`);
+    $("#sk").onclick=()=>ready(); $("#st").onclick=()=>run(cat); };
+  const run=(cat)=>{ const total=15000+Math.random()*40000, t0=Date.now();
+    stage(`<div class="card sun"><div class="kicker">Ангилал</div><div class="big">${esc(cat)}</div></div><div class="bomb live" id="bm">Дамжуул!</div><p class="note">Үгээ хэлээд дараагийн хүнд өг.</p>`);
+    const tick=()=>{ const left=total-(Date.now()-t0); if(left<=0){ boom(); return; } const iv=Math.max(110,Math.min(900,left/12)); const b=$("#bm"); if(b) b.style.setProperty("--beat",(iv*2/1000)+"s"); beep(left<5000?1100:760,.05,.12); timers.push(setTimeout(tick,iv)); };
+    tick(); };
+  const boom=()=>{ beep(90,.8,.4); buzz([400,80,400]); stage(`<div class="card rose flip" style="text-align:center"><div class="huge">БУМ!</div><div class="big">Гартаа барьж байгаа хүн шийтгэл.</div></div>
+    <div class="btns"><button class="btn ghost" id="hz" type="button">Шийтгэл сугал</button><button class="btn" id="ag" type="button">Дахин</button></div>`);
+    $("#hz").onclick=()=>openHZ(); $("#ag").onclick=()=>ready(); };
+  ready();
+};
+
+SCREENS.who = g => {
+  frame(g); const d=deck(WHO); let q=d(), n=1;
+  const r=()=>{ stage(`<div class="card mint flip"><div class="kicker">Асуулт ${n}</div><div class="big">${esc(q)}</div><div class="small">Нэг, хоёр, гурав гэхэд бүгд заа!</div></div>
+    <div class="btns"><button class="btn rose" id="hz" type="button">Шийтгэл</button><button class="btn" id="nx" type="button">Дараагийн асуулт</button></div>`);
+    $("#nx").onclick=()=>{q=d();n++;r();}; $("#hz").onclick=()=>openHZ(); }; r();
+};
+
+SCREENS.laws = g => {
+  frame(g); const d=deck(LAWS); const active=store("tg-laws")||[];
+  const r=(fresh)=>{ store("tg-laws",active); stage(`
+    ${fresh?`<div class="card sun flip"><div class="kicker">Шинэ хууль · №${active.length}</div><div class="big">${esc(fresh)}</div></div>`:`<div class="card dark"><div class="big">Хууль нэмэх бүрт энэ жагсаалт урт болно. Бүгдийг санаарай.</div></div>`}
+    <button class="btn" id="add" type="button">Шинэ хууль сугалах</button>
+    ${active.length?`<div class="label">Хүчинтэй хуулиуд · ${active.length}</div><ul class="laws">${active.map((l,i)=>`<li><b>${i+1}</b><span>${esc(l)}</span><button type="button" data-x="${i}" aria-label="Хуулийг хасах">×</button></li>`).join("")}</ul>
+    <div class="btns"><button class="btn rose" id="hz" type="button">Хууль зөрчлөө!</button><button class="btn ghost" id="clr" type="button">Бүгдийг арилгах</button></div>`:""}`);
+    $("#add").onclick=()=>{ let l=d(), guard=0; while(active.includes(l)&&guard++<30) l=d(); active.push(l); beep(660,.12); r(l); };
+    document.querySelectorAll("[data-x]").forEach(b=>b.onclick=()=>{active.splice(+b.dataset.x,1);r();});
+    if(active.length){ $("#hz").onclick=()=>openHZ(); $("#clr").onclick=()=>{active.length=0;r();}; }
+  }; r();
+};
+
+const BONES=[{k:"horse",n:"Морь",p:.12},{k:"camel",n:"Тэмээ",p:.12},{k:"sheep",n:"Хонь",p:.38},{k:"goat",n:"Ямаа",p:.38}];
+function boneSVG(k){ const s={horse:'<path d="M20 70 Q20 30 50 22 Q80 30 80 70" fill="none" stroke="#3b2a16" stroke-width="7" stroke-linecap="round"/><circle cx="50" cy="52" r="6" fill="#3b2a16"/>',
+  camel:'<path d="M18 62 Q34 28 50 50 Q66 28 82 62" fill="none" stroke="#3b2a16" stroke-width="7" stroke-linecap="round"/>',
+  sheep:'<circle cx="50" cy="50" r="22" fill="none" stroke="#3b2a16" stroke-width="7"/>',
+  goat:'<path d="M30 30 L50 70 L70 30" fill="none" stroke="#3b2a16" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>'}[k];
+  return `<svg viewBox="0 0 100 100" aria-hidden="true">${s}</svg>`; }
+function rollBone(){ let x=Math.random(),a=0; for(const b of BONES){a+=b.p; if(x<a) return b;} return BONES[3]; }
+SCREENS.shagai = g => {
+  frame(g); const ps=players(); let turn=0;
+  const r=(res)=>{ const name=ps[turn%ps.length];
+    let verdict="";
+    if(res){ const c={horse:0,camel:0,sheep:0,goat:0}; res.forEach(b=>c[b.k]++);
+      if(c.horse===4) verdict="Дөрвөн морь! Чи шинэ хууль тогтооно, бүгд дагана.";
+      else if(c.camel===4) verdict="Дөрвөн тэмээ! Бүгд Галзуу шийтгэл.";
+      else if(c.sheep===4) verdict="Дөрвөн хонь! Бүгд ээлжлэн чамайг магтана.";
+      else if(c.goat===4) verdict="Дөрвөн ямаа! Чи Галзуу шийтгэл.";
+      else if(c.horse&&c.camel&&c.sheep&&c.goat) verdict="Дөрвөн өөр! Дараагийн ээлж эсрэг чиглэлд эргэнэ.";
+      else { const parts=[]; if(c.horse) parts.push(`${c.horse} шийтгэлийг хүссэн хүндээ илгээ`); if(c.camel) parts.push(`бусад бүгд ${c.camel} шийтгэл`); if(c.goat) parts.push(`чи өөрөө ${c.goat} шийтгэл`); verdict = parts.length? parts.join(", ")+"." : "Тайван. Энэ удаа юу ч болохгүй."; verdict=verdict.charAt(0).toUpperCase()+verdict.slice(1); }
+    }
+    stage(`<div class="card dark" style="min-height:0"><div class="kicker">Ээлж</div><div class="huge" style="color:var(--sun)">${esc(name)}</div></div>
+      <div class="bones">${(res||BONES).map(b=>`<div class="bone${res?" roll":""}">${boneSVG(b.k)}<span>${b.n}</span></div>`).join("")}</div>
+      ${res?`<div class="card sun flip"><div class="kicker">Шүүхийн шийдвэр</div><div class="big">${esc(verdict)}</div></div>`:`<p class="note">Морь: илгээнэ · Тэмээ: бусад авна · Хонь: тайван · Ямаа: өөрөө авна</p>`}
+      <div class="btns">${res?`<button class="btn ghost" id="hz" type="button">Шийтгэл сугал</button><button class="btn" id="nx" type="button">Дараагийн хүн</button>`:`<button class="btn full" id="th" type="button">Шагай шидэх</button>`}</div>`);
+    if(res){ $("#hz").onclick=()=>openHZ(); $("#nx").onclick=()=>{turn++;r();}; }
+    else $("#th").onclick=()=>{ beep(300,.05);setTimeout(()=>beep(420,.05),90);setTimeout(()=>beep(360,.05),170); buzz(60); r([rollBone(),rollBone(),rollBone(),rollBone()]); };
+  }; r();
+};
+
+SCREENS.act = g => {
+  frame(g); const wd=deck(ACT_WORDS), sd=deck(ACT_STYLES); const sc=[0,0], names=["Улаан баг","Хөх баг"]; let team=0, round=1;
+  const lobby=()=>{ stage(`<div class="score">${names.map((n,i)=>`<div class="${i===team?"on":""}"><span>${n}</span><b>${sc[i]}</b></div>`).join("")}</div>
+    <div class="card dark"><div class="kicker">Тойрог ${round}</div><div class="big">${names[team]}: тайлбарлагчаа сонгоод утсыг түүнд өг.</div></div>
+    <button class="btn" id="go" type="button">60 секунд эхлүүлэх</button>
+    ${round>2&&team===0?`<button class="btn rose" id="end" type="button">Дуусгах, ялагдсан баг шийтгэл</button>`:""}`);
+    $("#go").onclick=play; const e=$("#end"); if(e) e.onclick=()=>{ const lose=sc[0]===sc[1]?"Хоёр баг":names[sc[0]<sc[1]?0:1]; stage(`<div class="card rose"><div class="kicker">Төгсгөл · ${sc[0]} : ${sc[1]}</div><div class="huge">${lose}</div><div class="big">шийтгэл хийнэ.</div></div><button class="btn" id="hz" type="button">Шийтгэл сугал</button>`); $("#hz").onclick=()=>openHZ(); }; };
+  const play=()=>{ let t=60, got=0; let w=wd(), s=sd();
+    const card=()=>{ const c=$("#cardw"); if(c) c.innerHTML=`<div class="card sun flip"><div class="kicker">${esc(s)}</div><div class="huge">${esc(w)}</div></div>`; };
+    stage(`<div class="timer" id="tm">60</div><div id="cardw"></div>
+      <div class="btns"><button class="btn ghost" id="sk" type="button">Алгасах −1</button><button class="btn mint" id="ok" type="button">Зөв +1</button></div>`);
+    card();
+    $("#ok").onclick=()=>{got++;beep(990,.08);w=wd();s=sd();card();};
+    $("#sk").onclick=()=>{got--;beep(220,.08);w=wd();s=sd();card();};
+    timers.push(setInterval(()=>{ t--; const e=$("#tm"); if(e) e.textContent=t; if(t<=5&&t>0) beep(700,.05);
+      if(t<=0){ clearTimers(); beep(150,.6,.3); buzz([300,100,300]); sc[team]+=got; stage(`<div class="card ${got>0?"mint":"rose"}"><div class="kicker">${names[team]}</div><div class="huge">${got>0?"+":""}${got}</div><div>оноо энэ ээлжинд</div></div><button class="btn" id="nx" type="button">Дараагийн баг</button>`); $("#nx").onclick=()=>{ team=1-team; if(team===0) round++; lobby(); }; } },1000));
+  };
+  lobby();
+};
+
+SCREENS.pairs = g => {
+  frame(g); const ps=players(); const teams=[]; for(let i=0;i<ps.length;i+=2) teams.push({n:ps[i]+(ps[i+1]?" & "+ps[i+1]:" & (хамтрагч хэрэгтэй)"),s:0});
+  const d=deck(PAIRQ); let k=0, round=1, q=d();
+  const r=()=>{ if(teams.length<2){ stage(`<div class="card dark"><div class="big">Дор хаяж 4 тоглогч (2 хос) хэрэгтэй.</div><div>Нүүр хуудаснаас нэр нэмээрэй. Хосууд жагсаалтын дарааллаар үүснэ.</div></div>`); return; }
+    if(round>5){ const min=Math.min(...teams.map(t=>t.s)); const losers=teams.filter(t=>t.s===min).map(t=>t.n).join(", ");
+      stage(`<div class="score">${teams.map(t=>`<div><span>${esc(t.n)}</span><b>${t.s}</b></div>`).join("")}</div><div class="card rose"><div class="kicker">Хамгийн бага оноо</div><div class="big">${esc(losers)}</div><div>Галзуу шийтгэлийг хамт хийнэ.</div></div>
+      <div class="btns"><button class="btn ghost" id="hz" type="button">Шийтгэл сугал</button><button class="btn" id="rs" type="button">Шинээр эхлэх</button></div>`);
+      $("#hz").onclick=()=>{const l=S.level;S.level=3;openHZ();S.level=l;}; $("#rs").onclick=()=>{teams.forEach(t=>t.s=0);round=1;k=0;r();}; return; }
+    const t=teams[k];
+    stage(`<div class="score">${teams.map((x,i)=>`<div class="${i===k?"on":""}"><span>${esc(x.n)}</span><b>${x.s}</b></div>`).join("")}</div>
+      <div class="card sun flip"><div class="kicker">Тойрог ${round}/5 · ${esc(t.n)}</div><div class="big">${esc(q)}</div><div class="small">Нэг хүн өөрийнхөө тухай, нөгөө нь хамтрагчийнхаа тухай зэрэг хариулна.</div></div>
+      <div class="btns"><button class="btn rose" id="no" type="button">Таарсангүй</button><button class="btn mint" id="yes" type="button">Таарлаа +1</button></div>`);
+    const next=()=>{ q=d(); k++; if(k>=teams.length){k=0;round++;} r(); };
+    $("#yes").onclick=()=>{t.s++;beep(990,.1);next();};
+    $("#no").onclick=()=>{ openHZ(t.n); const c=$("#ovClose"); const old=c.onclick; next(); };
+  }; r();
+};
+
+SCREENS.sync = g => {
+  frame(g); const d=deck(CATS); let cat=d(), hit=0, miss=0;
+  const r=()=>{ if(miss>=3){ stage(`<div class="card rose"><div class="kicker">${hit} таарсан · 3 алдсан</div><div class="huge">Хоёулаа шийтгэл!</div></div><div class="btns"><button class="btn ghost" id="hz" type="button">Шийтгэл сугал</button><button class="btn" id="rs" type="button">Дахин</button></div>`); $("#hz").onclick=()=>openHZ(); $("#rs").onclick=()=>{hit=0;miss=0;cat=d();r();}; return; }
+    if(hit>=5){ stage(`<div class="card mint"><div class="kicker">5 таарсан</div><div class="huge">Нэг сэтгэл!</div><div class="big">Хоёулаа нэгэн зэрэг гуравдагч хүнд (эсвэл бие биедээ) шийтгэл сонгож өг.</div></div><div class="btns"><button class="btn ghost" id="hz" type="button">Шийтгэл сугал</button><button class="btn" id="rs" type="button">Дахин</button></div>`); $("#hz").onclick=()=>openHZ(); $("#rs").onclick=()=>{hit=0;miss=0;cat=d();r();}; return; }
+    stage(`<div class="score"><div><span>Таарсан</span><b>${hit} / 5</b></div><div><span>Алдсан</span><b>${miss} / 3</b></div></div>
+      <div class="card sun flip"><div class="kicker">Ангилал</div><div class="big">${esc(cat)}</div><div class="small">Нэг, хоёр, гурав гэхэд зэрэг нэг үг хэл.</div></div>
+      <div class="btns"><button class="btn rose" id="no" type="button">Өөр үг</button><button class="btn mint" id="yes" type="button">Таарлаа!</button><button class="btn ghost full" id="sk" type="button">Өөр ангилал</button></div>`);
+    $("#yes").onclick=()=>{hit++;beep(990,.12);cat=d();r();}; $("#no").onclick=()=>{miss++;beep(200,.12);buzz(60);cat=d();r();}; $("#sk").onclick=()=>{cat=d();r();};
+  }; r();
+};
+
+SCREENS.talk = g => {
+  frame(g); let lv=1; const ds={1:deck(TALK[1]),2:deck(TALK[2]),3:deck(TALK[3])}; let q=ds[1]();
+  const names={1:"Халаалт",2:"Гүн",3:"Халуун"}; const ps=players(); let who=0;
+  const r=()=>{ stage(`<div class="seg" id="lv">${[1,2,3].map(l=>`<button type="button" data-l="${l}" aria-pressed="${lv===l}">${names[l]}</button>`).join("")}</div>
+    <div class="card ${lv===3?"rose":lv===2?"sun":""} flip"><div class="kicker">${esc(ps[who%2]||"")} асууна · ${names[lv]}</div><div class="big">${esc(q)}</div></div>
+    <div class="btns"><button class="btn rose" id="sk" type="button">Алгасах = шийтгэл</button><button class="btn" id="nx" type="button">Хариуллаа</button></div>`);
+    document.querySelectorAll("#lv [data-l]").forEach(b=>b.onclick=()=>{lv=+b.dataset.l;q=ds[lv]();r();});
+    $("#nx").onclick=()=>{who++;q=ds[lv]();r();}; $("#sk").onclick=()=>{openHZ(ps[(who+1)%2]);who++;q=ds[lv]();r();};
+  }; r();
+};
+
+/* ---------- card games ---------- */
+const RANKS=["A","2","3","4","5","6","7","8","9","10","J","Q","K"], SUITS=["♠","♥","♦","♣"];
+const newDeck=()=>shuffle(RANKS.flatMap((r,i)=>SUITS.map(s=>({r,v:i+1,s,red:s==="♥"||s==="♦"}))));
+const pcard=c=>`<div class="pcard flip${c.red?" red":""}" role="img" aria-label="${c.r} ${c.s}"><div class="t">${c.r}${c.s}</div><div class="c">${c.s}</div><div class="b">${c.r}${c.s}</div></div>`;
+SCREENS.cards = g => {
+  frame(g); let dk=newDeck(), kings=0, cur=null; const ps=players(); let turn=0;
+  const r=()=>{
+    if(!cur){ stage(`<div class="pcard back" aria-hidden="true"></div><p class="note">${dk.length} хөзөр үлдсэн</p><button class="btn" id="dr" type="button">${esc(ps[turn%ps.length])}: хөзөр сугалах</button>`); $("#dr").onclick=draw; return; }
+    const rule=CARD_RULES[cur.v-1]||""; const fourth=cur.r==="K"&&kings===4;
+    stage(`${pcard(cur)}
+      <div class="card ${fourth?"rose":"sun"} flip" style="min-height:0"><div class="kicker">${esc(ps[turn%ps.length])} · ${dk.length} хөзөр үлдсэн${cur.r==="K"?` · Хаан ${kings}/4`:""}</div><div class="big">${fourth?"4 дэх Хаан! Галзуу шийтгэл.":esc(rule)}</div></div>
+      <div class="btns"><button class="btn ghost" id="hz" type="button">Шийтгэл сугал</button><button class="btn" id="nx" type="button">${dk.length?"Дараагийн хүн":"Шинэ багц"}</button></div>`);
+    $("#hz").onclick=()=>{ if(fourth){const l=S.level;S.level=3;openHZ(ps[turn%ps.length]);S.level=l;} else openHZ(); };
+    $("#nx").onclick=()=>{ if(!dk.length){dk=newDeck();kings=0;} turn++; cur=null; r(); };
+  };
+  const draw=()=>{ cur=dk.pop(); if(cur.r==="K") kings++; beep(500,.05); r(); };
+  r();
+};
+SCREENS.hilo = g => {
+  frame(g); let dk=newDeck(), cur=dk.pop(), pot=0, streak=0; const ps=players(); let turn=0;
+  const lvl=p=>p<=2?1:p<=4?2:3;
+  const r=(msg)=>{ if(dk.length<2){dk=newDeck();}
+    stage(`${pcard(cur)}
+      <div class="score"><div class="on"><span>${esc(ps[turn%ps.length])} таана</span><b>Сав: ${pot}</b></div></div>
+      ${msg?`<div class="card ${msg.bad?"rose":"mint"} flip" style="min-height:0"><div class="big">${esc(msg.t)}</div></div>`:""}
+      <div class="btns"><button class="btn" id="lo" type="button">Доош ↓</button><button class="btn" id="hi" type="button">Дээш ↑</button>
+      ${streak>=3?`<button class="btn ghost full" id="ps" type="button">Савыг дараагийн хүнд дамжуулах</button>`:""}</div>`);
+    $("#hi").onclick=()=>guess(1); $("#lo").onclick=()=>guess(-1);
+    const p=$("#ps"); if(p) p.onclick=()=>{ turn++; streak=0; r({t:`Сав ${pot} оноотой ${ps[turn%ps.length]}-д шилжлээ.`}); };
+  };
+  const guess=d=>{ const nx=dk.pop(); const prev=cur; cur=nx;
+    if(nx.v===prev.v){ beep(600,.08); return r({t:"Ижил тоо. Аюулгүй, дахин таа."}); }
+    if((nx.v>prev.v)===(d>0)){ pot++; streak++; beep(990,.08); return r({t:`Зөв! Сав ${pot} боллоо.`}); }
+    const who=ps[turn%ps.length], p=Math.max(pot,1); beep(150,.4,.3); buzz([200,80,200]);
+    stage(`${pcard(cur)}<div class="card rose flip"><div class="kicker">${esc(who)} · Сав ${p}</div><div class="huge">Буруу!</div><div class="big">${LEVEL_NAME[lvl(p)]} шийтгэл${S.drink?` эсвэл ${p} балга`:""}.</div></div>
+      <div class="btns"><button class="btn ghost" id="hz" type="button">Шийтгэл сугал</button><button class="btn" id="nx" type="button">Дараагийн хүн</button></div>`);
+    $("#hz").onclick=()=>{ const l=S.level; S.level=lvl(p); openHZ(who); S.level=l; };
+    $("#nx").onclick=()=>{ pot=0; streak=0; turn++; r(); };
+  };
+  r();
+};
+
+/* ---------- user-made games ---------- */
+function customScreen(g){
+  frame(g);
+  if(!g.cards.length){ $("#app .rules").open=true; stage(`<div class="card dark" style="min-height:0"><div class="big">Дүрмийг дээрээс уншаад тоглоорой.</div></div><button class="btn rose" id="hz" type="button">Шийтгэл сугал</button>`); $("#hz").onclick=()=>openHZ(); return; }
+  const d=deck(g.cards); let n=0; const ps=players();
+  const r=()=>{ n++; stage(`<div class="card sun flip"><div class="kicker">${n} · ${esc(ps[(n-1)%ps.length])}</div><div class="big">${esc(d())}</div></div>
+    <div class="btns"><button class="btn rose" id="hz" type="button">Шийтгэл</button><button class="btn" id="nx" type="button">Дараагийн карт</button></div>`);
+    $("#nx").onclick=r; $("#hz").onclick=()=>openHZ(); };
+  r();
+}
+
+/* ---------- boot ---------- */
+rebuildContent();
+home();
+try{ fetch("custom.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(d=>{ if(d&&typeof d==="object"){ SHARED={content:d.content||{},games:d.games||[]}; rebuildContent(); if(current==="home") home(); } }).catch(()=>{}); }catch(e){}
+</script>
+
+</body>
+</html>
