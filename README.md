@@ -14,16 +14,14 @@
 
 - Нүүр хуудасны хамгийн доор **Админ** дараад (эсвэл хаягийн ард `#admin`) нууц үгээ оруулна.
 - Админ засвар хийхэд Cloudflare KV-д (`pid-pad-content`) хадгалагдаж, бүх хүнд шууд харагдана.
-- `functions/api/content.js` засвар уншиж/хадгална, `functions/api/login.js` нууц үг шалгана.
+- `worker.js` сайтыг (`public/`) үзүүлж, `/api/content` (засвар унших/хадгалах), `/api/login` (нууц үг шалгах)-ыг `functions/api/`-аас дуудна.
 
-## Cloudflare Pages тохиргоо (нэг удаа)
+## Cloudflare тохиргоо (Workers)
 
-1. dash.cloudflare.com → **Workers & Pages** → **Create** → **Pages** → **Connect to Git** → энэ репо.
-2. Project name: `pid-pad` (wrangler.toml дахь нэртэй ижил). Framework: None. Build command: хоосон. Output: `/`.
-3. Төслийн **Settings → Variables and Secrets** → **Add** → Type: Secret, Name: `ADMIN_PASSWORD`, Value: өөрийн нууц үг. Хадгалаад **Deployments**-ээс дахин deploy хийнэ.
-4. KV холболт (`PP`) `wrangler.toml`-д бичигдсэн тул өөр юм хийх шаардлагагүй.
+1. Workers & Pages → `pid-pad` → **Settings → Variables and Secrets** → **Add** → Type: Secret, Name: `ADMIN_PASSWORD`, Value: нууц үг.
+2. KV холболт (`PP`) болон static файлууд `wrangler.toml`-д бичигдсэн. GitHub-д push хийхэд Cloudflare өөрөө `wrangler deploy` хийнэ.
 
 ## Файлууд
 
-- `app.html`: сайтын бүх код. Засаад `./build.sh` ажиллуулж `index.html`-ийг шинэчилнэ.
-- `custom.json`: сервергүй (жишээ нь Claude artifact) үед ашиглагдах нийтлэг агуулга.
+- `app.html`: сайтын бүх код. Засаад `./build.sh` ажиллуулж `public/index.html`-ийг шинэчилнэ.
+- `public/custom.json`: сервергүй (жишээ нь Claude artifact) үед ашиглагдах нийтлэг агуулга.
