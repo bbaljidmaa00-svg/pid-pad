@@ -77,11 +77,25 @@ input[type=text],input[type=number],select{flex:1;min-width:0;background:var(--i
 .filters button[aria-pressed=true]{background:var(--text);color:var(--on-accent);border-color:var(--text)}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media (max-width:360px){.grid{grid-template-columns:1fr}}
-.game{position:relative;text-align:left;border:0;border-radius:var(--r);padding:14px;min-height:150px;display:flex;flex-direction:column;gap:6px;background:var(--c,var(--felt-2));color:var(--on-accent);overflow:hidden;transition:transform .15s}
-.game:active{transform:scale(.97)}
-.game h3{font-size:16px;font-weight:700}
-.game p{margin:0;font-size:13px;line-height:1.35;opacity:.85}
-.game .meta{margin-top:auto;display:flex;gap:4px;flex-wrap:wrap}
+.game{position:relative;text-align:left;border:1px solid var(--line);border-radius:22px;padding:0;display:flex;flex-direction:column;background:var(--felt);color:var(--text);overflow:hidden;transition:transform .18s,box-shadow .18s;animation:pop .45s backwards;animation-delay:calc(var(--i,0) * 35ms)}
+@keyframes pop{from{transform:translateY(14px) scale(.96);opacity:0}}
+.game:hover{transform:translateY(-3px) rotate(-.6deg);box-shadow:0 14px 30px rgba(0,0,0,.35)}
+.game:active{transform:scale(.96) rotate(.8deg)}
+.game .art{height:96px;position:relative;display:grid;place-items:center;color:#1a1330;background:radial-gradient(circle at 1px 1px,rgba(26,19,48,.16) 1.4px,transparent 1.6px) 0 0/12px 12px,linear-gradient(150deg,var(--c),color-mix(in srgb,var(--c) 62%,#16112a));overflow:hidden}
+.game .art svg{width:auto;height:70px;max-width:80%;filter:drop-shadow(0 4px 0 rgba(26,19,48,.18));transition:transform .3s}
+.game:hover .art svg{transform:scale(1.08) rotate(-4deg)}
+.game .art .num{position:absolute;left:10px;top:8px;font-family:var(--display);font-weight:900;font-size:11px;background:rgba(255,255,255,.55);color:#1a1330;border-radius:99px;padding:3px 8px}
+.game .body{padding:12px 12px 12px;display:flex;flex-direction:column;gap:5px;flex:1}
+.game h3{font-size:15px;font-weight:700}
+.game p{margin:0;font-size:12.5px;line-height:1.35;color:var(--muted)}
+.game .meta{margin-top:auto;padding-top:4px;display:flex;gap:4px;flex-wrap:wrap}
+.game .meta .tag{background:var(--felt-2);color:var(--text)}
+.pickbox{display:flex;gap:10px;align-items:center;background:linear-gradient(120deg,var(--rose),#ff8a5c);color:#fff;border:0;border-radius:22px;padding:14px 16px;width:100%;text-align:left;margin-bottom:12px}
+.pickbox b{font-family:var(--display);font-size:17px;display:block}
+.pickbox span{font-size:13px;opacity:.9}
+.pickbox svg{flex:none;width:46px;height:46px}
+.pickbox.spin svg{animation:spin .5s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 .tag{font-size:11px;font-weight:800;letter-spacing:.04em;padding:3px 8px;border-radius:99px;background:rgba(26,19,48,.16)}
 .game.offline{background:var(--felt);color:var(--text);border:1px dashed var(--line)}
 .game.offline .tag{background:var(--felt-2)}
@@ -438,6 +452,33 @@ function frame(g,inner){
 const stage = h => { $("#stage").innerHTML=h; };
 const offlineCard = g => `<div class="panel" style="gap:8px"><div class="row" style="justify-content:space-between"><h3 style="font-size:16px">${esc(g.name)}</h3><span class="pill">${esc(g.players)}</span></div><div class="muted small">${esc(g.desc)}</div>${rulesHTML(g)}</div>`;
 
+/* ---------- card illustrations ---------- */
+const _s='fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"';
+const ART={
+ huzruur:`<svg viewBox="0 0 120 80"><path ${_s} d="M28 38h64v34H28z"/><path ${_s} d="M24 38l10-16h52l10 16"/><path ${_s} d="M60 8v14M60 30v0"/><circle cx="60" cy="55" r="5" fill="currentColor"/></svg>`,
+ imposter:`<svg viewBox="0 0 120 80"><circle ${_s} cx="26" cy="40" r="16"/><circle ${_s} cx="94" cy="40" r="16"/><circle ${_s} cx="60" cy="40" r="20" stroke-dasharray="6 7"/><path ${_s} d="M53 34c0-6 14-6 14 1 0 5-7 5-7 10M60 53v0"/><path ${_s} d="M20 38h4M28 38h4M88 38h4M96 38h4"/></svg>`,
+ bomb:`<svg viewBox="0 0 120 80"><circle ${_s} cx="54" cy="48" r="24"/><path ${_s} d="M70 30l8-8M78 22c6-6 10 2 16-4"/><path ${_s} d="M98 8l2 6M104 18l6 0M96 22l2 4"/><path ${_s} d="M42 42a12 12 0 0 1 10-10"/></svg>`,
+ who:`<svg viewBox="0 0 120 80"><circle ${_s} cx="60" cy="22" r="10"/><path ${_s} d="M46 50c2-10 26-10 28 0"/><path ${_s} d="M12 70l34-26M108 70L74 44M60 76V58"/></svg>`,
+ laws:`<svg viewBox="0 0 120 80"><path ${_s} d="M24 12h34c4 0 2 6 2 10v50c0-4-4-6-8-6H24zM96 12H62c-4 0 -2 6-2 10v50c0-4 4-6 8-6h28z"/><path ${_s} d="M38 30h10M38 42h10M72 30h10M72 42h10"/></svg>`,
+ shagai:`<svg viewBox="0 0 120 80"><g ${_s}><ellipse cx="22" cy="42" rx="13" ry="18"/><ellipse cx="48" cy="38" rx="13" ry="18"/><ellipse cx="74" cy="42" rx="13" ry="18"/><ellipse cx="100" cy="38" rx="13" ry="18"/></g><circle cx="22" cy="42" r="4" fill="currentColor"/><path ${_s} d="M42 40q6-8 12 0M68 44l6-8 6 8"/><circle ${_s} cx="100" cy="38" r="5"/></svg>`,
+ act:`<svg viewBox="0 0 120 80"><path ${_s} d="M18 14h70v40H48l-16 14V54H18z"/><path ${_s} d="M98 20l16 16M114 20L98 36"/><path ${_s} d="M34 34h38"/></svg>`,
+ pairs:`<svg viewBox="0 0 120 80"><circle ${_s} cx="46" cy="40" r="22"/><circle ${_s} cx="74" cy="40" r="22"/><path ${_s} d="M60 22v0"/></svg>`,
+ sync:`<svg viewBox="0 0 120 80"><circle ${_s} cx="24" cy="44" r="12"/><circle ${_s} cx="96" cy="44" r="12"/><path ${_s} d="M46 14h28v22H46z"/><path ${_s} d="M53 22h14M53 29h14"/><path ${_s} d="M30 30l16-10M90 30L74 20"/></svg>`,
+ talk:`<svg viewBox="0 0 120 80"><path ${_s} d="M12 12h56v32H34l-12 10V44H12z"/><path ${_s} d="M108 30H56v30h30l12 10V60h10z"/><circle cx="30" cy="28" r="3" fill="currentColor"/><circle cx="42" cy="28" r="3" fill="currentColor"/><circle cx="54" cy="28" r="3" fill="currentColor"/></svg>`,
+ cards:`<svg viewBox="0 0 120 80"><g ${_s}><rect x="22" y="14" width="34" height="50" rx="5" transform="rotate(-16 39 39)"/><rect x="43" y="10" width="34" height="50" rx="5"/><rect x="64" y="14" width="34" height="50" rx="5" transform="rotate(16 81 39)"/></g><path d="M60 26c-8 8-12 12-6 16 3 2 5 0 6-2 1 2 3 4 6 2 6-4 2-8-6-16z" fill="currentColor"/></svg>`,
+ hilo:`<svg viewBox="0 0 120 80"><rect ${_s} x="42" y="12" width="36" height="56" rx="6"/><path ${_s} d="M16 34l10-12 10 12M26 22v36M84 46l10 12 10-12M94 58V22"/></svg>`,
+ wyr:`<svg viewBox="0 0 120 80"><path ${_s} d="M60 74V44L30 16M60 44l30-28"/><path ${_s} d="M22 26V14h12M98 26V14H86"/></svg>`,
+ never:`<svg viewBox="0 0 120 80"><path ${_s} d="M44 74V36c0-6 8-6 8 0V22c0-6 8-6 8 0v14-18c0-6 8-6 8 0v18-12c0-6 8-6 8 0v30c0 14-8 20-18 20H52c-6 0-10-4-14-10l-8-14c-3-5 4-9 8-5l6 6"/></svg>`,
+ hum:`<svg viewBox="0 0 120 80"><path ${_s} d="M40 60V16l44-8v44"/><circle ${_s} cx="32" cy="60" r="9"/><circle ${_s} cx="76" cy="52" r="9"/><path ${_s} d="M40 28l44-8"/></svg>`,
+ minute:`<svg viewBox="0 0 120 80"><circle ${_s} cx="60" cy="44" r="28"/><path ${_s} d="M52 8h16M60 8v8M60 44V28M60 44l10 8M86 18l6-6"/></svg>`,
+ mission:`<svg viewBox="0 0 120 80"><rect ${_s} x="18" y="18" width="84" height="50" rx="6"/><path ${_s} d="M18 22l42 28 42-28"/><path d="M60 4l3 7 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z" fill="currentColor"/></svg>`,
+ guess:`<svg viewBox="0 0 120 80"><circle ${_s} cx="60" cy="42" r="30"/><circle ${_s} cx="60" cy="42" r="17"/><circle cx="60" cy="42" r="5" fill="currentColor"/><path ${_s} d="M88 14L64 38M88 14h10M88 14V4"/></svg>`,
+ plus:`<svg viewBox="0 0 120 80"><rect ${_s} x="36" y="10" width="48" height="62" rx="8" stroke-dasharray="7 7"/><path ${_s} d="M60 28v26M47 41h26"/></svg>`,
+ spinner:`<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="4"/><path d="M24 4v40M4 24h40M10 10l28 28M38 10L10 38" stroke="currentColor" stroke-width="2.5" opacity=".7"/><circle cx="24" cy="24" r="6" fill="currentColor"/></svg>`,
+ custom:`<svg viewBox="0 0 120 80"><path d="M60 10l9 19 21 3-15 15 4 21-19-10-19 10 4-21-15-15 21-3z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/></svg>`
+};
+const artSVG = g => ART[g.id] || ART.custom;
+
 /* ---------- home ---------- */
 function home(){
   const ok = g => !g.hidden && fits(g,S.count);
@@ -470,8 +511,9 @@ function home(){
   <nav class="filters" aria-label="Шүүлтүүр">
     ${[["all","Бүгд"],["2","Хоёулаа"],["pair","Хосоороо"],["group","Олуулаа 3–8+"],["cards","Хөзөр"],["mine","Миний"],["offline","Утасгүй"]].map(([k,t])=>`<button type="button" data-f="${k}" aria-pressed="${filter===k}">${t}</button>`).join("")}
   </nav>
-  ${filter!=="offline"?`<div class="grid">${list.map(g=>`<button type="button" class="game" style="--c:${g.c}" data-g="${g.id}"><span class="glyph" aria-hidden="true">${esc(g.glyph)}</span><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p><div class="meta"><span class="tag">${esc(g.players)}</span>${g.custom?`<span class="tag">Миний</span>`:""}</div></button>`).join("")}
-    ${filter==="mine"||filter==="all"?`<button type="button" class="game offline" id="addgame"><span class="glyph" aria-hidden="true">+</span><h3>Өөрийн тоглоом нэмэх</h3><p>Нэр, дүрэм, карт бичээд л болно.</p></button>`:""}</div>`:""}
+  ${filter!=="offline"&&list.length?`<button type="button" class="pickbox" id="pick">${ART.spinner}<div><b id="pickt">Юу тоглох вэ?</b><span id="picks">Дараад хүрд эргүүл. ${list.length} тоглоомоос нэгийг сонгоно.</span></div></button>`:""}
+  ${filter!=="offline"?`<div class="grid">${list.map((g,idx)=>`<button type="button" class="game" style="--c:${g.c};--i:${idx}" data-g="${g.id}"><div class="art" aria-hidden="true">${artSVG(g)}<span class="num">${esc(g.players)}</span></div><div class="body"><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p>${g.custom||g.modes.includes("cards")?`<div class="meta">${g.custom?`<span class="tag">Миний</span>`:""}${g.modes.includes("cards")?`<span class="tag">Хөзөр</span>`:""}</div>`:""}</div></button>`).join("")}
+    ${filter==="mine"||filter==="all"?`<button type="button" class="game" style="--c:#3a3060" id="addgame"><div class="art" aria-hidden="true" style="color:var(--sun)">${ART.plus}</div><div class="body"><h3>Өөрийн тоглоом нэмэх</h3><p>Нэр, дүрэм, карт бичээд л болно.</p></div></button>`:""}</div>`:""}
   <h2 class="section-title">${filter==="cards"?"Хөзрөөр утасгүй тоглох":"Утасгүй тоглох дүрмүүд"}</h2>
   <p class="muted small" style="margin:0 0 12px">Дүрмийг нь уншаад шууд тогло. ${filter==="cards"?"Ердийн 52 хөзөр л хэрэгтэй.":"Дээрх тоглоомуудын дүрмийг ч «Утасгүй» шүүлтүүрээс харж болно."}</p>
   <div class="offline-list">
@@ -487,6 +529,9 @@ function home(){
   document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{filter=b.dataset.f;home();});
   document.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>go(b.dataset.g));
   $("#edit").onclick=()=>go("edit");
+  const pk=$("#pick"); if(pk) pk.onclick=()=>{ if(pk.classList.contains("spin")) return; pk.classList.add("spin"); let k=0, steps=14+Math.floor(Math.random()*8), pickG;
+    const tick=()=>{ pickG=list[Math.floor(Math.random()*list.length)]; $("#pickt").textContent=pickG.name; beep(400+k*30,.04); k++; if(k<steps) timers.push(setTimeout(tick,60+k*k*2)); else { pk.classList.remove("spin"); beep(990,.2); buzz(60); $("#picks").textContent="Дахин дарвал энэ тоглоом нээгдэнэ"; pk.onclick=()=>go(pickG.id); } };
+    tick(); };
   const ag=$("#addgame"); if(ag) ag.onclick=()=>{ go("edit"); gameForm(); };
 }
 
