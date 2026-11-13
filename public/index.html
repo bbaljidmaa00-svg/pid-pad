@@ -264,7 +264,13 @@ body{background-image:radial-gradient(60% 40% at 100% 0%,rgba(255,194,61,.07),tr
 .steps li::before{left:12px;top:12px;width:34px;height:34px;font-size:15px;color:var(--on-accent);box-shadow:none}
 .addline{display:block;width:100%;margin-top:22px;border:1.5px dashed var(--line);background:transparent;border-radius:16px;padding:15px;font-weight:800;color:var(--sun)}
 .setsheet{background:var(--felt);border:1px solid var(--line);border-radius:26px;padding:18px;gap:18px;max-height:88vh;overflow:auto}
-@media (min-width:520px){.game .art{height:110px}}
+.game{overflow:hidden}
+.game .art{height:112px;margin:0;border-radius:0;background:linear-gradient(140deg,color-mix(in srgb,var(--c) 70%,#fff) 0%,var(--c) 55%,color-mix(in srgb,var(--c) 85%,#000) 100%)}
+.game .art::before{width:140px;height:140px;right:-36px;top:-46px;opacity:.35}
+.game .cover{left:14px;right:6px;bottom:12px;font-size:clamp(22px,7vw,32px);line-height:.88;letter-spacing:-.045em}
+.game .body{padding:12px 14px 14px}
+.game h3{font-size:15.5px}
+@media (min-width:520px){.game .art{height:124px}}
 </style>
 
 <div id="app"></div>
@@ -465,7 +471,7 @@ const GAMES = [
   rules:["Хоёр баг болно. Баг бүрээс нэг хүн ээлжлэн тайлбарлагч болно.","60 секундэд аль болох олон үгийг багтаа таалга. Үг бүр «хэв маяг»-тай: дохиогоор, дуулж, робот шиг гэх мэт.","Хэв маягийг зөрчвөл тухайн үг тооцогдохгүй.","Алгасах бүрт 1 оноо хасна.","Тойргийн дараа ялагдсан баг бүхэлдээ шийтгэл."]},
  {id:"pairs",name:"Хосын шалгалт",glyph:"∞",c:"#ff8fb6",players:"4–12 (хосоороо)",modes:["pair"],desc:"Хамтрагчаа хэр сайн мэдэх вэ? Хос хосоороо өрсөлд.",
   rules:["Тоглогчид хос болно (жагсаалтын дарааллаар 2 2-оор).","Асуулт гарахад хосын хоёр гишүүн «гурав» гэхэд зэрэг хариулна.","Таарвал хос 1 оноо. Таараагүй бол хоёулаа шийтгэл.","5 тойргийн дараа хамгийн бага оноотой хос Галзуу шийтгэл хамт хийнэ."]},
- {id:"sync",name:"Нэг санаа",glyph:"=",c:"var(--sky)",players:"2",modes:["2"],desc:"Хоёулаа зэрэг нэг үг хэлэх гэж оролд. Сэтгэл нийлэх үү?",
+ {id:"sync",name:"Нэг санаа",glyph:"=",c:"#7ef0b8",players:"2",modes:["2"],desc:"Хоёулаа зэрэг нэг үг хэлэх гэж оролд. Сэтгэл нийлэх үү?",
   rules:["Ангилал гарна. «Нэг, хоёр, гурав» гэхэд хоёулаа зэрэг нэг үг хэлнэ.","Ижил үг хэлбэл таарсан. Ялгаатай бол алдаа.","3 удаа алдвал хоёулаа шийтгэл. 5 удаа таарвал хамгийн бага алдсан нь нөгөөдөө шийтгэл өгнө."]},
  {id:"talk",name:"Хоёулаа ярья",glyph:"…",c:"var(--sun)",players:"2",modes:["2","pair"],desc:"Халаалтаас гүн рүү ордог асуултууд. Алгасвал шийтгэл.",
   rules:["Ээлжлэн асуулт сугалж, нөгөөдөө асууна.","Түвшин: Халаалт, Гүн, Халуун. Хүссэн үедээ ахиул.","Хариулахгүй бол алгасаж болно, гэхдээ шийтгэл авна.","Худлаа хариулсныг нотолбол хоёр шийтгэл."]},
@@ -479,7 +485,7 @@ const GAMES = [
   rules:["Утсан дээрх өгүүлбэрийг чангаар унш.","Тэр зүйлийг хийж байсан бүх хүн гараа өргөнө.","Гар өргөсөн хүн бүр шийтгэл, эсвэл түүхээ 30 секундэд ярьж бусдыг инээлгэвэл чөлөөлөгдөнө.","Ганцаараа гар өргөсөн бол Галзуу шийтгэл."]},
  {id:"hum",name:"Аялгуу",glyph:"♪",c:"#c6f36b",players:"3+",modes:["pair","group"],desc:"Сэдэвт таарсан дууг үггүй аялж таалга.",
   rules:["Ээлжийн хүн сэдвийг хараад тэр сэдэвт тохирох дууг үггүй (ммм, на-на) аялна.","30 секундэд хэн нэгэн таавал таасан хүн аялагчтай хамт хүссэн хүндээ шийтгэл өгнө.","Хэн ч таахгүй бол аялагч шийтгэл.","Үг хэлэх, нэр зааж өгөхийг хориглоно."]},
- {id:"minute",name:"Зогсолтгүй",glyph:"30",c:"#ffcf5c",players:"2+",modes:["2","pair","group"],desc:"Сэдвээр 30 секунд зогсохгүй ярь. «Ээ», «аан» гэвэл шийтгэл.",
+ {id:"minute",name:"Зогсолтгүй",glyph:"30",c:"#ff8f70",players:"2+",modes:["2","pair","group"],desc:"Сэдвээр 30 секунд зогсохгүй ярь. «Ээ», «аан» гэвэл шийтгэл.",
   rules:["Ээлжийн хүн сэдвийг хараад 30 секунд тасралтгүй ярина.","2 секундээс удаан зогсох, «ээ», «аан» гэх, сэдвээс хазайх хориотой.","Бусад нь алдааг сонсоод «Зогс!» гэнэ. Алдаа үнэн бол ярьж буй хүн шийтгэл, худлаа бол хашгирсан хүн.","30 секундийг амжилттай дуусгавал хүссэн хүндээ шийтгэл өгнө."]},
  {id:"mission",name:"Нууц даалгавар",glyph:"✉",c:"#9ad0ff",players:"3–12",modes:["group"],desc:"Хүн бүр нууц даалгавартай. Шөнөжингөө баригдалгүй биелүүл.",
   rules:["Утсыг ээлжлэн дамжуулж хүн бүр өөрийн нууц даалгаврыг харна.","Үдэшлэгийн турш даалгавраа бусдад анзааруулалгүй биелүүлнэ.","Хэн нэгний даалгаврыг таасан бол «Би мэдлээ!» гээд хэл. Зөв бол даалгавартай хүн шийтгэл, буруу бол таасан хүн шийтгэл.","Даалгавраа биелүүлсэн хүн бусдад зарлаад хүссэн хүндээ Галзуу шийтгэл өгнө."]},
@@ -550,8 +556,8 @@ const OFFLINE = [
 ];
 const BUILTIN_COUNT = GAMES.length;
 const OFFLOOK={wink:["#ff7a59","Цаас, үзэг эсвэл хөзөр","10–20 мин"],liar:["#f2f0e6","52 хөзөр","15–30 мин"],bus:["#ffcf5c","52 хөзөр","10–20 мин"],tower:["#b9a4ff","52 хөзөр","20–30 мин"],forbid:["#7fe0c0","Цаас, үзэг, скотч","Үдэшлэгийн турш"],story:["#ff9ec4","Юу ч хэрэггүй","5–15 мин"],seven:["#8fd0ff","Юу ч хэрэггүй","5–10 мин"],"shagai-real":["#efe2c8","4 шагай","10–20 мин"],sugalaa:["#ffd36e","52 хөзөр","5 мин"],zavsar:["#9fe7d0","52 хөзөр","10–20 мин"],alga:["#ff8f70","52 хөзөр","10–15 мин"],tulaan:["#ff6b81","52 хөзөр","10 мин"],"21":["#c8b6ff","52 хөзөр","10–20 мин"],hos:["#a8e6ff","52 хөзөр","15–25 мин"],naim:["#ffe08a","52 хөзөр","15–20 мин"],halbaga:["#f4c9a0","52 хөзөр, халбага","10–20 мин"],haanbool:["#ffd700","52 хөзөр","20–40 мин"],gurvalsan:["#b6f0a8","52 хөзөр","15–25 мин"],haralgan:["#ffa3c7","52 хөзөр","5–15 мин"],uraldaan:["#9ad0ff","52 хөзөр","10 мин"],hurdan:["#ffb86b","52 хөзөр","10 мин"],durs:["#f7a8b8","52 хөзөр","20–40 мин"],baishin:["#e8dcc0","52 хөзөр","10–20 мин"],uleeh:["#9ee6e0","52 хөзөр, шил","5–10 мин"],dohio:["#d4b0ff","52 хөзөр","15–25 мин"]};
-const COVER_OFF={wink:"ИРМЭЭД\nАЛ!",liar:"ХУД\nЛАА!",bus:"4 ШАТ",tower:"ЦАМ\nХАГ",forbid:"ХОРИО\nТОЙ!",story:"НЭГ\nҮГЭЭР",seven:"7 БУМ!","shagai-real":"ШАГАЙ\nШИД",sugalaa:"НЭГ\nСУГАЛ",zavsar:"ЗАВ\nСАРТ?",alga:"АЛГАА\nЦОХИ!",tulaan:"ТУЛ\nААН ♠","21":"21\nБҮҮ!",hos:"ХОС\nХАЙ",naim:"8 ♣\nСОЛИ",halbaga:"ХАЛ\nБАГА!",haanbool:"ХААН\nБООЛ",gurvalsan:"7 7 7",haralgan:"ДУХ\n♥ К",uraldaan:"А ♠ А\nУРАЛД",hurdan:"3+9\n=?",durs:"♥ ♦\n♣ ♠",baishin:"ΛΛΛ\nБАЙШИН",uleeh:"ҮЛЭЭ!",dohio:"ШИВ\nДОХИО"};
-const COVER={huzruur:"ШИЙТ\nГЭЛ!",imposter:"ХЭН\nБЭ?",bomb:"БУМ!",who:"ЧИ\nЧИ ЧИ",laws:"ХУУЛЬ\n№1",shagai:"МОРЬ\nТЭМЭЭ",act:"ДОХИО\nЗАНГАА",pairs:"ХОС\nХОС",sync:"1 = 1",talk:"ЯРЬЯ\nҮҮ?",cards:"♠ K\n♥ Q",hilo:"↑ ДЭЭШ\n↓ ДООШ",wyr:"ЭНЭ\nЭСВЭЛ",never:"ХЭЗЭЭ\nЧ ҮГҮЙ",hum:"МММ\nНА-НА",minute:"30\"",mission:"ШШШ…",guess:"??\nХЭД",duel:"ТУЛ\nААН!",impress:"ДУУ\nРАЙ",forehead:"ДУХ\nДЭЭР",kingcup:"ХУН\nДАГА",toast:"ТОСТ!"};
+const COVER_OFF={wink:"ИРМЭ\nЭД АЛ!",liar:"ХУД\nЛАА!",bus:"4 ШАТ",tower:"ЦАМ\nХАГ",forbid:"ХОРИО\nТОЙ!",story:"НЭГ\nҮГЭЭР",seven:"7 БУМ!","shagai-real":"ШАГАЙ\nШИД",sugalaa:"НЭГ\nСУГАЛ",zavsar:"ЗАВ\nСАРТ?",alga:"АЛГАА\nЦОХИ!",tulaan:"ТУЛ\nААН ♠","21":"21\nБҮҮ!",hos:"ХОС\nХАЙ",naim:"8 ♣\nСОЛИ",halbaga:"ХАЛ\nБАГА!",haanbool:"ХААН\nБООЛ",gurvalsan:"7 7 7",haralgan:"ДУХ\n♥ К",uraldaan:"А ♠ А\nУРАЛД",hurdan:"3+9\n=?",durs:"♥ ♦\n♣ ♠",baishin:"ΛΛΛ\nБАЙШИН",uleeh:"ҮЛЭЭ!",dohio:"ШИВ\nДОХИО"};
+const COVER={huzruur:"ШИЙТ\nГЭЛ!",imposter:"ХЭН\nБЭ?",bomb:"БУМ!",who:"ЧИ\nЧИ ЧИ",laws:"ХУУЛЬ\n№1",shagai:"МОРЬ\nТЭМЭЭ",act:"ДОХИО\nЗАНГАА",pairs:"ХОС\nХОС",sync:"1 = 1",talk:"ЯРЬЯ\nҮҮ?",cards:"♠ K\n♥ Q",hilo:"↑ ДЭЭШ\n↓ ДООШ",wyr:"ЭНЭ\nЭСВЭЛ",never:"ХЭЗЭЭ\nЧ ҮГҮЙ",hum:"МММ\nНА-НА",minute:"30\nСЕК!",mission:"ШШШ…",guess:"??\nХЭД",duel:"ТУЛ\nААН!",impress:"ДУУ\nРАЙ",forehead:"ДУХ\nДЭЭР",kingcup:"ХУН\nДАГА",toast:"ТОСТ!"};
 const MINMAX={huzruur:[2,99],imposter:[3,12],bomb:[3,99],who:[3,99],laws:[3,99],shagai:[2,99],act:[4,99],pairs:[4,12],sync:[2,2],talk:[2,2],cards:[3,99],hilo:[2,99],wyr:[2,99],never:[3,99],hum:[3,99],minute:[2,99],mission:[3,12],guess:[2,99],duel:[2,99],impress:[3,99],forehead:[3,99],kingcup:[3,99],toast:[3,99],wink:[6,99],liar:[3,8],bus:[2,8],tower:[3,8],forbid:[3,99],story:[3,99],seven:[3,99],"shagai-real":[2,99],sugalaa:[2,12],zavsar:[2,10],alga:[3,8],tulaan:[2,4],"21":[2,8],hos:[2,6],naim:[2,6],halbaga:[3,8],haanbool:[4,8],gurvalsan:[2,6],haralgan:[3,8],uraldaan:[3,99],hurdan:[2,8],durs:[2,10],baishin:[2,8],uleeh:[3,10],dohio:[4,8]};
 [...GAMES,...OFFLINE].forEach(g=>{ const m=MINMAX[g.id]||[2,99]; g.min=m[0]; g.max=m[1]; g.cover=COVER[g.id]||COVER_OFF[g.id]||""; g.img=""; if(OFFLOOK[g.id]){ g.c=OFFLOOK[g.id][0]; g.needs=OFFLOOK[g.id][1]; g.time=OFFLOOK[g.id][2]; } });
 const GDEF={}; [...GAMES,...OFFLINE].forEach(g=>GDEF[g.id]={name:g.name,players:g.players,desc:g.desc,rules:g.rules.slice(),min:g.min,max:g.max,cover:g.cover,img:""});
@@ -660,7 +666,7 @@ const PRIM={kingcup:"drink",toast:"drink",cards:"cards",hilo:"cards",shagai:"car
 const SECTIONS=[["2","Хоёулаа","Хоёр найз, хосуудад","#ff9ec4"],["group","Олуулаа","3–8+ хүн, нэг утсыг дамжуулна","#45d3ad"],["cards","Хөзөр ба шагай","Утсаар, ширээн дээр хөзөртэй","#ffc23d"],["drink","Уух","Ус, ундаагаар ч болно","#ff5c7a"],["mine","Миний тоглоомууд","Таны нэмсэн тоглоомууд","#b9a4ff"]];
 const primOf = g => g.custom ? "mine" : (PRIM[g.id]||"group");
 const pl = g => `${g.min}${g.max>=99?"+":g.max>g.min?"–"+g.max:""} хүн`;
-const gameCard = (g,idx) => `<button type="button" class="game" style="--c:${g.c};--i:${idx}" data-g="${g.id}">${coverHTML(g,idx)}<div class="body"><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p><div class="meta"><span>${pl(g)}</span><span>Утсаар</span></div></div></button>`;
+const gameCard = (g,idx) => `<button type="button" class="game" style="--c:${g.c};--i:${idx}" data-g="${g.id}">${coverHTML(g,idx)}<div class="body"><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p><div class="meta"><span>${pl(g)}</span></div></div></button>`;
 const offCard = (g,idx) => `<button type="button" class="game off" style="--c:${g.c};--i:${idx}" data-o="${g.id}">${coverHTML(g,idx+2)}<div class="body"><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p><div class="meta"><span>${pl(g)}</span>${g.time?`<span>${esc(g.time)}</span>`:""}</div></div></button>`;
 function openSettings(){
   const ov=$("#ov"); ov.hidden=false;
