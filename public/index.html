@@ -271,6 +271,92 @@ body{background-image:radial-gradient(60% 40% at 100% 0%,rgba(255,194,61,.07),tr
 .game .body{padding:12px 14px 14px}
 .game h3{font-size:15.5px}
 @media (min-width:520px){.game .art{height:124px}}
+/* v7: playful light theme */
+:root{--ink:#fff3e2;--felt:#ffffff;--felt-2:#fff0d9;--line:rgba(42,33,64,.16);--text:#2a2140;--muted:#6c6485;--ol:#2a2140;--paper:#ffffff;
+  --sun:#ffc531;--rose:#ff5d7d;--mint:#2fd09e;--sky:#58b3ff;--grape:#9b7bff;--on-accent:#2a2140;color-scheme:light}
+body{background-color:var(--ink);background-image:radial-gradient(rgba(42,33,64,.07) 1.3px,transparent 1.6px);background-size:22px 22px;background-attachment:scroll}
+input[type=text],input[type=number],input[type=password],select,textarea{background:#fff;border:2px solid var(--line);color:var(--text)}
+/* top + hero */
+.brand{font-size:19px}.brand b{color:var(--rose)}
+.bm{border:2px solid var(--ol);box-shadow:2px 2px 0 var(--ol)}
+.editbtn,.back,.mini{background:#fff;border:2px solid var(--ol);box-shadow:0 3px 0 var(--ol);color:var(--text)}
+.mini.rose{color:var(--rose);border-color:var(--rose);box-shadow:0 3px 0 var(--rose)}
+.hero3{background:var(--sun);border:2.5px solid var(--ol);box-shadow:0 7px 0 var(--ol);color:var(--ol);padding:22px 20px 20px}
+.hero3::before{content:none}
+.hero3 h1{font-size:clamp(34px,10.5vw,48px);font-weight:900}
+.hero3 h1 span{display:inline-block;background:var(--rose);color:#fff;padding:2px 10px 4px;border-radius:12px;border:2.5px solid var(--ol);transform:rotate(-2deg);margin-top:6px}
+.hero3 p{color:var(--ol);opacity:.85;font-weight:600}
+.eyebrow{background:#fff;color:var(--ol);border:2px solid var(--ol)}
+.confetti i{position:absolute;font-style:normal;display:grid;place-items:center;width:42px;height:56px;background:#fff;border:2px solid var(--ol);border-radius:8px;font-size:22px;box-shadow:2px 3px 0 var(--ol);pointer-events:none;animation:bob 6s ease-in-out infinite}
+.confetti i:nth-child(1){right:18px;top:16px;transform:rotate(12deg);color:var(--ol)}
+.confetti i:nth-child(2){right:66px;top:30px;transform:rotate(-10deg);color:var(--rose);animation-delay:-2s}
+.confetti i:nth-child(3){right:-10px;top:92px;transform:rotate(-18deg);color:var(--ol);animation-delay:-4s;opacity:.9}
+@keyframes bob{50%{translate:0 -6px}}
+.pickbtn{background:var(--ol);color:#fff;border:2.5px solid var(--ol);box-shadow:0 5px 0 #000;margin-top:6px}
+.pickbtn small{opacity:.75}
+.pickbtn:active{transform:translateY(4px);box-shadow:0 1px 0 #000}
+/* setup */
+.snum{background:var(--ol);color:#fff;border:0}
+.cntseg{background:#fff;border:2px solid var(--ol);box-shadow:0 3px 0 var(--ol)}
+.seg{background:#fff;border:2px solid var(--line)}
+.seg button{color:var(--muted)}
+.seg button[aria-pressed=true]{background:var(--sun);color:var(--ol);box-shadow:inset 0 0 0 2px var(--ol)}
+.qset{background:#fff;border:2px solid var(--ol);box-shadow:0 3px 0 var(--ol)}
+.qa i{border:2px solid var(--ol)}
+.qedit{color:var(--rose)}
+/* filters */
+.filters{background:rgba(255,243,226,.92)}
+.filters button{background:#fff;border:2px solid var(--ol);color:var(--ol);font-weight:800}
+.filters button[aria-pressed=true]{background:var(--ol);border-color:var(--ol);color:#fff}
+/* sections */
+.sechead .dot{width:14px;height:14px;border:2px solid var(--ol)}
+.sechead h2{font-weight:800}
+.cnt{background:#fff;border:2px solid var(--ol);color:var(--ol)}
+.seeall{background:#fff;border:2px solid var(--ol);box-shadow:0 3px 0 var(--ol);color:var(--ol)}
+.addline{border:2px dashed var(--ol);color:var(--ol);background:rgba(255,255,255,.6)}
+/* game cards */
+.grid{gap:14px}
+.game{background:#fff;border:2.5px solid var(--ol);border-radius:22px;box-shadow:0 5px 0 var(--ol);color:var(--text);animation:none}
+.game:hover{transform:translateY(-3px);box-shadow:0 8px 0 var(--ol)}
+.game:active{transform:translateY(3px);box-shadow:0 2px 0 var(--ol)}
+.game .art{height:108px;margin:7px 7px 0;border-radius:15px;border:2px solid var(--ol);background:var(--c)}
+.game .art::before{background:radial-gradient(circle,rgba(255,255,255,.55) 2px,transparent 2.4px) 0 0/9px 9px;opacity:1;width:110px;height:110px;right:-30px;top:-30px}
+.game .art::after{content:none}
+.game .cover{color:var(--ol);font-size:clamp(22px,7vw,31px);bottom:10px;left:11px}
+.game .art .num{display:block;left:auto;right:7px;top:7px;background:#fff;color:var(--ol);border:2px solid var(--ol);border-radius:99px;padding:1px 8px;font-size:11px;transform:rotate(5deg)}
+.game .body{padding:10px 12px 13px}
+.game h3{font-size:15.5px;font-weight:800;color:var(--ol)}
+.game p{color:var(--muted)}
+.game .meta span{background:var(--felt-2);color:var(--ol);border:1.5px solid var(--line)}
+.game .meta:empty{display:none}
+/* rules + game screens */
+.rhero .art{border:2.5px solid var(--ol);margin:0}
+.rhero{box-shadow:0 5px 0 var(--ol);border-radius:26px}
+.facts div{background:#fff;border:2px solid var(--ol)}
+.steps li{background:#fff;color:var(--text);border:2px solid var(--ol);box-shadow:0 3px 0 var(--ol)}
+.steps li::before{border:2px solid var(--ol)}
+.panel,details.rules{background:#fff;border:2px solid var(--ol)}
+details.rules summary::after{color:var(--rose)}
+.card{background:#fff;color:var(--text);border:2.5px solid var(--ol);box-shadow:0 6px 0 var(--ol)}
+.card.dark{background:var(--ol);color:#fff;border-color:var(--ol)}
+.card.rose{background:var(--rose);color:#fff}.card.sun{background:var(--sun);color:var(--ol)}.card.mint{background:var(--mint);color:var(--ol)}
+.btn{border:2.5px solid var(--ol);box-shadow:0 4px 0 var(--ol);color:var(--ol)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ol)}
+.btn.ghost{background:#fff;border:2.5px solid var(--ol);color:var(--ol)}
+.btn.rose{color:#fff}
+.score div{background:#fff;border:2px solid var(--line)}
+.score div.on{border-color:var(--ol)}
+.score b,.laws li b{color:var(--rose)}
+.laws li{background:#fff;border:2px solid var(--line)}
+.chip{background:var(--felt-2);border:2px solid var(--line);color:var(--text)}
+.checks label{background:#fff;border:2px solid var(--line)}
+.switch{background:#eee6d8;border:2px solid var(--ol)}
+.fab{border:2.5px solid var(--ol);box-shadow:0 4px 0 var(--ol)}
+.setsheet{background:#fff;border:2.5px solid var(--ol)}
+.overlay{background:rgba(42,33,64,.55)}
+.pill{background:#fff;border:2px solid var(--line)}
+.offbadge{box-shadow:0 0 0 4px var(--ink),0 0 0 6px var(--ol)}
+.note{color:var(--muted)}
 </style>
 
 <div id="app"></div>
@@ -666,8 +752,8 @@ const PRIM={kingcup:"drink",toast:"drink",cards:"cards",hilo:"cards",shagai:"car
 const SECTIONS=[["2","Хоёулаа","Хоёр найз, хосуудад","#ff9ec4"],["group","Олуулаа","3–8+ хүн, нэг утсыг дамжуулна","#45d3ad"],["cards","Хөзөр ба шагай","Утсаар, ширээн дээр хөзөртэй","#ffc23d"],["drink","Уух","Ус, ундаагаар ч болно","#ff5c7a"],["mine","Миний тоглоомууд","Таны нэмсэн тоглоомууд","#b9a4ff"]];
 const primOf = g => g.custom ? "mine" : (PRIM[g.id]||"group");
 const pl = g => `${g.min}${g.max>=99?"+":g.max>g.min?"–"+g.max:""} хүн`;
-const gameCard = (g,idx) => `<button type="button" class="game" style="--c:${g.c};--i:${idx}" data-g="${g.id}">${coverHTML(g,idx)}<div class="body"><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p><div class="meta"><span>${pl(g)}</span></div></div></button>`;
-const offCard = (g,idx) => `<button type="button" class="game off" style="--c:${g.c};--i:${idx}" data-o="${g.id}">${coverHTML(g,idx+2)}<div class="body"><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p><div class="meta"><span>${pl(g)}</span>${g.time?`<span>${esc(g.time)}</span>`:""}</div></div></button>`;
+const gameCard = (g,idx) => `<button type="button" class="game" style="--c:${g.c};--i:${idx}" data-g="${g.id}">${coverHTML(g,idx)}<div class="body"><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p></div></button>`;
+const offCard = (g,idx) => `<button type="button" class="game off" style="--c:${g.c};--i:${idx}" data-o="${g.id}">${coverHTML(g,idx+2)}<div class="body"><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p>${g.time?`<div class="meta"><span>⏱ ${esc(g.time)}</span></div>`:""}</div></button>`;
 function openSettings(){
   const ov=$("#ov"); ov.hidden=false;
   const draw=()=>{ ov.innerHTML=`<div class="overlay" id="ovbg"><div class="sheet setsheet">
@@ -705,6 +791,7 @@ function home(){
   $("#app").innerHTML=`
   <header class="topnav"><div class="brand" aria-label="Пид Пад"><span class="bm">ПП</span><span>Пид <b>Пад</b></span></div>${canEdit?`<button class="editbtn" id="edit" type="button">Засах</button>`:""}</header>
   <section class="hero3">
+    <div class="confetti" aria-hidden="true"><i>♠</i><i>♥</i><i>♣</i></div>
     <div class="eyebrow">Үдэшлэгийн тоглоом</div>
     <h1>Өнөө орой<br><span>юу тоглох вэ?</span></h1>
     <p>${GAMES.filter(g=>!g.hidden).length} утсан тоглоом, ${OFFLINE.filter(g=>!g.hidden).length} утасгүй дүрэм. Нэг утсыг дамжуулаад л эхэл.</p>
