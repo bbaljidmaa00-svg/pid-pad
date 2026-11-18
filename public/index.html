@@ -1895,8 +1895,8 @@ function home(){
  const add=$('#ppAdd');if(add)add.onclick=()=>{go('edit');gameForm();};
  document.querySelectorAll('[data-mood]').forEach(b=>b.onclick=()=>{ppMood=b.dataset.mood;home();});
  document.querySelectorAll('[data-count]').forEach(b=>b.onclick=()=>{S.count=+b.dataset.count;save();home();});
- document.querySelectorAll('.pp-feature [data-open]').forEach(b=>b.onclick=()=>go(b.dataset.off==='true'?'rules-'+b.dataset.open:b.dataset.open));
- document.querySelectorAll('.pp-feature [data-fav]').forEach(b=>b.onclick=()=>ppFavorite(b.dataset.fav));
+ document.querySelectorAll('.pp-poster-feature [data-open]').forEach(b=>b.onclick=()=>go(b.dataset.off==='true'?'rules-'+b.dataset.open:b.dataset.open));
+ document.querySelectorAll('.pp-poster-feature [data-fav]').forEach(b=>b.onclick=()=>ppFavorite(b.dataset.fav));
  document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{ppTab=b.dataset.tab;ppShowAll=false;document.querySelectorAll('[data-tab]').forEach(c=>c.setAttribute('aria-pressed',c===b?'true':'false'));ppDrawLibrary();});
  $('#ppSearch').oninput=e=>{ppQuery=e.target.value;ppShowAll=false;ppDrawLibrary();};
  ppDrawLibrary();
