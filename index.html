@@ -1283,7 +1283,7 @@ body:has(.pp-room-page) .fab, body:has(.pp-offline-screen) .fab{display:none!imp
 @media(max-width:360px){.pp-featured{grid-template-columns:repeat(2,minmax(0,1fr))!important}.pp-feature b{font-size:14px!important}}
 
 
-/* V20: image-led game wall, minimal text, distinctive visual posters */
+/* V20: image-led game wall */
 .pp-poster-card{position:relative!important;isolation:isolate;overflow:hidden!important;border-radius:18px!important;min-width:0!important;background:#302044!important;border:1px solid #8863a0!important;box-shadow:0 5px 0 #09051d60,0 14px 28px #08031535!important;transition:transform .2s}
 .pp-poster-card:hover{transform:translateY(-3px)}
 .pp-poster-card:focus-within{outline:2px solid #e7ff70;outline-offset:3px}
@@ -1312,6 +1312,83 @@ body:has(.pp-room-page) .fab, body:has(.pp-offline-screen) .fab{display:none!imp
 }
 @media(max-width:350px){.pp-poster-labels strong{font-size:13px!important}.pp-poster-labels small{font-size:8px!important}}
 @media(prefers-reduced-motion:reduce){.pp-poster-card,.pp-poster-art{transition:none!important}}
+
+/* V21 — universal compact, usable gameplay */
+.pp21-shell{--pp21-bg:#241832;--pp21-edge:#694d7d;max-width:750px;margin:0 auto;min-height:min(96dvh,900px);padding:0 2px 28px;color:#faf4ff}
+.pp21-top{display:flex;align-items:center;gap:12px;padding:15px 0 12px;border-bottom:1px solid #584565}
+.pp21-back{border:1px solid #665079;background:#30213f;color:#fff;width:45px;height:45px;flex:none;border-radius:13px;font-size:24px}
+.pp21-titles{flex:1;min-width:0}
+.pp21-eyebrow{font:800 10px/1.4 var(--body);color:#eea3ca;letter-spacing:.15em}
+.pp21-titles h1{font:900 clamp(21px,4.4vw,28px)/1.16 var(--display);margin:3px 0 0;letter-spacing:-.04em;overflow-wrap:anywhere;color:white}
+.pp21-help{background:#3e2d52;border:1px solid #8c6c9c;color:#fff;border-radius:13px;padding:10px 13px;display:flex;gap:6px;align-items:center;font-weight:900;font-size:13px;flex:none;min-height:44px}
+.pp21-help span{font-size:12px}
+.pp21-cue{display:flex;gap:10px;align-items:start;margin:14px 0 16px;padding:12px 14px;background:#342344;border:1px solid #725584;border-radius:14px;color:#f2d9ee;font-size:14px;line-height:1.5}
+.pp21-cue-icon{color:#e7ff70;font-weight:900;line-height:1.5}
+.pp21-main{width:100%;min-width:0}
+.pp21-stage{display:flex;flex-direction:column;gap:12px!important;min-width:0}
+.pp21-stage>*{max-width:100%;min-width:0}
+.pp21-stage .pp21-score{display:flex!important;flex-wrap:wrap!important;gap:7px!important;justify-content:flex-start!important;background:transparent!important;padding:0!important;border:0!important;box-shadow:none!important;margin:0!important}
+.pp21-score>div{display:flex!important;align-items:center;justify-content:space-between!important;flex:1 1 125px;min-width:0!important;min-height:44px!important;border-radius:12px!important;padding:9px 12px!important;margin:0!important;background:#352643!important;border:1px solid #665078!important;gap:8px!important}
+.pp21-score>div.on{background:#492950!important;border-color:#ed83b1!important}
+.pp21-score>div span{font-size:12px!important;font-weight:700!important;color:#f3e5f1!important;line-height:1.2!important;overflow-wrap:anywhere}
+.pp21-score>div b{font:900 17px var(--display)!important;color:#e7ff70!important;flex:none}
+.pp21-display-card,.pp21-stage>.card{background:#352343!important;border:1px solid #775480!important;color:#fff!important;min-height:0!important;padding:23px 20px!important;border-radius:20px!important;box-shadow:none!important;display:flex!important;flex-direction:column!important;justify-content:center!important;gap:12px!important}
+.pp21-display-card .kicker{color:#e7ff70!important;opacity:1!important;font-size:11px!important;font-weight:900!important;letter-spacing:.11em!important}
+.pp21-display-card .big{font-size:clamp(22px,5.2vw,33px)!important;line-height:1.3!important;color:white!important;overflow-wrap:anywhere;font-family:var(--display)!important;letter-spacing:-.035em!important}
+.pp21-display-card .huge{font-size:clamp(30px,7vw,49px)!important;color:#fff!important;overflow-wrap:anywhere}
+.pp21-display-card .small,.pp21-display-card p,.pp21-display-card>div:not(.big):not(.kicker):not(.huge){color:#e1cde6!important;line-height:1.5}
+.pp21-stage .card.sun,.pp21-stage .card.rose,.pp21-stage .card.mint{background:#352343!important;color:#fff!important}
+.pp21-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px!important;padding:0!important;margin:0!important}
+.pp21-actions>.btn{width:100%!important;min-width:0!important;margin:0!important}
+.pp21-actions>.full{grid-column:1/-1}
+.pp21-stage .pp21-action{min-height:53px!important;padding:12px 14px!important;border-radius:14px!important;box-shadow:none!important;font-size:15px!important;line-height:1.3!important;font-weight:900!important}
+.pp21-stage .pp21-primary-action{outline:2px solid #e7ff70aa;outline-offset:1px}
+.pp21-microcue{color:#cbb6d3;font-size:12px;line-height:1.5;text-align:center;padding:1px 0;margin:2px 0 -4px}
+.pp21-bottom{margin-top:18px;border-top:1px solid #554063;padding:12px 0 0;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pp21-bottom button{border:0;background:#30243d;border-radius:10px;color:#dac9e5;padding:9px 12px;font-size:12px;font-weight:800;min-height:38px}
+.pp21-help-details{flex:1 1 100%;order:3;margin-top:3px;border-radius:12px;border:1px solid #594369;color:#e4d9eb;overflow:hidden}
+.pp21-help-details summary{padding:11px 13px;cursor:pointer;font-weight:800;font-size:12px;list-style:none;display:flex;justify-content:space-between}
+.pp21-help-details summary::after{content:"+";color:#e7ff70;font-size:17px;line-height:1}
+.pp21-help-details[open] summary::after{content:"−"}
+.pp21-help-details ol{margin:0;padding:2px 18px 15px 31px;font-size:13px;line-height:1.6;color:#e4d7e9}
+.pp21-stage .timer{font-size:clamp(39px,11vw,70px)!important;font-weight:900!important;color:#e7ff70!important}
+.pp21-shell~.fab,body:has(.pp21-shell) .fab{display:none!important}
+body:has(.pp21-shell) #app{padding-bottom:25px!important}
+@media(max-width:580px){
+ .pp21-shell{max-width:100%;padding:0 2px 20px}
+ .pp21-top{gap:9px;padding:7px 0 11px}
+ .pp21-back{width:41px;height:41px}
+ .pp21-help{padding:8px 10px;min-height:41px}
+ .pp21-help span{display:none}
+ .pp21-cue{font-size:13px;margin:11px 0 13px;padding:10px 12px}
+ .pp21-display-card,.pp21-stage>.card{padding:20px 16px!important;gap:9px!important;border-radius:18px!important}
+ .pp21-display-card .big{font-size:clamp(20px,6.2vw,29px)!important;line-height:1.32!important}
+ .pp21-stage .pp21-action{font-size:13px!important;min-height:49px!important;padding:10px 9px!important}
+ .pp21-score>div{min-height:39px!important;padding:8px 10px!important}
+ .pp21-score>div span{font-size:11px!important}
+ .pp21-score>div b{font-size:15px!important}
+ .pp21-bottom{margin-top:13px}
+}
+
+
+/* V21 compact score and no transition washout */
+.pp21-stage .pp21-score{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:8px!important;
+  align-items:stretch!important;
+  width:100%!important;
+}
+.pp21-stage .pp21-score>div{
+  flex:none!important;
+  height:auto!important;
+  min-height:42px!important;
+  padding:9px 11px!important;
+}
+.pp21-stage .pp21-score>div span{white-space:normal!important}
+.pp21-stage .pp21-display-card.flip{animation:none!important;opacity:1!important;transform:none!important}
+.pp21-stage .pp21-display-card .big,.pp21-stage .pp21-display-card .huge{opacity:1!important}
+@media(max-width:350px){.pp21-stage .pp21-score{grid-template-columns:1fr!important}}
 </style>
 </head>
 <body>
@@ -1713,18 +1790,87 @@ let filter = "all", current = "home";
 function go(id){ clearTimers(); closeHZ(); window.scrollTo(0,0); current=id||"home"; if(!id) return home(); if(id==="party") return partyScreen(); if(id==="admin"||(id==="edit"&&MODE==="server"&&!ADMIN)) return adminLogin(); if(id==="edit") return editor(); if(id.startsWith("rules-")){ const rg=[...OFFLINE,...GAMES].find(x=>x.id===id.slice(6)); return rg?rulesScreen(rg):home(); } const g=GAMES.find(x=>x.id===id); if(!g) return home(); (SCREENS[id]||customScreen)(g); }
 
 function rulesHTML(g,open){ return `<details class="rules"${open?" open":""}><summary>Яаж тоглох вэ</summary><ol>${g.rules.map(r=>`<li>${esc(r)}</li>`).join("")}</ol></details>`; }
+/* V21 unified in-game layout — retain each game's original handlers */
+const PP_GAME_TYPE = {
+  vote:new Set(['who','secretpick','imposter','huzruur','guess','wink','liar','haralgan']),
+  turn:new Set(['pairs','talk','never','wyr','sync','mission','story','hos','toast']),
+  action:new Set(['bomb','act','duel','cards','flash','memory','minute','forehead','hilo','hum','spin','alga','tulaan','hurdan']),
+  challenge:new Set(['kingcup','impress','laws','forbid','sugalaa'])
+};
+const ppScreenKind=id=>Object.entries(PP_GAME_TYPE).find(([,set])=>set.has(id))?.[0]||'action';
+let ppCurrentGameId='',ppLiveStageCount=0;
+function ppGameCue(g) {
+  const cues={
+    pairs:'Хосууд нэг асуултад хариулна. Таарвал +1 оноо.',
+    imposter:'Хост үг болон Imposter-ийн тоог сонгож эхлүүлнэ.',
+    sync:'Бүгд бодоод, нэгэн зэрэг хариултаа харуулна.',
+    wyr:'Хоёр сонголтоос нэгийг сонгоод хариулна.',
+    never:'Хийж байсан хүн гараа өргөнө.',
+    bomb:'Үг хэлээд утсаа дамжуул. Бөмбөг хаана тэсрэх вэ?',
+    act:'Тайлбарлаж таалгаад багтаа оноо ав.',
+    who:'Бүгд хамгийн тохирох хүнийг сонгоно.',
+    secretpick:'Хүн бүр нууцаар саналаа өгнө.',
+    memory:'Гэрэлтсэн дарааллыг тогтоож давт.',
+    flash:'Дохио гармагц хамгийн түрүүнд дар.'
+  };
+  return cues[g.id]||String(g.desc||'').split(/[.!?]/)[0].trim().slice(0,105)||'Эхлүүлэхэд бэлэн.';
+}
 function frame(g,inner){
-  $("#app").innerHTML=`<div class="topbar"><button class="back" type="button" aria-label="Буцах" id="back">←</button><h2>${esc(g.name)}</h2><span class="pill">${esc(g.players)}</span></div>
-  <div class="pp-game-intro">${esc(g.desc)}</div>
-  <button type="button" class="pp-game-guide" id="ppGameGuide">🎬 Хөдөлгөөнт жишээгээр үзэх <span>→</span></button>
-  ${rulesHTML(g)}<div class="stage" id="stage">${inner||""}</div>
-  <div class="pp-gamebar"><button type="button" id="ppHomeGame">⌕ Өөр тоглоом</button><button type="button" id="ppQuickGame">${PP_SESSION&&PP_SESSION.round<=10?'← Раунд руу буцах':'⚡ 10 раунд тоглох'}</button></div>`;
+  ppCurrentGameId=g.id;
+  ppLiveStageCount=0;
+  $("#app").innerHTML=`<div class="pp21-shell pp21-kind-${ppScreenKind(g.id)}">
+   <div class="pp21-top"><button class="pp21-back" type="button" aria-label="Буцах" id="back">←</button>
+     <div class="pp21-titles"><span class="pp21-eyebrow">PID PAD · ТОГЛООМ</span><h1>${esc(g.name)}</h1></div>
+     <button class="pp21-help" id="ppGameGuide" type="button" title="Хөдөлгөөнт жишээ" aria-label="Хөдөлгөөнт жишээ үзэх">▶ <span>Жишээ</span></button>
+   </div>
+   <div class="pp21-cue"><span class="pp21-cue-icon">✦</span><span>${esc(ppGameCue(g))}</span></div>
+   <div class="pp21-main"><div class="stage pp21-stage" id="stage">${inner||""}</div></div>
+   <div class="pp21-bottom">
+     <details class="pp21-help-details"><summary>Яаж тоглох вэ?</summary><ol>${g.rules.map(r=>`<li>${esc(r)}</li>`).join("")}</ol></details>
+     <button type="button" id="ppHomeGame">Өөр тоглоом</button>
+     <button type="button" id="ppQuickGame">${PP_SESSION&&PP_SESSION.round<=10?'Раунд руу буцах':'10 раунд'}</button>
+   </div>
+  </div>`;
   $("#back").onclick=()=>go();
   $("#ppGameGuide").onclick=()=>ppShowGuide(g.id);
   $("#ppHomeGame").onclick=()=>go();
   $("#ppQuickGame").onclick=()=>PP_SESSION&&PP_SESSION.round<=10?go('party'):partyStart(ppMood);
+  if(inner)pp21OrganizeStage();
 }
-const stage = h => { $("#stage").innerHTML=h; };
+function pp21OrganizeStage(){
+ const root=$("#stage");
+ if(!root || !document.querySelector('.pp21-shell'))return;
+ ppLiveStageCount++;
+ const score=root.querySelector('.score');
+ if(score)score.classList.add('pp21-score');
+ const cards=root.querySelectorAll(':scope > .card');
+ cards.forEach((card,i)=>{card.classList.add('pp21-display-card');if(i===0)card.classList.add('pp21-first-card')});
+ const actions=root.querySelectorAll(':scope > .btn, :scope > .btns > .btn');
+ actions.forEach((btn)=>{btn.classList.add('pp21-action');});
+ const groups=root.querySelectorAll(':scope > .btns');
+ groups.forEach(group=>group.classList.add('pp21-actions'));
+ const primary=[...actions].filter(b=>!b.classList.contains('ghost')&&!b.classList.contains('rose'));
+ const focus=primary[primary.length-1]||actions[0];
+ if(focus)focus.classList.add('pp21-primary-action');
+ // Older game implementations often render a long score sheet before the question.
+ // Keep the score visible but subordinate to the primary question.
+ const cue=root.querySelector('.pp21-microcue');
+ if(cue)cue.remove();
+ const firstAction=root.querySelector(':scope > .btns, :scope > .btn');
+ if(firstAction&&cards.length && ppScreenKind(ppCurrentGameId)!=='challenge'){
+   const hint=document.createElement('div');
+   hint.className='pp21-microcue';
+   hint.textContent={
+     pairs:'Хариултаа харьцуулж, таарсан эсэхийг сонго.',
+     sync:'Бүгд бэлэн бол нэгэн зэрэг харуул.',
+     imposter:'Дараагийн алхамд шилжихийн тулд доорх товчийг дар.',
+     wyr:'Сонголтоо хэлээд дараагийн картаа нээ.',
+     never:'Хийж байсан хүн дохио өгнө.',
+   }[ppCurrentGameId]||'Дараагийн үйлдлээ доороос сонго.';
+   firstAction.parentNode.insertBefore(hint,firstAction);
+ }
+}
+const stage = h => { $("#stage").innerHTML=h;pp21OrganizeStage(); };
 const offlineCard = g => `<div class="panel" style="gap:8px"><div class="row" style="justify-content:space-between"><h3 style="font-size:16px">${esc(g.name)}</h3><span class="pill">${esc(g.players)}</span></div><div class="muted small">${esc(g.desc)}</div>${rulesHTML(g)}</div>`;
 
 /* ---------- card illustrations ---------- */
@@ -2204,7 +2350,7 @@ function imposterRound(rand){ const cats=Object.keys(IMPOSTER); const cat=cats[M
 SCREENS.imposter = g => {
  frame(g);
  let impSource='built',impCount=1;
- const maxImp=n=>Math.max(1,Math.floor((n-1)/2));
+ const maxImp=n=>Math.max(1,n-2);
  const setup=()=>{
   const ps=players(),cap=maxImp(ps.length);
   impCount=Math.min(impCount,cap);
@@ -2716,7 +2862,7 @@ function ppRoomScreen(){
      <div class="pp-room-count">${count} / ${room.players.length} санал</div></div>`:''}
    ${room.phase==='imposter'||room.phase==='imposter_results'?`<div class="pp-room-box pp-online-imp"><div class="pp-room-kicker">🕵️ IMPOSTER · ${room.imposter?.count||1} ХУУРАМЧ</div><h3>${room.phase==='imposter_results'?'Нууц дүрүүд ил боллоо':'Чиний нууц дүр'}</h3><div class="pp-online-role ${room.imposter?.role==='imposter'?'spy':''}">${room.phase==='imposter_results'?`<b>Үг: ${esc(room.imposter?.word||'')}</b><p>Хуурамч: ${(room.imposter?.impostors||[]).map(esc).join(', ')}</p>`:`<span>${room.imposter?.role==='imposter'?'🕵️ Чи ХУУРАМЧ':'✅ Чи энгийн тоглогч'}</span><strong>${room.imposter?.role==='imposter'?'Үгийг мэдэхгүй':esc(room.imposter?.word||'')}</strong><small>${esc(room.imposter?.category||'Нууц үг')}</small>`}</div>${room.phase==='imposter'?`<p>Нууц дүрээ бусдад бүү харуул. Хэн хуурамчийг олж чадна вэ?</p><div class="pp-room-choices">${room.players.filter(p=>p.id!==me).map(p=>`<button type="button" data-ivote="${esc(p.id)}" class="${PP_ROOM.myVote===p.id?'chosen':''}">${esc(p.name)}</button>`).join('')}</div><p class="pp-room-hint">${room.ballotsCount} / ${room.players.length} санал · Дараа нь хост дүрүүдийг илчилнэ.</p>`:''}</div>`:''}
    ${room.phase==='closed'?'<div class="pp-room-box">Өрөө хаагдсан байна. Шинэ өрөө үүсгэж болно.</div>':''}
-   ${host&&room.phase!=='closed'?`<div class="pp-room-host"><p>Өрөөний эзний удирдлага</p>${['lobby','results','imposter_results'].includes(room.phase)?`<div class="pp-imp-online-setup"><strong>🕵️ Imposter эхлүүлэх</strong><div class="pp-imp-options"><label><input type="radio" name="impSource" value="built" checked> Бэлэн үг</label><label><input type="radio" name="impSource" value="custom"> Өөрийн үг</label></div><input id="ppHostWord" type="text" maxlength="70" placeholder="Өөрийн үг (сонгосон бол)" hidden><input id="ppHostCat" type="text" maxlength="40" placeholder="Ангилал (заавал биш)" hidden><label class="pp-imp-label">Хуурамчийн тоо <select id="ppHostCount">${Array.from({length:Math.max(1,Math.floor((room.players.length-1)/2))},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('')}</select></label><button id="ppHostImposterStart" type="button">🕵️ Imposter эхлүүлэх →</button></div>`:''}<div class="pp-room-host-actions">${!room.gameFinished?'<button data-rstart="who" type="button">👀 Хэн хамгийн?</button><button data-rstart="choice" type="button">⚖️ Хэцүү сонголт</button>':''}${room.phase==='voting'?'<button id="ppRoomReveal" type="button">Үр дүнг нээх ✨</button>':''}${room.phase==='imposter'?'<button id="ppRoomImpReveal" type="button">🕵️ Хуурамчийг илчлэх</button>':''}<button id="ppRoomReset" type="button">↻ Шинэ 10 раунд</button></div></div>`:''}
+   ${host&&room.phase!=='closed'?`<div class="pp-room-host"><p>Өрөөний эзний удирдлага</p>${['lobby','results','imposter_results'].includes(room.phase)?`<div class="pp-imp-online-setup"><strong>🕵️ Imposter эхлүүлэх</strong><div class="pp-imp-options"><label><input type="radio" name="impSource" value="built" checked> Бэлэн үг</label><label><input type="radio" name="impSource" value="custom"> Өөрийн үг</label></div><input id="ppHostWord" type="text" maxlength="70" placeholder="Өөрийн үг (сонгосон бол)" hidden><input id="ppHostCat" type="text" maxlength="40" placeholder="Ангилал (заавал биш)" hidden><label class="pp-imp-label">Хуурамчийн тоо <select id="ppHostCount">${Array.from({length:Math.max(1,room.players.length-2)},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('')}</select></label><button id="ppHostImposterStart" type="button">🕵️ Imposter эхлүүлэх →</button></div>`:''}<div class="pp-room-host-actions">${!room.gameFinished&&['lobby','results','imposter_results'].includes(room.phase)?'<button data-rstart="who" type="button">👀 Хэн хамгийн?</button><button data-rstart="choice" type="button">⚖️ Хэцүү сонголт</button>':''}${room.phase==='voting'?'<button id="ppRoomReveal" type="button">Үр дүнг нээх ✨</button>':''}${room.phase==='imposter'?'<button id="ppRoomImpReveal" type="button">🕵️ Хуурамчийг илчлэх</button>':''}<button id="ppRoomReset" type="button">↻ Шинэ 10 раунд</button></div></div>`:''}
    <button class="pp-room-secondary" id="ppRoomRefresh" type="button">↻ Шинэчлэх</button><p class="pp-room-fine">Саналууд сервертэй ойролцоогоор 3 секунд тутам синк хийнэ. Холболт тасарвал “Шинэчлэх” дарна уу.</p>
    <p class="pp-room-error" id="ppRoomError" role="status"></p></div>`;
  const msg=$('#ppRoomError');
