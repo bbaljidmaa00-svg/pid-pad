@@ -1,11 +1,18 @@
 name = "pid-pad"
 main = "worker.js"
-compatibility_date = "2024-09-23"
+compatibility_date = "2026-07-09"
 
 [assets]
 directory = "./public"
 binding = "ASSETS"
 
-# No id: Wrangler creates the KV namespace in this Cloudflare account on first deploy.
 [[kv_namespaces]]
 binding = "PP"
+
+[[durable_objects.bindings]]
+name = "ROOMS"
+class_name = "PartyRoom"
+
+[[migrations]]
+tag = "room-v1"
+new_sqlite_classes = ["PartyRoom"]

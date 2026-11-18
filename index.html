@@ -733,6 +733,517 @@ details.rules{background:#221a34;border:1px solid #493c61;box-shadow:none}detail
 @media(max-width:380px){.pp-v8-guide{padding:11px}.pp-v8-artframe{min-height:255px}.pp-v8-person{transform:scale(.85)}.pp-v8-sample{font-size:11px}.pp-v8-playpanel{padding:12px}}
 @media(prefers-reduced-motion:reduce){.pp-v8-guide *, .pp-v8-guide *:before,.pp-v8-guide *:after{animation:none!important}}
 
+
+/* V9: actual gameplay storyboards: bespoke scene layouts, not recycled emoji actors */
+.pp-v8-artframe{background:linear-gradient(160deg,#f9f1ff,#fff8ef)!important;border:1px solid #ecd6f2!important;border-radius:18px;min-height:257px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.pp9-scene{width:100%;padding:6px 3px 3px;position:relative}
+.pp9-scene-title{font-size:12px;font-weight:950;color:#744b83;text-align:center;line-height:1.35;padding:2px 5px 0;min-height:34px}
+.pp9-scene svg{width:100%;max-width:390px;display:block;margin:0 auto;height:auto;overflow:visible}
+.pp9-scene svg text{font-family:Manrope,system-ui,sans-serif;paint-order:stroke;stroke-width:.5px;stroke:#ffffff29}
+.pp9-speaker{font-size:13px;font-weight:950;fill:#653d75}
+.pp9-small{font-size:12px;font-weight:900;fill:#6d4678}
+.pp9-big{font-size:22px;font-weight:1000;fill:#684578}
+.pp9-stage{fill:#fff9f5;stroke:#efdce4;stroke-width:2}
+.pp9-person .pp9-arm{transform-box:fill-box;transform-origin:50% 0%;animation:pp9-wave .9s ease-in-out infinite alternate}
+.pp9-person .pp9-body{filter:drop-shadow(0 5px 3px #52375e12)}
+.pp9-move{animation:pp9-move 2.4s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
+.pp9-bounce{animation:pp9-bounce 1.65s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.pp9-rotate{animation:pp9-rotate 2.65s cubic-bezier(.28,.62,.4,1) infinite;transform-box:fill-box;transform-origin:center}
+.pp9-flip{animation:pp9-flip 2.3s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.pp9-shake{animation:pp9-shake .5s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
+.pp9-pop{animation:pp9-pop 1.9s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.pp9-left{animation:pp9-left 2.5s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
+.pp9-right{animation:pp9-right 2.5s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}
+.pp9-fall{animation:pp9-fall 2.3s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.pp9-blink{animation:pp9-blink 1.25s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.pp9-tap{animation:pp9-tap .7s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 100%}
+.pp9-frame-caption{display:flex;align-items:center;justify-content:center;gap:5px;color:#8a5c8e;font-size:10px;font-weight:850;margin:1px 5px 5px;text-align:center}
+.pp9-runner{height:5px;border-radius:99px;background:#f1e1ed;overflow:hidden;margin-top:5px}
+.pp9-runner i{display:block;height:100%;width:0;background:#d981be;animation:pp9-progress 3.9s linear forwards}
+.pp9-guide-lead{font-size:11px;font-weight:800;color:#8c6a97;text-align:center;margin:-4px 0 7px}
+.pp9-replay{width:100%;margin-top:10px;border-radius:12px;padding:10px;background:#fbe9f5;border:1px solid #e5c9e2;color:#713c70;font-weight:900;font-size:12px}
+@keyframes pp9-move{0%,13%{transform:translateX(-20px)}72%,100%{transform:translateX(16px)}}
+@keyframes pp9-left{0%,15%{transform:translateX(16px)}75%,100%{transform:translateX(-10px)}}
+@keyframes pp9-right{0%,15%{transform:translateX(-16px)}75%,100%{transform:translateX(10px)}}
+@keyframes pp9-bounce{0%,100%{transform:translateY(1px)}45%{transform:translateY(-10px)}}
+@keyframes pp9-flip{0%,25%{transform:rotateY(0deg)}55%,100%{transform:rotateY(180deg)}}
+@keyframes pp9-rotate{0%,10%{transform:rotate(0deg)}80%,100%{transform:rotate(660deg)}}
+@keyframes pp9-shake{from{transform:rotate(-12deg) translateY(0)}to{transform:rotate(10deg) translateY(-5px)}}
+@keyframes pp9-pop{0%,22%,100%{transform:scale(1)}65%{transform:scale(1.17)}}
+@keyframes pp9-fall{0%,20%{transform:translateY(-18px) rotate(-8deg)}70%,100%{transform:translateY(24px) rotate(18deg)}}
+@keyframes pp9-blink{0%,20%,70%,100%{opacity:.32}40%,55%{opacity:1;filter:brightness(1.13)}}
+@keyframes pp9-tap{from{transform:scale(.95)}to{transform:scale(1.12)}}
+@keyframes pp9-wave{from{transform:rotate(-21deg)}to{transform:rotate(18deg)}}
+@keyframes pp9-progress{from{width:0}to{width:100%}}
+@media(prefers-reduced-motion:reduce){.pp9-scene *, .pp9-scene *:before, .pp9-scene *:after,.pp9-runner i{animation:none!important}.pp9-runner i{width:100%}}
+
+
+/* === V13: original V9 colors, tested responsive layout refinements === */
+html,body{overflow-x:clip}
+#app{width:100%;box-sizing:border-box;min-width:0}
+.pp9-runner{display:none!important}
+.pp-head{min-width:0}.pp-head>div{min-width:0}
+.pp-head h2{overflow-wrap:break-word}
+.pp-star{flex:0 0 auto}
+.pp-tile b,.pp-feature b{overflow-wrap:anywhere}
+.pp-sips{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));width:100%;gap:3px}
+.pp-sips button{min-width:0;font-size:12px;padding:9px 3px}
+@media(max-width:600px){
+ body{padding-inline:0!important}
+ #app{max-width:none!important;padding:12px 16px calc(98px + env(safe-area-inset-bottom,0px))!important}
+ .topnav{gap:8px;padding:7px 0 15px}
+ .brand{font-size:clamp(18px,5vw,23px)}
+ .pp-top-actions{flex:none}
+ .pp-circle{width:44px;height:44px}
+ .editbtn{min-height:44px;padding:10px 12px;font-size:13px}
+ .pp-intro{font-size:11px;line-height:1.3;letter-spacing:.015em;gap:7px;flex-wrap:wrap}
+ .pp-hero{border-radius:24px;padding:22px 18px 18px;min-width:0}
+ .pp-hero::before{font-size:134px;right:-14px;top:-34px;opacity:.4}
+ .pp-eyebrow{font-size:10px;letter-spacing:.1em;margin-bottom:15px}
+ .pp-hero h1{font-size:clamp(35px,9.2vw,46px);letter-spacing:-.06em;line-height:1.15}
+ .pp-hero h1 em{padding:2px 9px 4px;line-height:1.2}
+ .pp-hero p{font-size:15px;line-height:1.55;margin:18px 0 20px;max-width:38ch}
+ .pp-primary{min-height:58px;font-size:14px;padding:14px 17px}
+ .pp-onboard-actions{display:grid!important;grid-template-columns:1fr!important;gap:9px!important}
+ .pp-guide-cta,.pp-drink-cta{width:100%;min-width:0;min-height:48px;font-size:13px;padding:11px}
+ .pp-under{gap:6px;font-size:11px;line-height:1.3}
+ .pp-under span{padding:6px 8px}
+ .pp-v8-example-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .pp-v8-example-actions button{min-width:0;overflow-wrap:anywhere;min-height:52px;padding:9px 8px;font-size:12px;line-height:1.3}
+ .pp-head{gap:8px;margin:26px 0 12px}
+ .pp-head h2{font-size:clamp(18px,5.4vw,23px);line-height:1.22}
+ .pp-head p{font-size:12px;margin-top:4px;line-height:1.4}
+ .pp-head small{flex:none;font-size:10px;align-self:center;white-space:nowrap}
+ .pp-vibes{grid-template-columns:1fr;gap:9px}
+ .pp-vibe{min-height:0;padding:14px 16px;display:grid;grid-template-columns:42px minmax(0,1fr);gap:4px 13px;align-items:center}
+ .pp-vibe .pp-emoji{grid-row:1/span 2;font-size:29px}
+ .pp-vibe b{font-size:16px;line-height:1.25}
+ .pp-vibe span:last-child{grid-column:2;font-size:13px;line-height:1.4}
+ .pp-setup{padding:17px 15px;gap:12px;align-items:stretch}
+ .pp-setup-label{width:100%;font-size:14px}
+ .pp-numbers{width:100%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+ .pp-numbers button{width:100%;height:44px;min-width:0;font-size:15px}
+ .pp-editnames{font-size:13px;text-align:left;width:max-content;min-height:35px}
+ .pp-featured,.pp-list{grid-template-columns:1fr!important;gap:11px}
+ .pp-feature{min-height:0;border-radius:20px}
+ .pp-feature>button.pp-feature-main{min-height:0;gap:8px;padding:16px 68px 18px 17px}
+ .pp-feature .pp-star{right:12px;top:13px;width:43px;height:43px;font-size:22px}
+ .pp-fnumber{font-size:11px;letter-spacing:.05em}
+ .pp-feature-icon{font-size:32px;margin:0}
+ .pp-feature b{max-width:none;font-size:clamp(17px,4.9vw,21px);line-height:1.3}
+ .pp-feature p{max-width:none;font-size:14px;line-height:1.5}
+ .pp-library{margin-top:25px}
+ .pp-search{font-size:16px!important;min-height:49px}
+ .pp-filters{gap:7px;padding-bottom:9px}
+ .pp-filters button{min-height:42px;padding:10px 15px;font-size:13px}
+ .pp-tile{min-height:0;border-radius:18px}
+ .pp-tile-main{gap:13px;padding:16px 68px 16px 13px;align-items:flex-start;min-width:0}
+ .pp-tile-main>span:nth-child(2){flex:1;min-width:0}
+ .pp-tile-emoji{width:43px;height:43px;flex:0 0 43px;font-size:27px}
+ .pp-tile b{font-size:clamp(16px,4.7vw,19px);line-height:1.35;padding-right:0}
+ .pp-tile p{font-size:13px;line-height:1.5;margin:8px 0;display:block;overflow:visible}
+ .pp-tile small{font-size:12px}
+ .pp-tile .pp-star{top:12px;right:12px;width:42px;height:42px;font-size:21px}
+ .seeall{min-height:49px;font-size:14px}
+ .pp-footer{font-size:12px;line-height:1.55}
+ .fab{right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));font-size:12px;padding:12px 14px;box-shadow:0 5px 16px #0005}
+ body:has(.pp-hero) .fab{display:none}
+ .pp-v8-guide{width:min(100%,460px);padding:14px}
+ .pp-v8-top span{font-size:14px;line-height:1.35}
+ .pp-v8-artframe{padding:6px;min-height:0}
+ .pp9-scene svg{max-width:100%}
+ .pp9-scene-title{font-size:12px}
+ .pp-v8-copy h3{font-size:20px}
+ .pp-v8-copy p{font-size:14px;line-height:1.5}
+ .pp9-guide-lead{font-size:12px}
+ .pp-v8-footer button{min-height:47px}
+ .pp-v8-wheel{width:min(75vw,280px);height:min(75vw,280px)}
+ .topbar h2{min-width:0;overflow-wrap:anywhere}
+ .stage,.pp-v8-playpanel,.panel{min-width:0}
+}
+@media(min-width:601px) and (max-width:800px){
+ #app{padding-inline:20px}
+ .pp-tile b{font-size:15px;padding-right:24px}
+ .pp-feature b{font-size:18px}
+}
+
+
+/* V14 mobile catalogue: genuinely compact, readable rows */
+@media(max-width:600px){
+ #app{padding-inline:15px!important}
+ .pp-list{display:flex!important;flex-direction:column!important;gap:9px!important}
+ .pp-tile{
+   display:flex!important;position:relative!important;
+   border-radius:17px!important;min-height:0!important;height:auto!important;
+   background:linear-gradient(110deg,#322540,#261d38 70%)!important;
+   border:1px solid #574566!important;overflow:hidden!important;
+   box-shadow:0 5px 16px rgba(0,0,0,.16)!important;
+ }
+ .pp-tile:nth-child(4n+1){border-left:4px solid #f38bab!important}
+ .pp-tile:nth-child(4n+2){border-left:4px solid #aa95f2!important}
+ .pp-tile:nth-child(4n+3){border-left:4px solid #e7ff70!important}
+ .pp-tile:nth-child(4n+4){border-left:4px solid #7cd1b5!important}
+ .pp-tile-main{
+   box-sizing:border-box!important;min-height:88px!important;width:100%!important;
+   padding:13px 56px 12px 13px!important;gap:12px!important;
+   display:grid!important;grid-template-columns:44px minmax(0,1fr)!important;
+   align-items:center!important;
+ }
+ .pp-tile-main>span:nth-child(2){display:flex!important;flex-direction:column!important;min-width:0!important;gap:2px!important}
+ .pp-tile-emoji{width:44px!important;height:44px!important;display:grid!important;place-items:center!important;flex:none!important;font-size:25px!important;border-radius:13px!important;background:#ffffff12!important}
+ .pp-tile b{font-family:var(--body)!important;font-weight:900!important;font-size:16px!important;line-height:1.22!important;padding:0!important;letter-spacing:-.025em!important;max-width:100%!important;overflow-wrap:break-word!important}
+ .pp-tile p{display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:1!important;overflow:hidden!important;text-overflow:ellipsis!important;font-size:12px!important;line-height:1.35!important;margin:3px 0!important;color:#cfc2dd!important;max-width:100%!important}
+ .pp-tile small{font-size:11px!important;line-height:1.2!important;color:#e7ff70!important;margin-top:3px!important}
+ .pp-tile .pp-star{width:35px!important;height:35px!important;min-width:35px!important;font-size:19px!important;top:50%!important;right:11px!important;transform:translateY(-50%)!important;background:#1a132d!important;border:1px solid #776589!important;box-shadow:none!important}
+ .pp-tile .pp-star[aria-pressed=true]{background:#e7ff70!important;color:#231332!important}
+ .pp-results{font-size:12px!important;margin:12px 0 8px!important}
+ .pp-featured{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+ .pp-feature{border-radius:18px!important;min-height:0!important}
+ .pp-feature>button.pp-feature-main{min-height:168px!important;padding:13px 13px 14px!important;gap:5px!important}
+ .pp-feature-icon{font-size:30px!important;margin-top:8px!important}
+ .pp-fnumber{font-size:10px!important;max-width:calc(100% - 30px)!important}
+ .pp-feature b{font-family:var(--body)!important;font-size:15px!important;line-height:1.18!important;max-width:none!important;padding-right:0!important;letter-spacing:-.025em!important}
+ .pp-feature p{font-size:11px!important;line-height:1.35!important;display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important;overflow:hidden!important;margin-top:3px!important}
+ .pp-feature .pp-star{width:33px!important;height:33px!important;right:8px!important;top:8px!important;font-size:17px!important}
+ .pp-head h2{letter-spacing:-.035em}
+}
+@media(max-width:370px){
+ .pp-featured{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .pp-feature b{font-size:14px!important}
+ .pp-feature p{font-size:10.5px!important}
+ .pp-tile-main{padding-right:51px!important}
+ .pp-tile b{font-size:15px!important}
+}
+
+
+/* V15 — editorial mobile homepage, original palette */
+.pp-section-kicker{display:block;color:#e7ff70;font-size:10px;font-weight:900;letter-spacing:.18em;margin-bottom:7px}
+.pp-link-symbol,.pp-link-arrow{font-size:18px}
+.pp-quick-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:13px 1px 6px}
+.pp-quick-actions button{
+  border:1px solid #615074;background:linear-gradient(140deg,#322443,#261d3a);color:#fff;
+  border-radius:16px;min-width:0;display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:5px;min-height:83px;padding:11px 5px;box-shadow:0 7px 14px #08051628;
+}
+.pp-quick-actions button span{font-size:22px;line-height:1}
+.pp-quick-actions button b{font-family:var(--body);font-size:12px;font-weight:900;line-height:1.2}
+.pp-quick-actions button small{font-size:10px;line-height:1.15;color:#c7b4da}
+.pp-quick-actions button[aria-pressed=true]{border-color:#e7ff70;background:#3d3356}
+.pp-quick-actions button[aria-pressed=true] small{color:#e7ff70}
+.pp-head{align-items:end}.pp-head h2{letter-spacing:-.045em}
+.pp-vibe-check{display:none}
+.pp-setup-top{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%}
+.pp-setup-top .pp-setup-label{margin:0}
+.pp-feature{background:#291f3c}
+.pp-feature:nth-child(4n + 1){background:radial-gradient(circle at 94% 84%,#f56a8635,transparent 65%),#302042}
+.pp-feature:nth-child(4n + 2){background:radial-gradient(circle at 94% 84%,#7ad9ce29,transparent 65%),#25263e}
+.pp-feature:nth-child(4n + 3){background:radial-gradient(circle at 94% 84%,#e7ff7022,transparent 65%),#32273d}
+.pp-feature:nth-child(4n + 4){background:radial-gradient(circle at 94% 84%,#b7a0ff35,transparent 65%),#2a2244}
+@media(max-width:600px){
+ #app{padding:13px 15px calc(78px + env(safe-area-inset-bottom,0px))!important}
+ .topnav{padding:6px 0 13px!important}
+ .pp-intro{margin:1px 0 12px!important;font-size:10px!important;letter-spacing:.075em!important;color:#d5c4e9!important}
+ .pp-intro .pp-intro-spark{padding:3px 7px;background:#f773a2;color:#1d102c;border-radius:6px;font-size:12px}
+ .pp-hero{
+  padding:24px 22px 20px!important;border-radius:25px!important;
+  background:radial-gradient(ellipse at 115% -15%,#f67aba4c,transparent 52%),linear-gradient(135deg,#50318b 0%,#382261 62%,#2b1a4c 100%)!important;
+ }
+ .pp-hero::before{font-size:112px!important;right:-16px!important;top:-26px!important;opacity:.42!important;transform:rotate(22deg)}
+ .pp-eyebrow{color:#f0e7fb!important;font-size:10px!important;margin-bottom:12px!important;letter-spacing:.12em!important}
+ .pp-eyebrow i{display:inline-block;width:5px;height:5px;background:#e7ff70;border-radius:50%;vertical-align:middle;margin:0 6px}
+ .pp-hero h1{font-size:clamp(38px,10vw,52px)!important;line-height:1.03!important;letter-spacing:-.065em!important;max-width:330px!important}
+ .pp-hero h1 em{border-radius:9px!important;padding:0 10px 4px!important}
+ .pp-hero p{font-size:14px!important;line-height:1.4!important;margin:15px 0 21px!important;max-width:none!important;color:#e4d5f4!important}
+ .pp-primary{min-height:56px!important;border-radius:15px!important;font-size:15px!important}
+ .pp-onboard-actions{margin-top:10px!important}
+ .pp-guide-cta{
+  min-height:43px!important;border:1px solid #776197!important;background:rgba(25,15,46,.20)!important;
+  box-shadow:none!important;border-radius:12px!important;color:#fff!important;font-size:13px!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;gap:7px!important
+ }
+ .pp-guide-cta .pp-link-arrow{margin-left:auto}
+ .pp-under{justify-content:center!important;gap:5px!important;margin-top:12px!important;font-size:10px!important}
+ .pp-under span{background:transparent!important;padding:2px 6px!important;color:#d6c2ed!important}
+ .pp-quick-actions{margin-top:12px!important;gap:8px!important}
+ .pp-quick-actions button{min-height:74px!important;border-radius:14px!important;padding:10px 2px!important}
+ .pp-quick-actions button b{font-size:11px!important;letter-spacing:-.015em}
+ .pp-quick-actions button span{font-size:19px!important}
+ .pp-head{margin:26px 1px 13px!important;gap:8px!important;align-items:end!important}
+ .pp-head h2{font-family:var(--display)!important;font-size:clamp(20px,5.6vw,25px)!important;line-height:1.14!important;letter-spacing:-.045em!important}
+ .pp-head p{font-size:12px!important;line-height:1.35!important;margin-top:5px!important}
+ .pp-head small{font-size:9px!important;color:#b69fc9!important}
+ .pp-vibes{
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important
+ }
+ .pp-vibe{
+  display:flex!important;flex-direction:column!important;align-items:flex-start!important;
+  min-height:123px!important;gap:5px!important;padding:12px 10px!important;
+  border-radius:16px!important;border:1px solid #5e4c73!important;background:#2b223d!important
+ }
+ .pp-vibe[aria-pressed=true]{border:1.5px solid var(--vc)!important;background:#3e2a59!important;box-shadow:inset 0 0 0 1px var(--vc)!important}
+ .pp-vibe .pp-emoji{font-size:27px!important;grid-row:auto!important;line-height:1.1!important}
+ .pp-vibe b{font-size:13px!important;line-height:1.22!important;font-family:var(--body)!important}
+ .pp-vibe span:last-child{grid-column:auto!important;font-size:10px!important;line-height:1.28!important;color:#c4b4d4!important}
+ .pp-vibe .pp-vibe-check{display:none}
+ .pp-vibe[aria-pressed=true] .pp-vibe-check{display:grid!important;place-items:center;position:absolute;right:8px;top:8px;width:19px;height:19px;border-radius:50%;font-size:11px;color:#26172e;background:var(--vc);font-style:normal}
+ .pp-setup{
+  display:block!important;margin-top:12px!important;padding:15px 13px!important;
+  border-radius:17px!important;background:#241a38!important
+ }
+ .pp-setup-top{margin-bottom:12px!important}
+ .pp-setup-label{font-size:13px!important;color:#faf1ff!important}
+ .pp-editnames{font-size:12px!important;color:#e7ff70!important;min-height:30px!important}
+ .pp-numbers{
+  display:grid!important;grid-template-columns:repeat(8,minmax(0,1fr))!important;
+  gap:5px!important;width:100%!important
+ }
+ .pp-numbers button{height:35px!important;width:100%!important;font-size:12px!important;border-radius:9px!important;padding:0!important}
+ .pp-featured{
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important
+ }
+ .pp-feature{border:1px solid #645176!important;border-radius:19px!important}
+ .pp-feature>button.pp-feature-main{
+  display:flex!important;flex-direction:column!important;gap:7px!important;
+  min-height:175px!important;padding:14px 11px 15px!important
+ }
+ .pp-fnumber{font-size:10px!important;color:#d3c4dd!important;max-width:calc(100% - 30px)}
+ .pp-feature-icon{font-size:28px!important;margin:2px 0 1px!important}
+ .pp-feature b{
+  font-family:var(--body)!important;font-size:15px!important;line-height:1.2!important;
+  letter-spacing:-.02em!important;max-width:100%!important;overflow-wrap:anywhere!important
+ }
+ .pp-feature p{
+  font-size:11px!important;line-height:1.4!important;color:#d5c9e3!important;
+  -webkit-line-clamp:2!important;overflow:hidden!important
+ }
+ .pp-feature .pp-star{top:10px!important;right:9px!important;width:30px!important;height:30px!important;font-size:17px!important}
+ .pp-library{margin-top:28px!important}
+ .pp-library .pp-head{margin-bottom:12px!important}
+ .pp-tile{border-radius:16px!important}
+}
+@media(max-width:370px){
+ .pp-vibe{padding:10px 8px!important;min-height:124px!important}
+ .pp-vibe b{font-size:12px!important}.pp-vibe span:last-child{font-size:9px!important}
+ .pp-numbers{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:7px!important}
+ .pp-numbers button{height:36px!important;font-size:13px!important}
+ .pp-feature b{font-size:14px!important}
+}
+
+
+@media(max-width:600px){
+.pp-setup-top .pp-editnames{white-space:nowrap!important;flex:none!important;min-width:max-content!important;font-size:12px!important}
+.pp-setup-top .pp-setup-label{width:auto!important;flex:1!important}
+.pp-vibe{min-height:114px!important}
+.pp-vibe span:last-child{font-size:10.5px!important}
+.pp-feature>button.pp-feature-main{min-height:185px!important}
+.pp-feature p{font-size:12px!important}
+}
+
+/* V16 — dark, readable game tutorials */
+.pp-v8-guide-shade{
+  background:rgba(9,7,23,.85)!important;
+  backdrop-filter:blur(11px)!important;
+  padding:16px!important;
+}
+.pp-v8-guide{
+  background:linear-gradient(160deg,#342449 0%,#251b38 100%)!important;
+  color:#fff7ff!important;
+  border:1px solid #725780!important;
+  box-shadow:0 28px 70px rgba(6,4,15,.65)!important;
+  border-radius:25px!important;
+  padding:17px!important;
+  max-height:calc(100dvh - 32px)!important;
+}
+.pp-v8-top{
+  color:#fff7ff!important;
+  font-size:15px!important;
+  line-height:1.38!important;
+  align-items:flex-start!important;
+}
+.pp-v8-top span{
+  color:#fff7ff!important;
+  font-family:var(--body)!important;
+  letter-spacing:-.01em!important;
+  padding-top:6px;
+}
+.pp-v8-x{
+  flex:0 0 40px!important;
+  height:40px!important;
+  background:#433052!important;
+  color:#f7dce9!important;
+  border:1px solid #84688d!important;
+}
+.pp-v8-pips i{background:#5d466b!important;height:5px!important}
+.pp-v8-pips i.on{background:#fb83b4!important}
+.pp-v8-artframe,.pp-v8-artframe:has(.scene-tap){
+  background:linear-gradient(155deg,#56416a,#443353)!important;
+  border:1px solid #846b91!important;
+  box-shadow:none!important;
+  border-radius:19px!important;
+}
+.pp9-scene-title{
+  color:#fff4ff!important;
+  font-size:13px!important;
+  line-height:1.4!important;
+}
+.pp9-frame-caption{
+  color:#e7d4f0!important;
+  font-size:12px!important;
+}
+.pp9-stage{
+  fill:#eee1f1!important;
+  stroke:#c6a9d5!important;
+  stroke-width:2!important;
+}
+.pp-v8-copy{padding:13px 2px 5px!important}
+.pp-v8-overline{
+  color:#ff9bc6!important;
+  font-size:11px!important;
+}
+.pp-v8-copy h3{
+  color:#fffaff!important;
+  font-size:24px!important;
+  font-family:var(--display)!important;
+}
+.pp-v8-copy p{
+  color:#e9dcec!important;
+  font-size:16px!important;
+  line-height:1.55!important;
+  max-width:34ch!important;
+}
+.pp9-guide-lead{
+  color:#d1b9d9!important;
+  font-size:12px!important;
+  line-height:1.4!important;
+  margin:5px 0 9px!important;
+}
+.pp-v8-footer .secondary{
+  background:#493657!important;
+  color:#f6e5f6!important;
+  border:1px solid #81678d!important;
+}
+.pp-v8-footer .primary{
+  background:linear-gradient(120deg,#fa76ac,#ff9b87)!important;
+  color:#26152e!important;
+  border:0!important;
+}
+.pp-v8-footer button{font-size:14px!important;min-height:51px!important}
+.pp9-replay{
+  color:#f8dcee!important;
+  background:#3b2b4c!important;
+  border:1px solid #735a81!important;
+  font-size:12px!important;
+  min-height:42px!important;
+}
+@media(max-width:460px){
+ .pp-v8-guide-shade{padding:12px!important}
+ .pp-v8-guide{padding:15px 13px!important;border-radius:22px!important;max-height:calc(100dvh - 24px)!important}
+ .pp-v8-artframe{min-height:0!important;padding:8px!important}
+ .pp-v8-top{font-size:14px!important}
+ .pp-v8-copy h3{font-size:22px!important}
+ .pp-v8-copy p{font-size:15px!important}
+ .pp-v8-footer{grid-template-columns:1fr 1.3fr!important}
+}
+
+
+/* V17: compact, correctly framed game demonstrations */
+.pp-v8-artframe{padding:8px!important;min-height:0!important;overflow:hidden!important;isolation:isolate}
+.pp9-scene{padding:4px 2px!important;overflow:hidden!important;width:100%!important;max-width:100%!important}
+.pp9-scene svg{display:block!important;overflow:hidden!important;width:100%!important;height:auto!important;max-height:255px!important;aspect-ratio:380/224!important;contain:paint}
+.pp9-scene-title{min-height:0!important;font-size:clamp(11px,3.35vw,14px)!important;line-height:1.3!important;padding:5px 4px!important}
+.pp9-frame-caption{font-size:12px!important;padding-top:2px!important}
+.pp-v8-copy{padding:8px 4px!important}
+.pp-v8-copy .pp-guidestep-copy{font-size:clamp(15px,4vw,17px)!important;line-height:1.47!important;color:#f9edf9!important;font-weight:700!important;margin:0!important;max-width:100%!important}
+.pp-v8-top{gap:8px!important}.pp-v8-top span{font-size:clamp(13px,3.7vw,16px)!important;max-width:calc(100% - 48px)!important}
+.pp-v8-guide{padding:14px!important;max-height:calc(100dvh - 24px)!important;overflow-y:auto!important}
+.pp-v8-footer{gap:8px!important}.pp-v8-footer button{min-width:0!important;font-size:13px!important;padding:11px 7px!important}
+.pp-v8-pips{margin:9px 0!important}
+/* More inviting physical-card-game view */
+.pp-offline-screen{display:grid;gap:14px}
+.pp-offline-hero{display:flex;gap:14px;align-items:center;padding:21px 17px;background:linear-gradient(130deg,#56386e,#322448);border-radius:22px;border:1px solid #80628d}
+.pp-offline-symbol{font-size:45px;flex:none;background:#f6b5d626;width:70px;height:74px;border-radius:19px;display:grid;place-items:center}
+.pp-offline-hero>div{min-width:0}.pp-offline-hero h3{font-size:clamp(21px,6vw,28px);color:#fff}
+.pp-offline-hero p{font-size:14px;line-height:1.5;color:#eee0f4;margin:8px 0 0}
+.pp-offline-kicker{font-size:10px;letter-spacing:.06em;font-weight:900;color:#e7ff70;display:block;margin-bottom:7px}
+.pp-offline-facts{display:flex;gap:7px;flex-wrap:wrap}
+.pp-offline-facts span{font-size:12px;font-weight:800;background:#31223e;border:1px solid #6a557a;color:#f8eaf8;border-radius:13px;padding:9px 12px}
+.pp-offline-title{font-size:21px;font-family:var(--display);font-weight:900;margin:7px 0 -4px}
+.pp-offline-steps{display:grid;gap:9px}
+.pp-offline-steps>div{display:flex;gap:14px;align-items:start;padding:14px 13px;background:#30233d;border-radius:16px;border:1px solid #695576;font-size:14px;line-height:1.55;color:#f4e9f7}
+.pp-offline-steps b{display:grid;place-items:center;flex:none;width:27px;height:27px;border-radius:9px;background:#e7ff70;color:#21142b;font-size:13px}
+.pp-offline-full{padding:14px;background:#30243e;border:1px solid #6a537b;border-radius:14px}
+.pp-offline-full summary{font-size:14px;font-weight:900;color:#f4d2e9;cursor:pointer}
+.pp-offline-full li{margin:10px 0;font-size:14px;color:#f1e2f2;line-height:1.5}
+.pp-offline-note{font-size:12px;color:#baa8c9;line-height:1.5;margin:0}
+/* Cloud room */
+.pp-online-entry{display:flex;align-items:center;gap:12px;text-align:left;width:100%;padding:13px;background:linear-gradient(110deg,#41336f,#302546);border:1px solid #8970b4;color:#fff;border-radius:18px;margin:13px 0 7px;min-height:75px}
+.pp-online-logo{display:grid;place-items:center;flex:none;width:43px;height:43px;border-radius:14px;background:#e7ff70;color:#291b41;font-size:25px;font-weight:900}
+.pp-online-entry>span:nth-child(2){flex:1;min-width:0}.pp-online-entry b{display:block;font-size:15px;font-weight:900;line-height:1.25}
+.pp-online-entry small{display:block;font-size:12px;line-height:1.35;color:#e3d4f2;margin-top:5px}
+.pp-online-arrow{font-size:20px;font-weight:900}
+.pp-room-page{max-width:560px;margin:0 auto;display:grid;gap:12px;padding-bottom:40px}
+.pp-room-intro{background:linear-gradient(125deg,#4a3174,#291d45);border:1px solid #8065a2;border-radius:23px;padding:22px 20px}
+.pp-room-magic{font-size:30px;color:#e7ff70}
+.pp-room-intro>span,.pp-room-kicker{display:block;font-size:11px;letter-spacing:.09em;font-weight:950;color:#e7ff70;margin:5px 0}
+.pp-room-intro h2{font-size:clamp(24px,7.2vw,35px);margin:10px 0;color:white}
+.pp-room-intro h2 em{color:#e7ff70;font-style:normal}.pp-room-intro p{font-size:14px;color:#e5d7ef;line-height:1.6}
+.pp-room-label{font-size:13px;color:#e3d1ec;font-weight:800}
+.pp-room-input{width:100%;font-size:17px!important;min-height:52px;border-radius:14px!important;padding:14px!important;background:#312541!important;color:#fff!important;border:1px solid #806698!important}
+.pp-room-main,.pp-room-secondary,.pp-room-copy,.pp-room-host-actions button{border-radius:13px;padding:13px 15px;font-size:15px;font-weight:900;min-height:48px}
+.pp-room-main{background:#e7ff70;color:#281a39;border:0}.pp-room-secondary{background:#3c2d52;color:white;border:1px solid #816b9c}
+.pp-room-divider{text-align:center;font-size:12px;color:#c1aecf}.pp-room-fine{font-size:12px;color:#c9b7d5;line-height:1.5}
+.pp-room-error{font-size:13px;color:#ffb3bd;font-weight:700;min-height:10px;margin:0}
+.pp-room-header{text-align:center;padding:20px;background:#3d2b59;border:1px solid #81699e;border-radius:22px}
+.pp-room-header>span{font-size:11px;letter-spacing:.1em;color:#d0bbdd;font-weight:900}
+.pp-room-code{font-family:var(--display);font-size:clamp(31px,9vw,42px);letter-spacing:.13em;color:#e7ff70;margin:10px 0}
+.pp-room-copy{border:1px solid #9076a7;background:#322340;color:white}
+.pp-room-player-head{font-size:15px;font-weight:950}
+.pp-room-people{display:flex;flex-wrap:wrap;gap:7px}
+.pp-room-people span{background:#38294d;padding:8px 11px;border-radius:99px;border:1px solid #775f90;color:white;font-size:13px}
+.pp-room-people span.host{color:#e7ff70;border-color:#c0d26e}
+.pp-room-box{background:#31243f;border:1px solid #735a83;border-radius:21px;padding:18px 16px}
+.pp-room-box h3{font-size:clamp(20px,6vw,25px);line-height:1.32;margin:9px 0 15px}
+.pp-room-box p{font-size:14px;color:#eadcf0;line-height:1.55}
+.pp-room-choices{display:grid;gap:9px}
+.pp-room-choices button{display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;background:#453254;border:1px solid #856a97;padding:15px;border-radius:14px;color:white;font-size:15px;min-height:58px}
+.pp-room-choices button.chosen{border-color:#e7ff70;background:#5d4964}
+.pp-room-choices button:disabled{opacity:1}
+.pp-room-choices button span{color:#e7ff70;font-size:12px;flex:none}
+.pp-room-hint{font-size:13px!important}.pp-room-count{font-size:13px;color:#e7ff70;font-weight:900;text-align:right}
+.pp-room-host{background:#3c2e51;border-radius:18px;border:1px solid #70598b;padding:14px}
+.pp-room-host p{font-size:13px;font-weight:850;color:#e8dbea;margin:0 0 9px}
+.pp-room-host-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pp-room-host-actions button{background:#584169;color:white;border:1px solid #8c74a0;font-size:13px}
+.pp-room-host-actions #ppRoomReveal{grid-column:1/-1;background:#e7ff70;color:#231a39}
+@media(max-width:440px){.pp-room-code{font-size:31px}.pp-offline-hero{gap:11px;padding:17px 13px}.pp-offline-symbol{width:57px;height:65px;font-size:36px}}
+
+
+/* Keep floating punishment button out of tutorial / online / offline reading surfaces. */
+body:has(.pp-room-page) .fab, body:has(.pp-offline-screen) .fab{display:none!important}
+@media(max-width:430px){.pp-room-page{padding-bottom:calc(32px + env(safe-area-inset-bottom,0px))}.pp-room-people span{font-size:12px}.pp-offline-hero h3{overflow-wrap:anywhere}}
+
+/* V18 online competition scoreboard */
+.pp-room-scoreboard{border-radius:22px;background:linear-gradient(145deg,#392650,#2a203f);border:1px solid #87649b;padding:16px;box-shadow:0 10px 30px #0b061b35}
+.pp-room-scorehead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
+.pp-room-scorehead span{font-size:10px;font-weight:950;color:#e7ff70;letter-spacing:.13em}
+.pp-room-scorehead h3{font-family:var(--display);font-size:20px;color:#fff;margin:4px 0 0;line-height:1.2}
+.pp-room-scorehead strong{font-size:13px;background:#4c3b64;color:#e7ff70;padding:8px 10px;border-radius:11px;white-space:nowrap}
+.pp-room-scorelist{display:grid;gap:7px}
+.pp-room-scoreline{display:flex;gap:9px;align-items:center;background:#483455;border:1px solid #6c517d;border-radius:14px;padding:11px 9px;color:#fff}
+.pp-room-scoreline.is-me{border-color:#e7ff70;background:#514365}
+.pp-room-rank{width:30px;flex:0 0 30px;text-align:center;font-size:20px;color:#f2e7ff}
+.pp-room-scoreplayer{flex:1;min-width:0;font-weight:850;overflow-wrap:anywhere;font-size:14px}
+.pp-room-scoreplayer small{font-size:10px;color:#d8c6e6}
+.pp-room-scoreline b{white-space:nowrap;color:#e7ff70;font-family:var(--display);font-size:20px}
+.pp-room-scoreline b small{font-family:var(--body);font-size:10px;color:#dcd1e8}
+.pp-room-award{color:#1e2540;background:#e7ff70;border-radius:20px;padding:3px 8px;font-weight:950;font-size:12px}
+.pp-room-scorehint{font-size:11px;color:#d4c0df;line-height:1.5;margin:12px 2px 0}
+.pp-room-champion{border-radius:21px;border:1px solid #e7ff70;background:linear-gradient(130deg,#50325f,#302248);padding:20px 16px;text-align:center}
+.pp-room-champion span{font-size:11px;color:#e7ff70;letter-spacing:.12em;font-weight:950}
+.pp-room-champion h3{color:white;font-family:var(--display);line-height:1.2;font-size:clamp(19px,6vw,26px);margin:10px 0}
+.pp-room-champion p{font-size:13px;color:#eadbf0}
+.pp-room-host-actions #ppRoomReset{grid-column:1/-1;background:#3e2b57;border:1px solid #b28bc5;color:#fff}
+@media(max-width:390px){.pp-room-scoreboard{padding:13px}.pp-room-scoreline{gap:6px;padding:10px 7px}.pp-room-scoreplayer{font-size:13px}.pp-room-scoreline b{font-size:18px}}
 </style>
 </head>
 <body>
@@ -771,7 +1282,7 @@ function buzz(p){ try{ navigator.vibrate && navigator.vibrate(p); }catch(e){} }
 let timers=[]; function clearTimers(){ timers.forEach(t=>{clearInterval(t);clearTimeout(t)}); timers=[]; }
 
 /* ---------- settings ---------- */
-const S = Object.assign({ players:["Бат","Сараа","Тэмүүжин","Номин"], drink:false, level:2, count:0 }, store("tg-settings")||{});
+const S = Object.assign({ players:["Бат","Сараа","Тэмүүжин","Номин"], drink:false, level:2, count:0, sips:2 }, store("tg-settings")||{});
 const save = () => store("tg-settings",S);
 
 /* ---------- forfeits (шийтгэл) ---------- */
@@ -860,6 +1371,7 @@ const CARD_RULES = [
 ];
 const hzDecks = {1:deck(HZ[1]),2:deck(HZ[2]),3:deck(HZ[3])};
 const drinkDeck = deck(DRINK_EXTRA);
+const sipText=(n)=>`${Math.max(1,+n||+S.sips||2)} балга`;
 function drawHZ(level){
   level = level||S.level;
   return {text:hzDecks[level](),level};
@@ -869,7 +1381,7 @@ function hzCardHTML(h,who){
   return `<div class="card rose flip">
     <div class="kicker">Шийтгэл · ${LEVEL_NAME[h.level]}${who?` · ${esc(who)}`:""}</div>
     <div class="big">${esc(h.text)}</div>
-    ${S.drink && !h.drink ? `<div class="drinkalt">21+: Хүсвэл багахан балга согтууруулах ундаа сонгож болно; алгасаж болно</div>`:""}
+    ${S.drink && !h.drink ? `<div class="drinkalt">Drink mode · ${sipText()} эсвэл алгасаж болно.</div>`:""}
   </div>`;
 }
 const groupDeck = deck(GROUP);
@@ -918,7 +1430,7 @@ const MISSIONS = ["Хэн нэгнийг «тийм» гэж 3 удаа хэлү
 const ESTIMATE = ["Монгол Улс хэдэн аймагтай вэ? | 21","Улаанбаатар хэдэн дүүрэгтэй вэ? | 9","Чингис хаан Их Монгол Улсыг хэдэн онд байгуулсан бэ? | 1206","Монгол кирилл цагаан толгой хэдэн үсэгтэй вэ? | 35","Насанд хүрсэн хүний биед хэдэн яс байдаг вэ? | 206","Нэг жилд хэдэн цаг байдаг вэ? | 8760","Эверест уул хэдэн метр өндөр вэ? | 8849","Монгол Улсын нутаг дэвсгэр хэдэн мянган км² вэ? | 1564","Шатрын самбар хэдэн нүдтэй вэ? | 64","Жокергүй хөзрийн багц хэдэн хөзөртэй вэ? | 52","Хөлбөмбөгт нэг баг талбай дээр хэдэн тоглогчтой байдаг вэ? | 11","Дэлхийн хүн ам ойролцоогоор хэдэн тэрбум вэ? | 8","Улаанбаатар далайн түвшнээс ойролцоогоор хэдэн метр өндөрт оршдог вэ? | 1350","Нэг өдөрт хэдэн секунд байдаг вэ? | 86400","Энд байгаа бүх хүний насны нийлбэр хэд вэ? | Тоолж шалга","Энд байгаа бүх хүний утсан дахь нийт апп хэд вэ? | Тоолж шалга","Энэ өрөөнд хэдэн хаалга, цонх байна вэ? | Тоолж шалга","Таны утасны зургийн цомогт хэдэн зураг байгаа вэ? (эзэн нь хариулна) | Утсаа шалга"];
 const GAMES = [
  {id:"huzruur",name:"Шийтгэлийн хайрцаг",glyph:"!",c:"var(--rose)",players:"2+",modes:["2","pair","group"],desc:"Ердийн биш, бүтээлч шийтгэлүүд. Аль ч тоглоомтой хослуулна.",
-  rules:["Аль ч тоглоомд хожигдсон хүн энд шийтгэл сугална.","Түвшингээ сонго: Зөөлөн, Халуухан, Галзуу.","«Хараал» гэсэн шийтгэл хэд хэдэн эргэлт үргэлжилнэ, бүгд хянана.","Хийж чадахгүй бол «Өөрийг сугал»-ыг бүгд зөвшөөрвөл л дарна.","Уух горим асаалттай бол шийтгэл бүр уух сонголттой гарна."]},
+  rules:["Аль ч тоглоомд хожигдсон хүн энд шийтгэл сугална.","Түвшингээ сонго: Зөөлөн, Халуухан, Галзуу.","«Хараал» гэсэн шийтгэл хэд хэдэн эргэлт үргэлжилнэ, бүгд хянана.","Хийж чадахгүй бол «Өөрийг сугал»-ыг бүгд зөвшөөрвөл л дарна.","Drink mode асаалттай бол шийтгэл бүр уух сонголттой гарна."]},
  {id:"imposter",name:"Хуурамч",glyph:"?",c:"var(--sun)",players:"3–12",modes:["group"],desc:"Бүгд нэг үгтэй, нэг нь л мэдэхгүй. Хэн бэ?",
   rules:["Хүн бүр утсаа ээлжлэн аваад нууц үгээ харна. Нэг хүн нь «Хуурамч», тэр зөвхөн ангиллыг мэднэ.","Тойргоор хүн бүр үгээ нэг үгээр тайлбарлана. Хэт ил гаргаж болохгүй, Хуурамч таачихна.","2 тойргийн дараа бүгд нэг хүн рүү заан санал хураана.","Хуурамчийг олбол тэр нэг удаа үгийг таах эрхтэй. Таавал Хуурамч ялна, тэр хүссэн хоёр хүндээ шийтгэл өгнө. Тааж чадахгүй бол Хуурамч өөрөө Галзуу шийтгэл авна.","Буруу хүнийг сонгосон бол сонгогдсон хүн болон бүх сонгогчид шийтгэл.","Өөр өөрийн утсаар: нэг хүн код гаргаад хэлнэ, бүгд ижил код, тоглогчийн тоо, өөрийн дугаараа оруулна."]},
  {id:"bomb",name:"Тэсрэх бөмбөг",glyph:"*",c:"var(--sky)",players:"3+",modes:["group"],desc:"Ангилалд үг хэлээд утсаа дамжуул. Хэний гарт тэсрэх вэ?",
@@ -1192,13 +1704,15 @@ function openSettings(){
       <form class="addrow" id="addf"><input type="text" id="pname" placeholder="Нэр нэмэх" maxlength="16" autocomplete="off"><button class="btn" style="width:auto;padding:10px 16px" type="submit">Нэмэх</button></form></div>
     <div class="stack"><div class="label">Шийтгэлийн түвшин</div>
       <div class="seg">${[1,2,3].map(l=>`<button type="button" data-l="${l}" aria-pressed="${S.level===l}">${LEVEL_NAME[l]}</button>`).join("")}</div></div>
-    <div class="toggle"><div><b>Уух горим</b><div class="small muted">Согтууруулах ундаа зөвхөн хуульд заасан насанд хүрэгчдэд. Алгасаж болно.</div></div>
-      <button class="switch" id="drink" type="button" role="switch" aria-checked="${S.drink}" aria-label="Уух горим"></button></div>
+    <div class="toggle"><div><b>Drink mode</b><div class="small muted">21+ тохиргоо. Оролцохгүй бол алгасаж болно.</div></div>
+      <button class="switch" id="drink" type="button" role="switch" aria-checked="${S.drink}" aria-label="Drink mode"></button></div>
+    <div class="stack"><span class="label">Шийтгэлийн оронд уух тоо</span><div class="seg pp-sips">${[1,2,3,4,5].map(n=>`<button type="button" data-sip="${n}" aria-pressed="${(+S.sips||2)===n}">${n} балга</button>`).join("")}</div></div>
   </div></div>`;
     ov.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{S.players.splice(+b.dataset.rm,1);save();draw();});
     $("#addf").onsubmit=e=>{e.preventDefault();const v=$("#pname").value.trim();if(v){S.players.push(v);save();draw();setTimeout(()=>$("#pname")&&$("#pname").focus(),0);}};
     ov.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{S.level=+b.dataset.l;save();draw();});
-    $("#drink").onclick=()=>{S.drink=!S.drink;save();draw();};
+    $("#drink").onclick=()=>{const was=S.drink;if(was){S.drink=false;save();draw();}else{closeHZ();ppV8DrinkToggle();}};
+    ov.querySelectorAll("[data-sip]").forEach(b=>b.onclick=()=>{S.sips=+b.dataset.sip;save();draw();});
     const close=()=>{ closeHZ(); home(); };
     $("#sclose").onclick=close; $("#ovbg").onclick=e=>{ if(e.target.id==="ovbg") close(); }; };
   draw();
@@ -1209,7 +1723,7 @@ function openSettings(){
 function ppV8DrinkToggle(){
  if(S.drink){S.drink=false;save();home();toast('Уух горим унтарлаа.');return;}
  const ov=$('#ov');ov.hidden=false;
- ov.innerHTML=`<div class="pp-v8-guide-shade" id="ageShade"><div class="pp-v8-modal" role="dialog" aria-modal="true" aria-label="21+ горим"><h3>🍷 Согтууруулах ундааны горим · 21+</h3><p>Энэ нь ус, жүүсээр тоглох горим биш — согтууруулах ундааны сонголт. Монголд согтууруулах ундааг 21-ээс доош насныханд худалдах, үйлчлэхийг хориглодог. Бүх тоглогч 21 хүрсэн, оролцох эсэхээ өөрсдөө шийдэх боломжтой үед л асаана. Алгасах, согтууруулах бус ундаа сонгох боломж үргэлж байна. Хүчлэх, хурдан уух даалгавар байхгүй.</p><div class="actions"><button type="button" class="yes" id="pp21Yes">Бүгд 21+ — асаах</button><button type="button" id="pp21No">Болих / уухгүй тоглох</button></div></div></div>`;
+ ov.innerHTML=`<div class="pp-v8-guide-shade" id="ageShade"><div class="pp-v8-modal" role="dialog" aria-modal="true" aria-label="21+ горим"><h3>🍷 Drink mode · 21+</h3><p>Энэ нь ус, жүүсээр тоглох горим биш — согтууруулах ундааны сонголт. Монголд согтууруулах ундааг 21-ээс доош насныханд худалдах, үйлчлэхийг хориглодог. Бүх тоглогч 21 хүрсэн, оролцох эсэхээ өөрсдөө шийдэх боломжтой үед л асаана. Алгасах, согтууруулах бус ундаа сонгох боломж үргэлж байна. Хүчлэх, хурдан уух даалгавар байхгүй.</p><div class="actions"><button type="button" class="yes" id="pp21Yes">Бүгд 21+ — асаах</button><button type="button" id="pp21No">Болих / уухгүй тоглох</button></div></div></div>`;
  const close=()=>{ov.hidden=true;ov.innerHTML='';};
  $('#pp21No').onclick=close;$('#ageShade').onclick=e=>{if(e.target.id==='ageShade')close();};
  $('#pp21Yes').onclick=()=>{store('pp-v8-age-confirm',true);S.drink=true;save();close();home();toast('21+ сонголт асаалаа. Хүн бүр алгасаж болно.');};
@@ -1218,9 +1732,9 @@ function ppV8DrinkToggle(){
 /* === V3: instant game discovery and session-led experience === */
 let ppMood='laugh',ppTab='all',ppQuery='',ppShowAll=false,PP_SESSION=null;
 const PP_VIBES={
- laugh:{name:'Инээд',line:'Нүднээс нулимс гартал',emoji:'😂',color:'#ff78a6',desc:'Тэнэг юм хийж, инээгээд аваарай'},
- chaos:{name:'Өрсөлдөөн',line:'Хэн ялах бол?',emoji:'⚡',color:'#e7ff70',desc:'Таймер, тулаан, өрсөлдөөн'},
- deep:{name:'Үнэнийг ярья',line:'Нууц юу байна?',emoji:'👀',color:'#a98aff',desc:'Асуулт, сонголт, сонин үнэн'}
+ laugh:{name:'Инээд',line:'Бөөн инээд',emoji:'😂',color:'#ff78a6',desc:'Тэнэг юм хийж, инээгээд аваарай'},
+ chaos:{name:'Өрсөлдөөн',line:'Хэн ялах вэ?',emoji:'⚡',color:'#e7ff70',desc:'Таймер, тулаан, өрсөлдөөн'},
+ deep:{name:'Үнэнийг ярья',line:'Үнэнийг ярья',emoji:'👀',color:'#a98aff',desc:'Асуулт, сонголт, сонин үнэн'}
 };
 const PP_ICONS={spin:'🎡',flash:'⚡',secretpick:'🗳️',memory:'🟪',huzruur:'🎲',imposter:'🕵️',bomb:'💣',who:'👀',laws:'📜',shagai:'🎯',act:'🎭',pairs:'💘',sync:'🧠',talk:'💬',cards:'🃏',hilo:'📈',wyr:'🤔',never:'🙈',hum:'🎵',minute:'⏱️',mission:'🤫',guess:'🔮',duel:'🥊',impress:'🎬',forehead:'😵‍💫',kingcup:'👑',toast:'🎤',wink:'🫣',liar:'🤥',bus:'🚌',tower:'🏗️',forbid:'🤐',story:'📖',seven:'7️⃣',sugalaa:'🎟️',zavsar:'♠️',alga:'👏',tulaan:'⚔️',21:'2️⃣',hos:'🧩',naim:'♣️',halbaga:'🥄',haanbool:'👑',gurvalsan:'3️⃣',haralgan:'😶',uraldaan:'🏇',hurdan:'🏁',durs:'♦️',baishin:'🏠',uleeh:'🌬️',dohio:'🤫'};
 const PP_FEATURES={laugh:['spin','secretpick','wyr','sync'],chaos:['flash','memory','duel','bomb'],deep:['secretpick','never','talk','imposter']};
@@ -1255,25 +1769,28 @@ function home(){
  const tabs=[['all','Бүгд'],['new','✨ Шинэ'],['group','Олуулаа'],['2','Хоёулаа'],['cards','Хөзөр'],['offline','Утасгүй'],['favs','★ Дуртай']];
  $('#app').innerHTML=`
  <header class="topnav"><div class="brand"><span class="bm">ПП</span><span>Пид <b>Пад</b></span></div><div class="pp-top-actions"><button type="button" class="pp-circle" id="ppSettings" aria-label="Тоглогчийн тохиргоо">⚙</button>${canEdit?'<button class="editbtn" id="edit" type="button">Засах</button>':''}</div></header>
- <div class="pp-intro"><span>ШИНЭ</span> НАЙЗУУДААРАА ТОГЛОХ ЦАГ!</div>
- <section class="pp-hero"><div class="pp-eyebrow">★ ПИД ПАД · PARTY PLAY</div>
+ <div class="pp-intro"><span class="pp-intro-spark">✦</span> НАЙЗУУД ЦУГЛАСАН БОЛ, ТОГЛООМ ЭХЭЛНЭ</div>
+ <section class="pp-hero"><div class="pp-eyebrow">✳ PID PAD <i></i> PARTY GAMES</div>
  <h1>Уйдах зав<br><em>өгөхгүй!</em></h1>
- <p>Найзууд, нэг утас, дараагийн инээд. Дүрэм цээжлэхгүй — шууд эхэл!</p>
+ <p>Нэг утас. Олон инээд. Яг одоо эхэл.</p>
  <button type="button" class="pp-primary" id="ppStart"><span>🎲 &nbsp; ШУУД ТОГЛОХ</span><span class="arr">↗</span></button>
- <div class="pp-onboard-actions"><button class="pp-guide-cta" type="button" id="ppGuideHome">🎬 Хөдөлгөөнт жишээгээр үзэх</button><button class="pp-drink-cta" type="button" id="ppDrinkHome" aria-pressed="${!!S.drink}">${S.drink?'🍷 21+ горим · АСААЛТТАЙ':'🍷 Согтууруулах ундааны горим · 21+'}</button></div>
- <div class="pp-under"><span>⚡ 10 раунд</span><span>👥 ${ppCountLabel()}</span><span>📱 Нэг утсаар</span></div><div class="pp-v8-example-actions"><button type="button" id="ppSpinShortcut">🎡 Азын хүрд</button><button type="button" id="ppSurprise">🎰 Санамсаргүй тоглоом</button></div></section>
- <div class="pp-head"><div><h2>Ямар вайбтай орой вэ?</h2><p>Сонговол раундууд өөрчлөгдөнө</p></div><small>01 / 03</small></div>
- <div class="pp-vibes">${Object.entries(PP_VIBES).map(([id,v])=>`<button type="button" class="pp-vibe" style="--vc:${v.color}" data-mood="${id}" aria-pressed="${id===ppMood}"><span class="pp-emoji">${v.emoji}</span><b>${v.name}</b><span>${v.line}</span></button>`).join('')}</div>
- <section class="pp-setup"><span class="pp-setup-label">👥 Хэдүүлээ вэ?</span><div class="pp-numbers">${[[0,'Бүгд'],[2,'2'],[3,'3'],[4,'4'],[5,'5'],[6,'6'],[7,'7'],[8,'8+']].map(([n,t])=>`<button type="button" data-count="${n}" aria-label="${t} хүн" aria-pressed="${S.count===n}">${t}</button>`).join('')}</div><button type="button" id="ppNames" class="pp-editnames">Нэр нэмэх +</button></section>
- <div class="pp-head"><div><h2>Чамд санал болгох 🎯</h2><p>${PP_VIBES[ppMood].desc}</p></div><small>ШУУД ЭХЭЛ</small></div>
+ <div class="pp-onboard-actions"><button class="pp-guide-cta" type="button" id="ppGuideHome"><span class="pp-link-symbol">▷</span> Хэрхэн тоглох вэ?<span class="pp-link-arrow">↗</span></button></div>
+ <div class="pp-under"><span>✦ 10 раунд</span><span>♣ ${ppCountLabel()}</span><span>◎ Нэг утсаар</span></div></section>
+ <div class="pp-quick-actions"><button class="pp-drink-cta" type="button" id="ppDrinkHome" aria-pressed="${!!S.drink}"><span>🍷</span><b>Drink mode</b><small>${S.drink?`${sipText()} · ON`:'21+'}</small></button><button type="button" id="ppSpinShortcut"><span>◉</span><b>Азын хүрд</b><small>Spin</small></button><button type="button" id="ppSurprise"><span>✦</span><b>Гэнэтийн тоглоом</b><small>Random</small></button></div>
+ <button type="button" id="ppOnlineEntry" class="pp-online-entry"><span class="pp-online-logo">⌘</span><span><b>Найзуудтайгаа online тогло</b><small>Өрөөний кодоор нэгдэж, тус тусын утаснаас саналаа өг</small></span><span class="pp-online-arrow">↗</span></button>
+ <div class="pp-head pp-head-moods"><div><span class="pp-section-kicker">01 / MOOD</span><h2>Өнөөдөр ямар вайб вэ?</h2><p>Сонгосон mood-оор раундууд солигдоно</p></div></div>
+ <div class="pp-vibes">${Object.entries(PP_VIBES).map(([id,v])=>`<button type="button" class="pp-vibe" style="--vc:${v.color}" data-mood="${id}" aria-pressed="${id===ppMood}"><span class="pp-emoji">${v.emoji}</span><b>${v.name}</b><span>${v.line}</span><i class="pp-vibe-check">✓</i></button>`).join('')}</div>
+ <section class="pp-setup"><div class="pp-setup-top"><span class="pp-setup-label">Хэдүүлээ тоглох вэ?</span><button type="button" id="ppNames" class="pp-editnames">+ Нэр нэмэх</button></div><div class="pp-numbers">${[[0,'Бүгд'],[2,'2'],[3,'3'],[4,'4'],[5,'5'],[6,'6'],[7,'7'],[8,'8+']].map(([n,t])=>`<button type="button" data-count="${n}" aria-label="${t} хүн" aria-pressed="${S.count===n}">${t}</button>`).join('')}</div></section>
+ <div class="pp-head pp-head-featured"><div><span class="pp-section-kicker">02 / DISCOVER</span><h2>Шууд тоглоод үз ✨</h2><p>${PP_VIBES[ppMood].desc}</p></div><small>4 СОНГОЛТ</small></div>
  <div class="pp-featured">${picks.map((g,i)=>ppTile(g,true,i)).join('')}</div>
- <section class="pp-library"><div class="pp-head"><div><h2>Бүх тоглоом</h2><p>Өөрийнхөөрөө сонгоод тогло</p></div><small>ХАЙХ · ХАДГАЛАХ</small></div>
+ <section class="pp-library"><div class="pp-head"><div><span class="pp-section-kicker">03 / ALL GAMES</span><h2>Тоглоомын сан</h2><p>Таалагдсанаа сонгоод эхлүүл</p></div><small>52 ТОГЛООМ</small></div>
  <div class="pp-library-tools"><input type="text" class="pp-search" id="ppSearch" placeholder="🔎 Тоглоом хайх..." value="${esc(ppQuery)}" autocomplete="off" aria-label="Тоглоом хайх"/><div class="pp-filters">${tabs.map(([k,t])=>`<button type="button" data-tab="${k}" aria-pressed="${ppTab===k}">${t}</button>`).join('')}</div></div>
  <div id="ppLibrary"></div></section>
  ${canEdit?'<button class="addline" id="ppAdd" type="button" style="margin-top:21px;width:100%">+ Өөрийн тоглоом нэмэх</button>':''}
  <p class="pp-footer">Дуртай тоглоомоо ☆ дарж хадгал. Хэн нэгэн оролцохыг хүсэхгүй бол тухайн раундыг алгасаж болно.</p>
  ${MODE==='server'&&!ADMIN?'<button class="adminlink" id="adm" type="button">Админ</button>':''}`;
  $('#ppStart').onclick=()=>partyStart(ppMood);
+ $('#ppOnlineEntry').onclick=()=>ppRoomLanding();
  $('#ppGuideHome').onclick=()=>ppShowGuide('party');
  $('#ppDrinkHome').onclick=()=>ppV8DrinkToggle();
  $('#ppSpinShortcut').onclick=()=>go('spin');
@@ -1332,7 +1849,7 @@ function partyScreen(){
  ${c.type==='choice'?(()=>{const parts=String(c.text).split('|');return `<div class="pp-choices"><button type="button" class="pp-choice" data-vote="0"><span>A</span>${esc(parts[0]||'Эхний сонголт')}<small>Санал: <b id="ppVote0">${s.votes[0]}</b></small></button><button type="button" class="pp-choice" data-vote="1"><span>Б</span>${esc(parts[1]||'Хоёр дахь сонголт')}<small>Санал: <b id="ppVote1">${s.votes[1]}</b></small></button></div>`;})():`<div class="pp-pbig">${esc(c.text||'')}${c.type==='timer'?' 🎤':''}</div>`}
  ${c.type==='timer'?`<div class="pp-party-timer" id="ppTimer">${s.done?'00':s.started?Math.max(0,Math.ceil((s.deadline-Date.now())/1000)):'30'}</div>`:''}
  <div class="pp-pnote">${c.type==='vote'?(s.reveal?'ОДОО БҮГД ЗЭРЭГ ЗАА!': 'Бэлэн бол “3, 2, 1” дар'):(c.type==='timer'?(s.done?'Цаг дууслаа!':'Таймерийг эхлүүлээд үзүүл'):label[2])}</div></div>
- <div class="pp-actionbar">${c.type==='minigame'?'<button type="button" class="full" id="ppPlayMini">🎮 МИНИ ТОГЛООМ НЭЭХ</button>':''}${c.type==='vote'&&!s.reveal?'<button type="button" id="ppCount" class="full">🔥 3, 2, 1 — ЭХЭЛ!</button>':''}${c.type==='timer'&&!s.started&&!s.done?'<button type="button" id="ppTimerStart" class="full">⏱️ 30 СЕКУНД ЭХЛҮҮЛЭХ</button>':''}<button type="button" id="ppSkip">↷ Алгасах</button><button type="button" id="ppPartyPunish">⚡ Шийтгэл</button><button type="button" class="next" id="ppNext">Дараагийнх →</button></div><div class="pp-party-again">${s.mood==='laugh'?'😹 Дүрэм нь энгийн: ичсэн ч инээгээд өнгөр.':s.mood==='chaos'?'⚡ Хэн нэгэн ялагдвал хөгжилтэй шийтгэл сонгож болно.':'💜 Хэн ч хувийн зүйл ярих албагүй.'}${S.drink?' 🍷 21+: Алгасах эсвэл өөрийн сонгосон багахан балга.':''}</div>`}
+ <div class="pp-actionbar">${c.type==='minigame'?'<button type="button" class="full" id="ppPlayMini">🎮 МИНИ ТОГЛООМ НЭЭХ</button>':''}${c.type==='vote'&&!s.reveal?'<button type="button" id="ppCount" class="full">🔥 3, 2, 1 — ЭХЭЛ!</button>':''}${c.type==='timer'&&!s.started&&!s.done?'<button type="button" id="ppTimerStart" class="full">⏱️ 30 СЕКУНД ЭХЛҮҮЛЭХ</button>':''}<button type="button" id="ppSkip">↷ Алгасах</button><button type="button" id="ppPartyPunish">⚡ Шийтгэл</button><button type="button" class="next" id="ppNext">Дараагийнх →</button></div><div class="pp-party-again">${s.mood==='laugh'?'😹 Дүрэм нь энгийн: ичсэн ч инээгээд өнгөр.':s.mood==='chaos'?'⚡ Хэн нэгэн ялагдвал хөгжилтэй шийтгэл сонгож болно.':'💜 Хэн ч хувийн зүйл ярих албагүй.'}${S.drink?` 🍷 Drink mode: ${sipText()} эсвэл алгасах.`:''}</div>`}
  `;
  $('#partyExit').onclick=()=>{clearTimers();go();};
  if(finished){$('#ppAgain').onclick=()=>partyStart(s.mood);$('#ppGoHome').onclick=()=>go();return;}
@@ -1382,27 +1899,114 @@ function ppV8How(g){
  const d=PP_V8_GUIDE_DATA[g.id];if(d)return [d[0],d[1].split(','),[d[2],d[3],d[4]]];
  const r=g.rules||[];return [g.name,['read','pass','score'],[PP_SHORT_RULE(r[0]||'Бэлд'),PP_SHORT_RULE(r[1]||'Ээлжээ тогло'),PP_SHORT_RULE(r[2]||'Раунд дууслаа')]];
 }
+
+const PP9_STORY={"party":[["lineup","Бат, Сараа, Номин гурав бэлдлээ","3 хүн"],["roulette","10 өөр раундаас нэг нь гарлаа","1 / 10"],["result","Ээлжийн хүн даалгавраа гүйцэтгэнэ","Дараагийн раунд"]],"huzruur":[["tiers","Зөөлөн, Халуухан, Галзуу түвшнээс сонго","Галзуу"],["draw","Шийтгэлийн картыг санамсаргүй сугална","?"],["task","Гарсан даалгаврыг харж гүйцэтгэнэ","Сорил!"]],"imposter":[["phone","Бат «Бууз» гэдэг үгийг ганцаараа харлаа","Бууз"],["whisper","Сараа сэжүүр хэлнэ. Нэг хүн үгээ мэдэхгүй","Хоол"],["vote","Бүгд хуурамч гэж бодсон хүнээ заана","Сараа?"]],"bomb":[["topic","Сэдэв гарлаа: «Амьтан»","АМЬТАН"],["pass","Бат «муур» гээд утсаа Сараад дамжуулав","муур → нохой"],["timer","Цаг дуусахад утас хэнд байна?","00:00"]],"who":[["question","«Хэн төлөвлөгөөгүй аялалд явах вэ?»","ХЭН?"],["point","3, 2, 1 — бүгд зэрэг нэг хүнийг заана","3 · 2 · 1"],["votes","Сараа хамгийн олон санал авлаа","Сараа +3"]],"laws":[["rule","«За» гэж хэлж болохгүй дүрэм гарлаа","ЗА ✕"],["chat","Номин санамсаргүй «За» гэж хэллээ","За!"],["task","Дүрэм зөрчсөн Номин шийтгэл сугална","Номин"]],"shagai":[["bones","Дөрвөн шагайг шидэхээр бэлдэв","4 шагай"],["scatter","Шагайнууд шалан дээр бууж байна","Шид!"],["match","Морь, морь, хонь, тэмээ гарлаа","2 морь"]],"act":[["team","Бат тайлбарлана, бусад нь таана","Бат → баг"],["mime","Бат «хуушуур»-ыг үггүйгээр үзүүлнэ","Хуушуур"],["score","Сараа тааж баг нь нэг оноо авлаа","+1"]],"pairs":[["pair","Бат, Сараа нэг хос болж суулаа","Бат + Сараа"],["answer2","«Дуртай хоол?» — хоёулаа нууцаар бичнэ","Бууз / Бууз"],["match2","Хариу таарлаа — хос нэг оноо авна","+1"]],"sync":[["lineup","Гурвуулаа ижил асуулт харна","3 хүн"],["answer3","«Амрах газар?» — бүгд зэрэг хэлнэ","Далай!"],["match3","Бат, Сараа хоёрын хариу таарлаа","2 таарсан"]],"talk":[["tiers","Асуултын гүнээ сонгоно","Хөнгөн"],["conversation","Сараа асуултад хариулж байна","Дурсамж"],["pass","Дараагийн асуулт Номинд очно","Номин"]],"cards":[["deal","Бат хоёр тоглогчид хөзөр тараав","♥ 7"],["draw","Сараа багцаас нэг хөзөр сугална","♥ 7"],["task","♥ 7-д оноосон дүрмийг биелүүлнэ","7 ♥"]],"hilo":[["draw","Бат эхний хөзөр 7♠-ыг нээлээ","7 ♠"],["bet","Сараа дараагийнх өндөр гэж таалаа","↑ ӨНДӨР"],["flip","J♥ гарлаа — 7-оос өндөр!","J ♥"]],"wyr":[["choice","А: Үнэгүй аялал, Б: Үнэгүй тоглолт","A / Б"],["hands","Хүн бүр А эсвэл Б-г сонгоно","А  ·  Б"],["split","Хэн аль талд байгааг харна","2 : 1"]],"never":[["question","«Би хэзээ ч ...» өгүүлбэр гарлаа","БИ ЛАВ..."],["hands","Хийж байсан хүмүүс гараа өргөнө","2 хүн"],["conversation","Хүсвэл түүхээ хуваалцана","Юу болсон?"]],"hum":[["topic","Дууны төрөл гарлаа: «Кино»","КИНО"],["sing","Бат үг хэлэлгүй ая аялж байна","♪ ♫"],["timer","Номин 30 секундэд дууг таалаа","00:24"]],"minute":[["topic","Сэдэв: «Миний муу зуршил»","СЭДЭВ"],["timer","Бат 30 секунд тасралтгүй ярьж байна","00:30"],["score","30 секунд дуусахад ээлж солигдоно","Дууслаа"]],"mission":[["secret","Бат нууцаар: «3 удаа ТИЙМ хэлүүл»","НУУЦ"],["chat","Бат бусдаас асуулт асууж эхлэв","Тийм!"],["votes","Гурван удаа «Тийм» хэлүүлж чадлаа","3 / 3"]],"duel":[["pair","Бат, Сараа хоёр өрсөлдөхөөр суулаа","VS"],["reflex","GO! дээр эхэлж товч дарна","GO!"],["winner","Бат түрүүлж дарж яллаа","Бат +1"]],"impress":[["secret","Батад нууц дүрслэх нөхцөл гарлаа","Цас харсан тэмээ"],["mime","Бат үггүйгээр хөдөлгөөнөөр үзүүлнэ","..."],["timer","Номин цагт багтаан таалаа","+1"]],"forehead":[["foreheadphone","Бат утсаа духан дээрээ барина","Морин хуур"],["hint","Сараа «Чавхдаст хөгжим» гэж сэжүүрлэв","Хөгжим"],["winner","Бат «Морин хуур!» гэж таалаа","Зөв!"]],"kingcup":[["deal","21+ насныхан ээлжээр карт сонгоно","♥ K"],["draw","Сараа хөзөр нээж дүрмийг харна","7 ♦"],["task","Алгасаж эсвэл сонгосон дүрмээ хийнэ","Сонголт"]],"toast":[["topic","Сэдэв: «Найзууд»","НАЙЗУУД"],["conversation","Бат 30 секундын тост хэлнэ","Эрүүл мэнд!"],["votes","Найзууд дэмжиж оноо өгнө","+1"]],"guess":[["question","Таах тоотой асуулт гарна","ХЭД?"],["numbers","Бат 20, Сараа 30, Номин 40 гэлээ","20 | 30 | 40"],["winner","Жинхэнэ хариу 32 — Сараа ойр байв","32"]],"wink":[["role","Нууц алуурчин, мөрдөгч сонгогдоно","Хэн?"],["wink","Алуурчин нууцаар нүд ирмэнэ","wink"],["vote","Мөрдөгч нэг хүнийг сэжиглэж заана","Сараа?"]],"liar":[["deal","Бат, Сараа хоёр хөзрөө авлаа","2 туз"],["bluff","Бат 2 картыг далд тавиад «Туз» гэнэ","АА?"],["flip","Сараа шалгахад хоёр өөр карт байв","7 / K"]],"bus":[["steps","4 үе шаттай хөзрийн сорил эхэлнэ","1 • 2 • 3 • 4"],["bet","Бат «улаан» гэж таалаа","УЛААН"],["flip","♥ гарсан тул дараагийн шат руу орно","♥ +1"]],"tower":[["pyramid","10 картыг пирамид хэлбэрээр дэлгэнэ","10 карт"],["flip","Пирамидын нэг картыг эргүүлэн нээнэ","♥ 8"],["match2","Сараагийн гар дахь 8-тай таарлаа","8 + 8"]],"forbid":[["secret","Батын хориотой үг: «За»","ЗА"],["chat","Сараа түүнийг «За» хэлүүлэх гэж асуув","Маргааш ирэх үү?"],["task","Бат хориотой үгээ хэлчихлээ","ЗА!"]],"story":[["word","Бат эхний «Нэгэн» гэдэг үг хэлнэ","Нэгэн"],["chain","Сараа «өдөр», Номин «манай» нэмэв","Нэгэн өдөр..."],["pass","Дараагийн хүн түүхийг үргэлжлүүлнэ","Үргэлжилнэ"]],"seven":[["numbers","Бат «1», Сараа «2», Номин «3» гэж тоолно","1 2 3"],["count","7 дээр тоо хэлэхийн оронд «БУМ!» гэнэ","БУМ!"],["task","7 дээр андуурвал ээлж хожигдоно","Алдаа!"]],"sugalaa":[["deal2","Бат, Сараа тус бүр нэг карт авлаа","2 / K"],["flip2","Хоёулаа хөзрөө зэрэг нээнэ","2♠ / K♥"],["winner","K хөзөртэй Сараа яллаа","Сараа"]],"zavsar":[["gap","4 ба Q хоёр хөзрийг нээнэ","4 · Q"],["bet","Гурав дахь карт хооронд нь орох уу?","ХООРОНД"],["flip","8 гарлаа — хоёрын хооронд!","4 < 8 < Q"]],"alga":[["count","Бат ээлжээр хөзөр нээж 5 гэж хэлнэ","5"],["slap","Нээгдсэн карт 5 бол бүгд хүрнэ","5 ♥"],["winner","Сүүлд хүрсэн хүн хожигдоно","Сүүлд!"]],"tulaan":[["deal2","Хоёр тоглогч дээд картаа бэлдэнэ","? / ?"],["flip2","Нэгэн зэрэг 9♠ ба K♥ нээгдлээ","9 / K"],["winner","K өндөр тул Сараа яллаа","K > 9"]],"21":[["draw","Батад 8 ба 9 карт байна","8 + 9"],["draw2","Бат дахиад 4 сугаллаа","+ 4"],["math","8 + 9 + 4 = 21. Яг таарлаа!","21!"]],"hos":[["grid","6 картыг нүүрээр нь доош дэлгэнэ","6 карт"],["flip2","Бат хоёр картыг эргүүллээ","8♥ / 8♠"],["match2","Ижил тоотой хоёр карт таарлаа","ХОС"]],"naim":[["deal","Сараа гартаа 8♣ карт барьж байна","8♣"],["change","8 тавиад дараагийн өнгийг сонгоно","♥"],["pass","Дараагийн хүн шинэ өнгөөр тоглоно","♥"]],"halbaga":[["table","Хөзөр ба халбагыг голд тавина","4 Q"],["match4","Бат дөрвөн ижил Q хөзөр цуглуулав","Q Q Q Q"],["spoon","Бат халбага шүүрлээ, бусад нь дагана","ШҮҮР!"]],"haanbool":[["deal","Бүх тоглогч хөзөр авна","K / 10 / 3"],["rank","Ээлжээр хөзрийн эрэмбээр тавина","3 → 10 → K"],["winner","Түрүүлж дууссан нь дээгүүр байр эзэлнэ","1-р байр"]],"gurvalsan":[["deal","Бат хөзрүүдээ ангилж авна","3 / 4"],["match3","3 ижил тоотой бүлэг бүрдүүлнэ","7 7 7"],["match4","4 ижил хөзрөө цуглуулаад дуусгана","K K K K"]],"haralgan":[["foreheadcard","Бат өөрийн хөзрийг харалгүй духандаа барина","K ♥"],["glance","Бат Сараагийн 6♠-ыг харж таамаглав","6♠"],["flip2","Бат өөрийн K♥-ыг харж үр дүнг мэднэ","K ♥"]],"uraldaan":[["track","Дөрвөн тэмдэг замын эхэнд гарна","♠ ♥ ♣ ♦"],["race","Хөзөр нээгдэх бүрд нэг тэмдэг урагшилна","♥ ↑"],["winner","♥ тэмдэг түрүүлж барианд хүрлээ","♥ ЯЛЛАА"]],"hurdan":[["deal","2 ба 7 гэсэн хөзрүүд гарлаа","2 / 7"],["math","Бат 2 + 7 = 9 гэдгийг оллоо","2 + 7"],["slap","Түрүүлж зөв хосыг заасан нь ялна","= 9"]],"durs":[["suits","♠ ♥ ♣ ♦ тэмдэг бүрт үйлдэл онооно","♠ ♥ ♣ ♦"],["flip","Санамсаргүй ♥ хөзөр нээгдлээ","♥"],["hands","Бүгд ♥-д тохирсон үйлдэл хийлээ","ЗӨВ!"]],"baishin":[["house","Хоёр картыг налуулж эхний давхар барина","/\\"],["build","Сараа нэмж карт тавьж байна","2 давхар"],["fall","Байшин нурвал тухайн хүн хожигдоно","НУРЛАА!"]],"uleeh":[["stack","Ширээн дээр давхар хөзөр тавина","8 карт"],["blow","Бат амьсгаагаараа картуудыг үлээнэ","ФҮҮ!"],["scatter","Картууд тарж, үлдсэнийг тоолно","3 үлдэв"]],"dohio":[["pair","Бат, Номин хоёр нууц дохио тохирно","ДОХИО"],["wink","Бат нүд ирмэж хамтрагчдаа дохио өгнө","wink"],["vote","Өрсөлдөгч баг дохионд анхаарч таана","Оллоо!"]],"shagai-real":[["bones","Дөрвөн бодит шагайгаа бэлдэнэ","4 шагай"],["scatter","Номин дөрвөн шагайг зэрэг шиднэ","Шид!"],["match","Буусан хослолоо харьцуулна","2 морь"]],"spin":[["lineup","Бат, Сараа, Номин нэрээ орууллаа","Бат / Сараа / Номин"],["wheel","Хүрд эргэнэ — заалт аажим зогсоно","ЭРГҮҮЛ"],["winner","Заалт Сарааг заалаа","Сараа"]],"flash":[["pair","Бат, Сараа хоёр талын товч дээр бэлдэнэ","Бат / Сараа"],["ready","Дэлгэц GO! гэж хэлэх хүртэл хүлээнэ","БЭЛЭН"],["reflex","GO! — Бат түрүүлж дарлаа","Бат +1"]],"secretpick":[["question","«Хэн төлөвлөгөөгүй аялах вэ?» гарлаа","ХЭН?"],["phone","Бат, Сараа нууцаар тус тус санал өгнө","Нууц"],["votes","3 санал тоолж Сарааг тодрууллаа","Сараа +2"]],"memory":[["colors","Дөрвөн өнгөт товч гарна","Ягаан / Ногоон / Шар"],["blink","Ягаан → Ногоон → Шар дараалан гэрэлтэнэ","1 → 2 → 3"],["presscolors","Бат яг тэр дарааллаар товч дарна","Зөв!"]]};
+// All art in this guide is built from scalable SVG primitives. The scene's
+// actual objects, number of players, and animation change for *each* game & step.
+const PP9_ESC=s=>String(s??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
+function pp9Txt(x,y,s,size=13,anchor='middle',klass='pp9-small') {return `<text x="${x}" y="${y}" font-size="${size}" text-anchor="${anchor}" class="${klass}">${PP9_ESC(s)}</text>`;}
+function pp9P(x,y,name='Бат',color='#be9def',wave=false){return `<g class="pp9-person" transform="translate(${x},${y})">
+ <ellipse cx="0" cy="79" rx="34" ry="7" fill="#c1acc55d"/>
+ <path d="M -24 18 Q 0 2 24 18 L 29 73 L -29 73 Z" class="pp9-body" fill="${color}" stroke="#fff" stroke-width="2.5"/>
+ <rect x="-36" y="26" width="12" height="39" rx="6" fill="#edb993" transform="rotate(-9 -30 26)"/>
+ <g class="pp9-arm"><rect x="24" y="26" width="12" height="38" rx="6" fill="#edb993" transform="rotate(${wave?-30:12} 30 28)"/></g>
+ <ellipse cy="-3" rx="24" ry="27" fill="#f5c79f" stroke="#f6e7dc" stroke-width="2"/>
+ <path d="M -25 -10 Q -22 -40 0 -35 Q 27 -38 24 -6 Q 8 -23 -8 -19 Q -15 -8 -25 -10" fill="#593448"/>
+ <circle cx="-8" cy="-2" r="2.4" fill="#533648"/><circle cx="8" cy="-2" r="2.4" fill="#533648"/>
+ <path d="M -5 9 Q 0 13 5 9" fill="none" stroke="#a35265" stroke-width="2" stroke-linecap="round"/>
+ ${pp9Txt(0,98,name,11,'middle','pp9-speaker')}</g>`;}
+function pp9Badge(x,y,s,w=90,cls=''){return `<g class="${cls}"><rect x="${x-w/2}" y="${y-17}" width="${w}" height="31" rx="12" fill="#fff" stroke="#eccbe8" stroke-width="1.5"/>${pp9Txt(x,y+4,s,13)}</g>`}
+function pp9Card(x,y,s='?',suit='♥',cls='',angle=0,back=false){return `<g class="${cls}" transform="translate(${x},${y}) rotate(${angle})"><rect x="-26" y="-40" width="52" height="76" rx="9" fill="${back?'#9c72c4':'#fffdfb'}" stroke="${back?'#fff':'#e3c9d7'}" stroke-width="2.4"/><rect x="-21" y="-35" width="42" height="66" rx="6" fill="none" stroke="${back?'#ead7ff':'#f9e5ed'}" stroke-width="1.5"/>${back?'<path d="M-17 0L0-23L17 0L0 23Z" fill="#e4c6ff"/>':pp9Txt(0,4,s,22,'middle','pp9-big')+pp9Txt(0,24,suit,18,'middle','pp9-big')}</g>`;}
+function pp9Phone(x,y,s='?',cls=''){return `<g class="${cls}" transform="translate(${x},${y})"><rect x="-28" y="-48" rx="11" width="56" height="96" fill="#403354" stroke="#9980c2" stroke-width="3"/><rect x="-23" y="-39" rx="5" width="46" height="72" fill="#fff7e9"/><rect x="-7" y="37" rx="3" width="14" height="4" fill="#c3b0cb"/>${pp9Txt(0,-3,s,14,'middle','pp9-small')}</g>`;}
+function pp9Line(x1,y1,x2,y2,color='#d7b8e8',w=3,cls=''){return `<path class="${cls}" d="M${x1} ${y1}L${x2} ${y2}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-dasharray="6 7"/>`}
+function pp9Q(s){return pp9Badge(190,61,s,255,'pp9-pop')}
+function pp9People(n=2){return n===3?pp9P(72,112,'Бат','#f4a9c5',true)+pp9P(190,112,'Сараа','#bca5ec',true)+pp9P(308,112,'Номин','#92d9c5',true):pp9P(78,120,'Бат','#f4a9c5',true)+pp9P(308,120,'Сараа','#bca5ec',true)}
+function pp9Table(){return `<ellipse cx="190" cy="181" rx="106" ry="27" fill="#f3dbce" stroke="#cdaaba" stroke-width="2"/><ellipse cx="190" cy="177" rx="102" ry="23" fill="#fff9f2"/>`}
+function pp9ColorGrid(step){let c=['#f59cbd','#98ddbd','#ffe08b','#bdabf4'];return c.map((v,i)=>`<g class="${step===1?'pp9-blink':step===2?'pp9-tap':''}" style="animation-delay:${i*.32}s"><rect x="${140+(i%2)*55}" y="${64+Math.floor(i/2)*55}" width="48" height="46" rx="12" fill="${v}" stroke="#fff" stroke-width="3"/></g>`).join('');}
+function pp9Stage(id,step){
+ const story=PP9_STORY[id];if(!story)return '';
+ const [kind,caption,detail]=story[step];let art='';const ppl=()=>pp9People(),three=()=>pp9People(3);
+ const cards=(a='7',b='K',c1='♥',c2='♠')=>pp9Card(158,125,a,c1,'pp9-left',-8)+pp9Card(224,125,b,c2,'pp9-right',9);
+ switch(kind){
+ case 'lineup':case 'pair':case 'team': art=(kind==='lineup'?three():ppl())+pp9Badge(190,48,detail,135,'pp9-pop');break;
+ case 'roulette':art=three()+pp9Badge(190,66,'1 / 10',85,'pp9-pop')+pp9Card(192,128,'?', '', 'pp9-flip');break;
+ case 'tiers':art=['ЗӨӨЛӨН','ХАЛУУХАН','ГАЛЗУУ'].map((t,i)=>`<g class="${i===step?'pp9-pop':''}"><rect x="${45+i*103}" y="81" width="96" height="75" rx="16" fill="${['#bbebcf','#ffd9a6','#f7a9ca'][i]}" stroke="#fff" stroke-width="3"/>${pp9Txt(93+i*103,122,t,12)}</g>`).join('');break;
+ case 'topic':case 'question':case 'rule':case 'secret':art=pp9Q(detail)+three(); if(kind==='secret')art+=pp9Phone(190,116,'●●●','pp9-pop');break;
+ case 'phone':art=ppl()+pp9Phone(190,112,detail,'pp9-move')+pp9Line(112,138,267,138);break;
+ case 'foreheadphone':art=ppl()+pp9Phone(110,73,detail,'pp9-bounce')+pp9Badge(301,64,'Сэжүүр?',95);break;
+ case 'pass':art=ppl()+pp9Phone(190,122,detail,'pp9-move')+pp9Line(118,158,261,158);break;
+ case 'hint':case 'whisper':case 'conversation':case 'chat':art=ppl()+pp9Badge(182,73,detail,kind==='conversation'?138:134,'pp9-bounce')+pp9Line(137,90,179,111);break;
+ case 'point':case 'vote':case 'votes':case 'hands':art=three()+pp9Badge(190,63,detail,145,'pp9-pop')+(kind==='point'||kind==='vote'?'<path class="pp9-bounce" d="M110 129L175 101L149 101M175 101L163 126M272 130L209 101L226 99M209 101L219 126" fill="none" stroke="#a278af" stroke-width="5" stroke-linecap="round"/>':'');break;
+ case 'answer2':art=ppl()+pp9Badge(110,62,'Бууз',85,'pp9-bounce')+pp9Badge(271,62,'Бууз',85,'pp9-bounce');break;
+ case 'answer3':art=three()+pp9Badge(75,63,'Далай',82,'pp9-bounce')+pp9Badge(190,63,'Далай',82,'pp9-bounce')+pp9Badge(311,63,'Уул',82,'pp9-bounce');break;
+ case 'match2':art=ppl()+cards('8','8','♥','♠')+pp9Badge(192,50,'ТЭНЦЛЭЭ!',130,'pp9-pop');break;
+ case 'match3':art=three()+pp9Badge(190,61,detail,165,'pp9-pop');break;
+ case 'match4':art=pp9Card(102,115,'K','♥','pp9-bounce')+pp9Card(163,115,'K','♦','pp9-bounce')+pp9Card(224,115,'K','♠','pp9-bounce')+pp9Card(285,115,'K','♣','pp9-bounce');break;
+ case 'deal':case 'deal2':art=ppl()+pp9Table()+pp9Card(150,125,'?', '', 'pp9-move',-11,true)+pp9Card(232,125,'?', '', 'pp9-left',10,true);break;
+ case 'draw':art=ppl()+pp9Table()+pp9Card(188,125,detail==='♥ 7'?'7':detail==='7 ♠'?'7':'?','♥','pp9-move');break;
+ case 'draw2':art=ppl()+pp9Table()+cards('8','4','♥','♠')+pp9Badge(190,66,detail,86,'pp9-pop');break;
+ case 'flip':case 'flip2':art=ppl()+pp9Table()+cards(kind==='flip'?'7':'9',detail.includes('K')?'K':'8','♠','♥')+pp9Badge(190,48,detail,132,'pp9-pop');break;
+ case 'bluff':art=ppl()+pp9Table()+pp9Card(166,130,'?','♠','pp9-move',-11,true)+pp9Card(217,130,'?','♦','pp9-move',9,true)+pp9Badge(190,62,'2 ТУЗ!',100,'pp9-pop');break;
+ case 'bet':case 'choice':case 'change':art=ppl()+pp9Badge(190,74,detail,158,'pp9-pop')+(kind==='bet'?pp9Card(190,141,'7','♠','pp9-bounce'):kind==='change'?pp9Card(190,135,'8','♣','pp9-rotate'):pp9Badge(142,138,'А',65,'pp9-left')+pp9Badge(239,138,'Б',65,'pp9-right'));break;
+ case 'gap':art=ppl()+pp9Card(153,128,'4','♠','pp9-bounce')+pp9Card(224,128,'Q','♥','pp9-bounce')+pp9Badge(190,67,'Дунд нь?',119,'pp9-pop');break;
+ case 'steps':art=[0,1,2,3].map((a)=>`<g class="${a===1?'pp9-pop':''}"><rect x="${49+a*78}" y="109" rx="12" width="69" height="73" fill="${a===1?'#ffd78a':'#e7d8f4'}" stroke="#fff" stroke-width="2"/>${pp9Txt(82+a*78,152,String(a+1),24,'middle','pp9-big')}</g>`).join('');break;
+ case 'pyramid':art=[...Array(6)].map((_,i)=>{let row=i<3?0:i<5?1:2, col=i<3?i:i<5?i-3:0, x=126+col*63+row*31,y=154-row*50;return pp9Card(x,y,'?', '',i===2?'pp9-flip':'',0,true)}).join('');break;
+ case 'grid':art=[...Array(6)].map((_,i)=>pp9Card(114+(i%3)*77,91+Math.floor(i/3)*85,'?','',i===1?'pp9-flip':'',0,true)).join('');break;
+ case 'deal2':art=ppl()+pp9Card(169,123,'?','', 'pp9-left',-10,true)+pp9Card(221,123,'?','', 'pp9-right',10,true);break;
+ case 'numbers':case 'count':case 'word':case 'chain':case 'math':art=three()+pp9Badge(190,67,detail,kind==='chain'?206:165,kind==='count'?'pp9-pop':'pp9-move');break;
+ case 'stack':art=pp9Table()+[0,1,2,3,4].map((i)=>pp9Card(190+i*2,151-i*9,'?', '', '',0,true)).join('')+pp9P(79,110,'Бат','#f4a9c5');break;
+ case 'blow':art=pp9Table()+[0,1,2,3].map(i=>pp9Card(178+i*25,132-i*9,'?','',`pp9-${i%2?'right':'fall'}`,i*18,true)).join('')+pp9P(78,100,'Бат','#f4a9c5');break;
+ case 'scatter':art=kind==='scatter'&&id==='uleeh'?pp9Table()+[0,1,2,3].map(i=>pp9Card(140+i*42,137+(i%2)*25,'?','',i%2?'pp9-right':'pp9-left',i*12,true)).join(''):kind==='scatter'?three()+[0,1,2,3].map(i=>pp9Badge(119+i*48,122+(i%2)*35, ['М','Х','Т','М'][i],45,'pp9-fall')).join(''):'';break;
+ case 'bones':art=three()+[0,1,2,3].map(i=>`<g class="pp9-shake"><rect x="${112+i*43}" y="98" width="35" height="39" rx="11" fill="${i%2?'#e7bf96':'#f8dcb6'}" stroke="#ae8b7f" stroke-width="2"/>${pp9Txt(130+i*43,122,['М','Х','Т','М'][i],16)}</g>`).join('');break;
+ case 'match':art=three()+pp9Badge(190,67,detail,165,'pp9-pop');break;
+ case 'mime':art=pp9P(192,94,'Бат','#f4a9c5',true)+pp9Badge(190,51,detail,140,'pp9-bounce')+pp9Line(130,158,250,158);break;
+ case 'sing':art=pp9P(176,95,'Бат','#ffc28c',true)+['♪','♫','♬'].map((c,i)=>`<g class="pp9-bounce" style="animation-delay:${i*.25}s">${pp9Txt(235+i*22,84-i*23,c,24,'middle','pp9-big')}</g>`).join('');break;
+ case 'timer':art=pp9P(81,118,'Бат','#f4a9c5')+`<g class="pp9-pop"><circle cx="235" cy="109" r="55" fill="#fff" stroke="#e5b2d1" stroke-width="8"/><path d="M235 109L235 70M235 109L259 117" stroke="#ab7cb3" stroke-width="7" stroke-linecap="round"/>${pp9Txt(235,155,detail,15)}</g>`;break;
+ case 'score':case 'winner':case 'result':case 'task':art=ppl()+pp9Badge(190,75,detail,166,'pp9-pop')+`<path class="pp9-bounce" d="M173 150l16-12 14 12-4 30h-23z" fill="#ffe088" stroke="#dcb25b" stroke-width="3"/>`;break;
+ case 'role':art=three()+pp9Badge(90,62,'МӨРДӨГЧ',108,'pp9-pop')+pp9Badge(297,62,'НУУЦ',90,'pp9-flip');break;
+ case 'wink':art=ppl()+pp9Badge(190,60,'НУУЦ ДОХИО',137,'pp9-pop')+`<g class="pp9-tap"><path d="M63 111q14 11 28 0" fill="none" stroke="#6a4e64" stroke-width="4" stroke-linecap="round"/></g>`;break;
+ case 'foreheadcard':art=ppl()+pp9Card(105,75,'K','♥','pp9-bounce')+pp9Card(274,75,'6','♠','pp9-bounce');break;
+ case 'glance':art=ppl()+pp9Card(105,75,'?','', '',0,true)+pp9Card(274,75,'6','♠','pp9-bounce')+pp9Line(128,49,270,49);break;
+ case 'track':case 'race':art=['♠','♥','♣','♦'].map((s,i)=>pp9Line(60,68+i*34,340,68+i*34,'#d4c2db',2)+pp9Badge((kind==='race'&&i===1)?305:84,68+i*34,s,46,kind==='race'&&i===1?'pp9-right':'')).join('');break;
+ case 'suits':art=['♠','♥','♣','♦'].map((s,i)=>pp9Card(91+i*66,122,s,'','pp9-bounce',0,false)).join('');break;
+ case 'house':case 'build':case 'fall':art=pp9Table()+[[-24,-24],[24,24]].map(([a,b],i)=>pp9Card(182+i*27,121,'?', '',kind==='fall'?'pp9-fall':'pp9-bounce',i===0?-27:27,true)).join('')+(kind==='build'?pp9Card(190,60,'?','','pp9-fall',0,true):'');break;
+ case 'table':art=ppl()+pp9Table()+pp9Badge(190,129,'🥄',58,'pp9-bounce')+pp9Card(151,126,'Q','♥')+pp9Card(230,126,'Q','♦');break;
+ case 'spoon':art=ppl()+pp9Table()+`<g class="pp9-move"><ellipse cx="192" cy="144" rx="9" ry="16" fill="#d7d9df" stroke="#9096aa" stroke-width="2"/><rect x="190" y="154" width="5" height="43" rx="3" fill="#b6b8c5"/></g>`+pp9Badge(190,68,'ШҮҮР!',112,'pp9-pop');break;
+ case 'rank':art=['3','10','K'].map((s,i)=>pp9Card(115+i*74,135-i*15,s,'♠','pp9-bounce')).join('');break;
+ case 'change':art=ppl()+pp9Card(190,121,'8','♣','pp9-rotate')+pp9Badge(190,65,'♥ ШИЛЖЛЭЭ',140,'pp9-pop');break;
+ case 'slap':art=ppl()+pp9Table()+pp9Card(190,125,'5','♥','pp9-flip')+`<g class="pp9-tap"><path d="M185 118L187 86Q195 74 205 91L216 110Z" fill="#f2bd9b" stroke="#cb9e7b" stroke-width="2"/></g>`;break;
+ case 'wheel':art=three()+`<g class="pp9-rotate" transform="translate(191,120)"><circle r="56" fill="#fff" stroke="#ca9cc9" stroke-width="3"/><path d="M0 0L0-53A53 53 0 0 1 46 26Z" fill="#f9a5c2"/><path d="M0 0L46 26A53 53 0 0 1-46 26Z" fill="#b5a4ed"/><path d="M0 0L-46 26A53 53 0 0 1 0-53Z" fill="#8bdec6"/></g><path d="M191 43l-9-17h18Z" fill="#a85488"/>`;break;
+ case 'ready':case 'reflex':art=ppl()+`<rect x="131" y="122" width="118" height="50" rx="14" fill="${kind==='ready'?'#ffda92':'#b4efce'}" stroke="#fff" stroke-width="3"/>${pp9Txt(190,155,kind==='ready'?'ХҮЛЭЭ!':'GO!',24,'middle','pp9-big')}<circle class="pp9-${kind==='ready'?'blink':'tap'}" cx="96" cy="169" r="19" fill="#f49ac5"/><circle class="pp9-tap" cx="285" cy="169" r="19" fill="#a3d9cb"/>`;break;
+ case 'colors':case 'blink':case 'presscolors':art=pp9ColorGrid(step)+pp9Badge(190,47,detail,178,'pp9-pop');break;
+ case 'numbers':art=three()+pp9Badge(190,69,detail,172,'pp9-pop');break;
+ case 'split':art=pp9Badge(123,93,'A : 2',105,'pp9-left')+pp9Badge(259,93,'Б : 1',105,'pp9-right')+three();break;
+ default:art=ppl()+pp9Badge(190,61,detail,174,'pp9-pop');
+ }
+ return `<div class="pp9-scene" data-game="${PP9_ESC(id)}" data-step="${step+1}" data-action="${PP9_ESC(kind)}"><div class="pp9-scene-title">${PP9_ESC(caption)}</div><svg viewBox="0 0 380 224" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${PP9_ESC(caption)}"><rect class="pp9-stage" x="6" y="9" width="368" height="207" rx="22"/>${art}</svg><div class="pp9-frame-caption">${PP9_ESC((step+1)+' / 3 · '+detail)}</div></div>`;
+}
 function ppShowGuide(id='party'){
  const g=id==='party'?{id:'party',name:'10 раунд — шууд тоглох',rules:[]}:[...GAMES,...OFFLINE].find(x=>x.id===id);
  if(!g)return;
- const [example,scenes,copy]=ppV8How(g);let step=0,demo=false,clicked=false;
+ let step=0;
  const ov=$('#ov');ov.hidden=false;
  const close=()=>{ov.hidden=true;ov.innerHTML='';};
- const render=()=>{
-   const scene=demo?scenes[1]:scenes[step];
-   const header=demo?'НЭГ РАУНДЫН ЖИШЭЭ':`АЛХАМ ${step+1} / 3`;
-   const title=demo?'Одоо өөрөө турш!':['1. Эхлээд','2. Дараа нь','3. Эцэст нь'][step];
-   ov.innerHTML=`<div class="pp-v8-guide-shade" id="ppV8Shade"><section class="pp-v8-guide" role="dialog" aria-modal="true" aria-label="Тоглоомын хөдөлгөөнт заавар"><div class="pp-v8-top"><span>✦ ${esc(g.name)} · Хөдөлгөөнт заавар</span><button class="pp-v8-x" id="ppV8Close" type="button" aria-label="Хаах">✕</button></div><div class="pp-v8-pips">${[0,1,2].map(i=>`<i class="${demo||i<=step?'on':''}"></i>`).join('')}</div>
-   <div class="pp-v8-artframe">${ppV8Sketch(scene,example,step)}</div>
-   <div class="pp-v8-copy"><div class="pp-v8-overline">${header}</div><h3>${title}</h3><p>${esc(demo?(clicked?'Болж байна! Энэ нь жишээ раунд. Одоо жинхэнэ тоглоомоо эхлүүлж болно.':copy[1]):copy[step])}</p></div>
-   ${demo?`<div class="pp-v8-example-actions"><button type="button" id="ppV8DemoAction" class="${clicked?'chosen':''}">${clicked?'✓ Хийчихлээ':'● Жишээ үйлдлийг хийх'}</button><button type="button" id="ppV8Replay">↻ Дахин үзэх</button></div>`:''}
-   <div class="pp-v8-footer"><button class="secondary" id="ppV8Prev" type="button">${demo?'← Алхмууд':step?'← Буцах':'✕ Хаах'}</button><button class="primary" id="ppV8Next" type="button">${demo?'Тоглоомоо эхлүүлэх →':step===2?'Нэг раунд турших →':'Дараагийнх →'}</button></div><div class="pp-v8-tip">Дүрмийг цээжлэх шаардлагагүй. Алхмаа хараад шууд тогло.</div></section></div>`;
+ function render(){
+   let scene=PP9_STORY[id]?.[step];
+   const copy=scene?scene[1]:'Жишээгээр тайлбарлах';
+   ov.innerHTML=`<div class="pp-v8-guide-shade" id="ppV8Shade"><section class="pp-v8-guide" role="dialog" aria-modal="true" aria-label="${PP9_ESC(g.name)} тоглоомын хөдөлгөөнт заавар">
+   <div class="pp-v8-top"><span>✦ ${esc(g.name)} · Яг яаж тоглох вэ?</span><button class="pp-v8-x" id="ppV8Close" type="button" aria-label="Хаах">✕</button></div>
+   <div class="pp-v8-pips">${[0,1,2].map(i=>`<i class="${i===step?'on':''}"></i>`).join('')}</div>
+   <div class="pp-v8-artframe">${pp9Stage(id,step)}</div>
+   <div class="pp-v8-copy"><div class="pp-v8-overline">АЛХАМ ${step+1} / 3</div><p class="pp-guidestep-copy">${PP9_ESC(copy)}</p></div>
+   
+   <div class="pp-v8-footer"><button class="secondary" id="ppV8Prev" type="button">${step?'← Өмнөх':'✕ Хаах'}</button><button class="primary" id="ppV8Next" type="button">${step===2?'Тоглоомоо нээх →':'Дараагийн алхам →'}</button></div>
+   <button class="pp9-replay" id="ppV8Replay" type="button">↻ ${step===2?'Эхнээс нь дахин үзэх':'Энэ алхмыг дахин анимейшнтай үзэх'}</button>
+   </section></div>`;
    $('#ppV8Close').onclick=close;$('#ppV8Shade').onclick=e=>{if(e.target.id==='ppV8Shade')close();};
-   $('#ppV8Prev').onclick=()=>{if(demo){demo=false;step=2;clicked=false;render();}else if(step){step--;render();}else close();};
-   $('#ppV8Next').onclick=()=>{if(demo){close();if(id==='party')partyStart(ppMood);else if(OFFLINE.includes(g))go('rules-'+id);else go(id);}else if(step<2){step++;render();}else{demo=true;render();}};
-   const btn=$('#ppV8DemoAction');if(btn)btn.onclick=()=>{clicked=!clicked;render();};
-   const replay=$('#ppV8Replay');if(replay)replay.onclick=()=>{clicked=false;render();};
- };
+   $('#ppV8Prev').onclick=()=>{if(step){step--;render();}else close();};
+   $('#ppV8Next').onclick=()=>{if(step<2){step++;render();}else{close();if(id==='party')partyStart(ppMood);else if(OFFLINE.includes(g))go('rules-'+id);else go(id);}};
+   $('#ppV8Replay').onclick=()=>{render();};
+ }
  render();
 }
 
@@ -1733,7 +2337,7 @@ SCREENS.hilo = g => {
     if(nx.v===prev.v){ beep(600,.08); return r({t:"Ижил тоо. Аюулгүй, дахин таа."}); }
     if((nx.v>prev.v)===(d>0)){ pot++; streak++; beep(990,.08); return r({t:`Зөв! Сав ${pot} боллоо.`}); }
     const who=ps[turn%ps.length], p=Math.max(pot,1); beep(150,.4,.3); buzz([200,80,200]);
-    stage(`${pcard(cur)}<div class="card rose flip"><div class="kicker">${esc(who)} · Сав ${p}</div><div class="huge">Буруу!</div><div class="big">${LEVEL_NAME[lvl(p)]} шийтгэл${S.drink?` эсвэл 1 балга ус/ундаа`:""}:</div></div>${penHTML(who,lvl(p))}
+    stage(`${pcard(cur)}<div class="card rose flip"><div class="kicker">${esc(who)} · Сав ${p}</div><div class="huge">Буруу!</div><div class="big">${LEVEL_NAME[lvl(p)]} шийтгэл${S.drink?` эсвэл ${sipText()}`:""}:</div></div>${penHTML(who,lvl(p))}
       <div class="btns"><button class="btn ghost" id="hz" type="button">Шийтгэл сугал</button><button class="btn" id="nx" type="button">Дараагийн хүн</button></div>`);
     $("#hz").onclick=()=>{ const l=S.level; S.level=lvl(p); openHZ(who); S.level=l; };
     $("#nx").onclick=()=>{ pot=0; streak=0; turn++; r(); };
@@ -1847,7 +2451,7 @@ SCREENS.duel = g => {
       <div class="card sun flip"><div class="big">${esc(t)}</div></div>
       <div class="btns"><button class="btn" id="wa" type="button">${esc(a)} ялав</button><button class="btn" id="wb" type="button">${esc(b)} ялав</button><button class="btn ghost full" id="sk" type="button">Өөр тулаан</button></div>`);
     const win=(w,l)=>{ beep(990,.2); stage(`<div class="card mint flip" style="min-height:0"><div class="kicker">Ялагч</div><div class="huge">${esc(w)}</div></div>
-      ${S.drink?`<div class="card rose flip" style="min-height:0"><div class="big">${esc(l)}: 1 балга ус/ундаа эсвэл доорх шийтгэл.</div></div>`:""}${penHTML(l)}
+      ${S.drink?`<div class="card rose flip" style="min-height:0"><div class="big">${esc(l)}: ${sipText()} эсвэл доорх шийтгэл.</div></div>`:""}${penHTML(l)}
       <button class="btn" id="nx" type="button">Дараагийн тулаан</button>`); $("#nx").onclick=r; };
     $("#wa").onclick=()=>win(a,b); $("#wb").onclick=()=>win(b,a); $("#sk").onclick=r; };
   r();
@@ -1866,11 +2470,11 @@ SCREENS.forehead = g => {
   ready();
 };
 SCREENS.kingcup = g => {
-  if(!S.drink){frame(g);stage(`<div class="pp-v8-playpanel"><h3>🍷 21+ горим</h3><p>Энэ тоглоом зөвхөн 21 ба түүнээс дээш насныханд зориулсан горимд нээгдэнэ.</p><button type="button" class="btn" id="ppAgeModeOpen">21+ тохиргоо</button></div>`);$("#ppAgeModeOpen").onclick=ppV8DrinkToggle;return;}
+  if(!S.drink){frame(g);stage(`<div class="pp-v8-playpanel"><h3>🍷 Drink mode · 21+</h3><p>Энэ тоглоом зөвхөн 21 ба түүнээс дээш насныханд зориулсан горимд нээгдэнэ.</p><button type="button" class="btn" id="ppAgeModeOpen">21+ тохиргоо</button></div>`);$("#ppAgeModeOpen").onclick=ppV8DrinkToggle;return;}
 
   frame(g); const d=deck(DRINKCARDS.filter(s=>!/(хүрхрээ|зогсох хүртэл|хундагыг нь дүүргэ|амьсгаагаа барих|бүтэн аяга|тухайн хүнийг балгуула|2 балга|3 балга|хэн ч зогсож болохгүй)/i.test(s))), ps=players(); let n=0;
   const r=()=>{ n++; stage(`<div class="card flip" style="background:#ff4f8b;color:#fff"><div class="kicker">${n} · ${esc(ps[(n-1)%ps.length])} сугаллаа</div><div class="big">${esc(d())}</div></div>
-    <p class="note">Согтууруулах ундаа уухгүй хүн ус, ундаагаар тоглоно.</p>
+    <p class="note">Хүсвэл ус, ундаагаар орлуулж эсвэл алгасаж болно.</p>
     <div class="btns"><button class="btn ghost" id="hz" type="button">Шийтгэлээр солих</button><button class="btn" id="nx" type="button">Дараагийн карт</button></div>`);
     $("#nx").onclick=r; $("#hz").onclick=()=>openHZ(ps[(n-1)%ps.length]); };
   r();
@@ -1917,18 +2521,24 @@ function gameEditForm(id){
 
 /* ---------- rules screen (offline play) ---------- */
 function rulesScreen(g){
-  current="rules"; const isOff=OFFLINE.includes(g);
-  $("#app").innerHTML=`<div class="topbar"><button class="back" type="button" aria-label="Буцах" id="back">←</button><h2>${esc(g.name)}</h2></div>
-  <div class="stack" style="--c:${g.c}">
-    <div class="rhero game" style="--c:${g.c};animation:none">${coverHTML(g,1)}</div>
-    <p style="margin:0;font-size:17px;font-weight:600">${esc(g.desc)}</p>
-    <div class="facts"><div><span>Хүн</span><b>${esc(g.players)}</b></div><div><span>Хэрэгтэй</span><b>${esc(g.needs||"Утас")}</b></div><div><span>Хугацаа</span><b>${esc(g.time||"Хүссэнээрээ")}</b></div></div>
-     <button class="pp-game-guide" id="ppGameGuide" type="button">🎬 Хөдөлгөөнт жишээгээр үзэх <span>→</span></button>
-     <div class="label" style="margin-top:8px">Дэлгэрэнгүй дүрэм</div>
-    <ol class="steps">${g.rules.map((r,i)=>`<li style="--i:${i}">${esc(r)}</li>`).join("")}</ol>
-    <div class="btns" style="margin-top:8px">${isOff?`<button class="btn rose full" id="hz" type="button">Шийтгэл сугалах</button>`:`<button class="btn ghost" id="hz" type="button">Шийтгэл сугал</button><button class="btn" id="play" type="button">Утсаар тоглох</button>`}</div>
-  </div>`;
-  $("#back").onclick=()=>go(); $("#ppGameGuide").onclick=()=>ppShowGuide(g.id); $("#hz").onclick=()=>openHZ(); const pl=$("#play"); if(pl) pl.onclick=()=>go(g.id);
+  current="rules";
+  const isOff=OFFLINE.includes(g);
+  const needs=g.needs|| (g.cards?'Жинхэнэ хөзөр':'Найзууд, цаас / жижиг хэрэгсэл');
+  const intro=(g.rules||[]).slice(0,3);
+  $("#app").innerHTML=`<div class="topbar"><button class="back" id="back" type="button" aria-label="Буцах">←</button><h2>${esc(g.name)}</h2></div>
+    <div class="pp-offline-screen">
+      <div class="pp-offline-hero"><span class="pp-offline-symbol">${PP_ICONS[g.id]||'🃏'}</span><div><span class="pp-offline-kicker">ХЭРЭГСЭЛТЭЙ ТОГЛООМ · БОДИТОЙ ТОГЛОНО</span><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p></div></div>
+      <div class="pp-offline-facts"><span>👥 ${esc(g.players)}</span><span>🎒 ${esc(needs)}</span><span>⏱ ${esc(g.time||'10–15 мин')}</span></div>
+      <button class="pp-game-guide" id="ppGameGuide" type="button"><span>▶ Хөдөлгөөнт жишээг үзэх</span><span>↗</span></button>
+      <div class="pp-offline-title">3 алхмаар тогло</div>
+      <div class="pp-offline-steps">${intro.map((line,i)=>`<div><b>${i+1}</b><span>${esc(line)}</span></div>`).join('')}</div>
+      <details class="pp-offline-full"><summary>Бүх дүрмийг унших (${g.rules.length})</summary><ol>${g.rules.map(line=>`<li>${esc(line)}</li>`).join('')}</ol></details>
+      <button class="btn rose" id="hz" type="button">Шийтгэл сугалах</button>
+      <p class="pp-offline-note">Энэ төрлийн тоглоомыг утаснаас бус, ширээн дээрх хөзөр, шагай эсвэл хэрэгслээр тоглоно. Утас зөвхөн дүрэм, тайлбар болон шийтгэлд ашиглагдана.</p>
+    </div>`;
+  $("#back").onclick=()=>go();
+  $("#ppGameGuide").onclick=()=>ppShowGuide(g.id);
+  $("#hz").onclick=()=>openHZ();
 }
 
 /* ---------- admin login ---------- */
@@ -1946,9 +2556,132 @@ function adminLogin(){
     .catch(()=>{ $("#lmsg").textContent="Сервертэй холбогдож чадсангүй."; }); };
 }
 
+
+/* === V17: cloud synchronized party room === */
+let PP_ROOM=null,PP_ROOM_INTERVAL=null;
+const ppRoomSessionKey='pp-room-session-v1';
+function ppRoomStop(){if(PP_ROOM_INTERVAL){clearInterval(PP_ROOM_INTERVAL);PP_ROOM_INTERVAL=null;}}
+function ppRoomSet(r){PP_ROOM=r;if(r)store(ppRoomSessionKey,{code:r.code,token:r.token,name:r.name});}
+const ppRoomAPI=async(path,body=null,token='')=>{
+  const init={method:body?'POST':'GET',headers:{'content-type':'application/json'}};
+  if(token)init.headers.authorization='Bearer '+token;
+  if(body)init.body=JSON.stringify(body);
+  const res=await fetch('/api/rooms/'+path,init);
+  let d=await res.json().catch(()=>({error:'Серверийн хариу буруу байна.'}));
+  if(!res.ok)throw new Error(d.error||'Холболт амжилтгүй.');
+  return d;
+};
+function ppRoomLanding(code=''){
+  ppRoomStop();current='online';window.scrollTo(0,0);
+  const saved=store(ppRoomSessionKey)||{};
+  const roomCode=code||saved.code||'';
+  $('#app').innerHTML=`<div class="pp-room-page"><div class="topbar"><button class="back" id="ppRoomBack" type="button">←</button><h2>Online Room</h2></div>
+    <div class="pp-room-intro"><div class="pp-room-magic">✳</div><span>PARTY TOGETHER</span><h2>Тус тусын утаснаас<br><em>хамт тогло!</em></h2><p>Нэг хүн өрөө үүсгэнэ. Найзууд зургаан оронтой кодоор нэгдэж, нэг асуултад нууцаар саналаа өгнө.</p></div>
+    <label class="pp-room-label">Тоглогчийн нэр</label><input class="pp-room-input" id="ppRoomName" type="text" maxlength="24" placeholder="Жишээ: Сараа" value="${esc(saved.name||'')}">
+    <button class="pp-room-main" id="ppRoomCreate" type="button">✦ Шинэ өрөө үүсгэх</button>
+    <div class="pp-room-divider">эсвэл кодоор нэгдэх</div>
+    <input class="pp-room-input" id="ppRoomCode" type="text" inputmode="numeric" maxlength="6" placeholder="6 оронтой код" value="${esc(roomCode)}">
+    <button class="pp-room-secondary" id="ppRoomJoin" type="button">Кодоор нэгдэх →</button>
+    <p id="ppRoomError" class="pp-room-error" role="status"></p>
+    <p class="pp-room-fine">Интернэт шаардлагатай. Өрөө 24 цаг хүртэл хадгалагдана. Одоогоор “Хэн хамгийн?” болон “Алийг сонгох вэ?” төрлөөр хамт тоглоно.</p></div>`;
+  $('#ppRoomBack').onclick=()=>{ppRoomStop();home()};
+  const status=$('#ppRoomError');const name=()=>$('#ppRoomName').value.trim();
+  const handle=async(create)=>{
+    status.textContent='Холбогдож байна…';
+    try{
+      if(!name())throw Error('Эхлээд нэрээ оруулна уу.');
+      const c=$('#ppRoomCode').value.replace(/\D/g,'');
+      if(!create&&!/^\d{6}$/.test(c))throw Error('6 оронтой код оруулна уу.');
+      const data=await ppRoomAPI(create?'create':`${c}/join`,{name:name()});
+      ppRoomSet({code:data.room.code,token:data.token,name:name(),data:data.room});
+      ppRoomScreen();
+    }catch(e){status.textContent=e.message+(location.protocol==='file:'?' Онлайн өрөө ажиллуулахын тулд серверт нийтэлсэн сайтыг ашиглана.':'');}
+  };
+  $('#ppRoomCreate').onclick=()=>handle(true);
+  $('#ppRoomJoin').onclick=()=>handle(false);
+  if(code&&saved.code===code&&saved.token){
+    ppRoomSet({...saved,data:null});
+    ppRoomAPI(code,null,saved.token).then(d=>{PP_ROOM.data=d.room;ppRoomScreen();}).catch(()=>{});
+  }
+}
+const ppRoomPickPrompt=(mode)=>{
+  if(mode==='who')return {mode,prompt:pick(WHO),options:null};
+  const [a,b]=String(pick(WYR)).split('|').map(s=>s.trim());
+  return {mode,prompt:'Алийг сонгох вэ?',options:[{id:'a',label:a},{id:'b',label:b}]};
+};
+function ppRoomScreen(){
+ if(!PP_ROOM)return ppRoomLanding();ppRoomStop();current='online';
+ const room=PP_ROOM.data;
+ if(!room){ppRoomLanding(PP_ROOM.code);return;}
+ const host=room.isHost,me=room.selfId;
+ const count=room.ballotsCount||0;
+ const card=room.card;
+ const ballot=room.ballots||{};
+ const myVote=room.phase==='voting' ? PP_ROOM.myVote : ballot[me];
+ const tally=id=>Object.values(ballot).filter(v=>v===id).length;
+ const scores=room.scores||{},award=room.lastAward||{};
+ const rankings=[...room.players].sort((a,b)=>(scores[b.id]||0)-(scores[a.id]||0)||a.name.localeCompare(b.name,'mn'));
+ const maxPoints=Math.max(0,...rankings.map(p=>scores[p.id]||0));
+ const champions=rankings.filter(p=>(scores[p.id]||0)===maxPoints);
+ $('#app').innerHTML=`<div class="pp-room-page"><div class="topbar"><button class="back" id="ppRoomExit" type="button">←</button><h2>Online Room</h2></div>
+   <div class="pp-room-header"><span>ӨРӨӨНИЙ КОД</span><div class="pp-room-code">${esc(room.code)}</div><button type="button" class="pp-room-copy" id="ppRoomCopy">Холбоос хуулах ↗</button></div>
+   <div class="pp-room-scoreboard"><div class="pp-room-scorehead"><div><span>🏆 LIVE RANKING</span><h3>Онооны самбар</h3></div><strong>${Math.min(room.round,10)} / 10</strong></div>
+   <div class="pp-room-scorelist">${rankings.map((p,i)=>`<div class="pp-room-scoreline ${p.id===me?'is-me':''}"><span class="pp-room-rank">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</span><span class="pp-room-scoreplayer">${esc(p.name)}${p.id===me?' <small>чи</small>':''}</span>${room.phase==='results'&&award[p.id]?`<span class="pp-room-award">+${award[p.id]}</span>`:''}<b>${scores[p.id]||0}<small> оноо</small></b></div>`).join('')}</div>
+   <p class="pp-room-scorehint">Санал өгвөл +1 · “Хэн хамгийн?”-д сонгогдвол +2 · “Хэцүү сонголт”-ын олонхтой таарвал +1 нэмэлт оноо</p></div>
+   ${room.gameFinished?`<div class="pp-room-champion"><span>🏆 10 РАУНД ДУУСЛАА</span><h3>${champions.map(p=>esc(p.name)).join(' & ')} ${champions.length>1?'тэнцлээ!':'ялагч боллоо!'}</h3><p>${maxPoints} оноо · Дахин тогловол оноо шинээр эхэлнэ.</p></div>`:''}
+   <div class="pp-room-player-head">👥 Нэгдсэн хүмүүс · ${room.players.length}/12</div>
+   <div class="pp-room-people">${room.players.map(p=>`<span class="${p.id===room.hostId?'host':''}">${p.id===room.hostId?'★ ':''}${esc(p.name)}${p.id===me?' (чи)':''}</span>`).join('')}</div>
+   ${room.phase==='lobby'?`<div class="pp-room-box"><h3>Найзуудаа хүлээж байна…</h3><p>Код эсвэл холбоосоо явуулаад бусдыг нэгдүүл. Өрөөний эзэн эхний раундыг эхлүүлнэ.</p></div>`:''}
+   ${card&&['voting','results'].includes(room.phase)?`<div class="pp-room-box"><div class="pp-room-kicker">РАУНД ${room.round} · ${card.mode==='who'?'Хэн хамгийн?':'Хэцүү сонголт'}</div>
+     <h3>${esc(card.prompt)}</h3>
+     <div class="pp-room-choices">${card.options.map(o=>`<button type="button" data-rvote="${esc(o.id)}" ${room.phase!=='voting'?'disabled':''} class="${myVote===o.id?'chosen':''}"><b>${esc(o.label)}</b>${room.phase==='results'?`<span>${tally(o.id)} санал</span>`:''}</button>`).join('')}</div>
+     <p class="pp-room-hint">${room.phase==='results'?'Оноо нэмэгдлээ! 🏆':myVote?'Саналыг чинь хүлээн авлаа. Бусдыг хүлээж байна.':'Нууцаар саналаа өг. Бусад хүн үр дүнг нээх хүртэл харахгүй.'}</p>
+     <div class="pp-room-count">${count} / ${room.players.length} санал</div></div>`:''}
+   ${room.phase==='closed'?'<div class="pp-room-box">Өрөө хаагдсан байна. Шинэ өрөө үүсгэж болно.</div>':''}
+   ${host&&room.phase!=='closed'?`<div class="pp-room-host"><p>Өрөөний эзний удирдлага</p><div class="pp-room-host-actions">${!room.gameFinished?'<button data-rstart="who" type="button">👀 Хэн хамгийн?</button><button data-rstart="choice" type="button">⚖️ Хэцүү сонголт</button>':''}${room.phase==='voting'?'<button id="ppRoomReveal" type="button">Үр дүнг нээх ✨</button>':''}<button id="ppRoomReset" type="button">↻ Шинэ 10 раунд</button></div></div>`:''}
+   <button class="pp-room-secondary" id="ppRoomRefresh" type="button">↻ Шинэчлэх</button><p class="pp-room-fine">Саналууд сервертэй ойролцоогоор 3 секунд тутам синк хийнэ. Холболт тасарвал “Шинэчлэх” дарна уу.</p>
+   <p class="pp-room-error" id="ppRoomError" role="status"></p></div>`;
+ const msg=$('#ppRoomError');
+ $('#ppRoomExit').onclick=()=>{ppRoomStop();home()};
+ $('#ppRoomCopy').onclick=async()=>{
+   const url=new URL(location.href);url.searchParams.set('room',room.code);url.hash='';
+   try{await navigator.clipboard.writeText(url.toString());msg.textContent='Холбоос хууллаа.';}catch(e){msg.textContent='Код: '+room.code+' — найздаа явуулаарай.';}
+ };
+ document.querySelectorAll('[data-rvote]').forEach(b=>b.onclick=async()=>{
+  if(PP_ROOM.busy)return;PP_ROOM.busy=true;
+  try{const d=await ppRoomAPI(`${PP_ROOM.code}/action`,{type:'vote',optionId:b.dataset.rvote},PP_ROOM.token);PP_ROOM.myVote=b.dataset.rvote;PP_ROOM.data=d.room;ppRoomScreen();}
+  catch(e){msg.textContent=e.message;}finally{PP_ROOM.busy=false;}
+ });
+ document.querySelectorAll('[data-rstart]').forEach(b=>b.onclick=async()=>{
+  try{const selected=ppRoomPickPrompt(b.dataset.rstart);const d=await ppRoomAPI(`${PP_ROOM.code}/action`,{type:'next',...selected},PP_ROOM.token);PP_ROOM.myVote=null;PP_ROOM.data=d.room;ppRoomScreen();}catch(e){msg.textContent=e.message;}
+ });
+ const reset=$('#ppRoomReset');if(reset)reset.onclick=async()=>{
+  if(room.round>0&&!window.confirm('Одоогийн оноог арилгаад 10 раундыг шинээр эхлүүлэх үү?'))return;
+  try{const d=await ppRoomAPI(`${PP_ROOM.code}/action`,{type:'reset'},PP_ROOM.token);PP_ROOM.myVote=null;PP_ROOM.data=d.room;ppRoomScreen();}catch(e){msg.textContent=e.message;}
+ };
+ const reveal=$('#ppRoomReveal');if(reveal)reveal.onclick=async()=>{try{const d=await ppRoomAPI(`${PP_ROOM.code}/action`,{type:'reveal'},PP_ROOM.token);PP_ROOM.data=d.room;ppRoomScreen();}catch(e){msg.textContent=e.message;}};
+ $('#ppRoomRefresh').onclick=()=>ppRoomPoll(true);
+ PP_ROOM_INTERVAL=setInterval(()=>{if(current==='online')ppRoomPoll(false)},3000);
+}
+async function ppRoomPoll(force){
+ if(!PP_ROOM||PP_ROOM.polling)return;PP_ROOM.polling=true;
+ try{
+   const d=await ppRoomAPI(PP_ROOM.code,null,PP_ROOM.token);
+   const old=PP_ROOM.data;const changed=force||!old||old.updatedAt!==d.room.updatedAt;
+   PP_ROOM.data=d.room;
+   if(old?.round!==d.room.round)PP_ROOM.myVote=null;
+   if(changed&&current==='online')ppRoomScreen();
+ }catch(e){if(force){let msg=$('#ppRoomError');if(msg)msg.textContent=e.message;}}
+ finally{if(PP_ROOM)PP_ROOM.polling=false;}
+}
+
 /* ---------- boot ---------- */
 rebuildContent();
 home();
+if(new URLSearchParams(location.search).get('room')){
+  const roomCode=new URLSearchParams(location.search).get('room');
+  if(/^\d{6}$/.test(roomCode))ppRoomLanding(roomCode);
+}
 const rerender=()=>{ if(current==="home") home(); else if(current==="edit") editor(); };
 const localMode=()=>{ MODE="local"; try{ fetch("custom.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(d=>{ if(d&&typeof d==="object"){ SHARED={content:d.content||{},games:d.games||[],gedits:d.gedits||{}}; } rebuildContent(); rerender(); }).catch(()=>{ rebuildContent(); rerender(); }); }catch(e){ rebuildContent(); rerender(); } };
 try{
