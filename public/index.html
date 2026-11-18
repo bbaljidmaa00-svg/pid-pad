@@ -1282,6 +1282,36 @@ body:has(.pp-room-page) .fab, body:has(.pp-offline-screen) .fab{display:none!imp
 @media(max-width:620px){.pp-hero{padding:24px 20px!important}.pp-hero h1{font-size:clamp(36px,9vw,48px)!important}.pp-play-choices .pp-primary,.pp-online-primary{min-height:53px!important;font-size:14px!important;border-radius:14px!important}.pp-featured{grid-template-columns:repeat(3,minmax(0,1fr))!important}.pp-feature>button.pp-feature-main{padding:12px 8px!important;min-height:150px!important}.pp-feature b{font-size:12px!important}.pp-feature p{display:none!important}.pp-feature-icon{font-size:29px!important}.pp-feature .pp-star{width:27px!important;height:27px!important;right:7px!important;top:7px!important}.pp-fnumber{font-size:9px!important}.pp-feature{border-radius:15px!important}.pp-customize>summary,.pp-library-reveal>summary{padding:15px 13px;font-size:13px}}
 @media(max-width:360px){.pp-featured{grid-template-columns:repeat(2,minmax(0,1fr))!important}.pp-feature b{font-size:14px!important}}
 
+
+/* V20: image-led game wall, minimal text, distinctive visual posters */
+.pp-poster-card{position:relative!important;isolation:isolate;overflow:hidden!important;border-radius:18px!important;min-width:0!important;background:#302044!important;border:1px solid #8863a0!important;box-shadow:0 5px 0 #09051d60,0 14px 28px #08031535!important;transition:transform .2s}
+.pp-poster-card:hover{transform:translateY(-3px)}
+.pp-poster-card:focus-within{outline:2px solid #e7ff70;outline-offset:3px}
+.pp-poster-open{width:100%;position:relative;display:block;border:0;background:transparent;padding:0;overflow:hidden;color:white;text-align:left;cursor:pointer;aspect-ratio:1.45/1!important;min-height:0!important}
+.pp-poster-feature .pp-poster-open{aspect-ratio:1.55/1!important}
+.pp-poster-art{position:absolute;inset:0;width:100%;height:100%;display:block;transition:transform .3s}
+.pp-poster-open:hover .pp-poster-art{transform:scale(1.06)}
+.pp-poster-shade{position:absolute;inset:0;background:linear-gradient(90deg,#140728dc 0%,#14072857 58%,transparent 92%),linear-gradient(0deg,#150925bf,transparent 58%)}
+.pp-poster-labels{position:absolute;z-index:2;inset:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:15px 44px 15px 15px;gap:7px}
+.pp-poster-labels strong{font:900 clamp(16px,2.1vw,25px)/1.12 var(--display);color:#fff!important;text-shadow:0 3px 12px #170c30bb;letter-spacing:-.035em;max-width:12ch;overflow-wrap:anywhere}
+.pp-poster-labels small{font:800 11px/1.2 var(--body);color:#e7ff70!important;background:#201335ba;padding:5px 9px;border:1px solid #d8c1ff77;border-radius:99px;white-space:nowrap}
+.pp-poster-new{background:#e7ff70;color:#241335;font:900 10px var(--body);padding:4px 9px;border-radius:99px}
+.pp-poster-fav{z-index:3;position:absolute!important;right:9px!important;top:9px!important;transform:none!important;width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;border-radius:50%!important;border:1px solid #ffffff77!important;background:#1b113ba9!important;color:white!important;font-size:19px!important;box-shadow:none!important;display:grid!important;place-items:center}
+.pp-poster-fav[aria-pressed=true]{background:#e7ff70!important;color:#221238!important}
+.pp-featured,.pp-list{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important}
+.pp-featured{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+@media(max-width:650px){
+ .pp-featured,.pp-list{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+ .pp-poster-card{border-radius:15px!important}
+ .pp-poster-open,.pp-poster-feature .pp-poster-open{aspect-ratio:1/1!important}
+ .pp-poster-labels{padding:9px 32px 12px 11px!important;gap:5px!important}
+ .pp-poster-labels strong{font-size:clamp(13px,4vw,19px)!important;max-width:11ch!important}
+ .pp-poster-labels small{font-size:9px!important;padding:4px 7px!important}
+ .pp-poster-fav{right:7px!important;top:7px!important;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;font-size:16px!important}
+ .pp-poster-new{font-size:9px;padding:3px 6px}
+}
+@media(max-width:350px){.pp-poster-labels strong{font-size:13px!important}.pp-poster-labels small{font-size:8px!important}}
+@media(prefers-reduced-motion:reduce){.pp-poster-card,.pp-poster-art{transition:none!important}}
 </style>
 </head>
 <body>
@@ -1570,7 +1600,7 @@ const OFFLINE = [
 ];
 const OFFLINE_TITLE_RENAMES = {'wink': 'Нууц алуурчин', 'liar': 'Худалчийн хөзөр', 'bus': 'Дөрвөн буудал', 'tower': 'Хөзрийн пирамид', 'forbid': 'Хориотой үг', 'story': 'Үгийн хэлхээ', 'seven': 'Долоон дохио', 'sugalaa': 'Азын сугалаа', 'zavsar': 'Дундах хөзөр', 'alga': 'Түрүүлж цохь', 'tulaan': 'Хөзрийн тулаан', '21': '21-ийн сорил', 'hos': 'Хосоо ол', 'naim': 'Наймын эргэлт', 'halbaga': 'Халбаганы төлөө', 'haanbool': 'Хаан · Боол', 'gurvalsan': 'Гурвалсан хослол', 'haralgan': 'Хараагүй хөзөр', 'uraldaan': 'Тузын уралдаан', 'hurdan': 'Хурдан тооцоо', 'durs': 'Дүрсний сорил', 'baishin': 'Хөзрийн байшин', 'uleeh': 'Сүүлчийн хөзөр', 'dohio': 'Нууц дохио', 'shagai-real': 'Шагайн тойрог'};
 OFFLINE.forEach(g=>{ if(OFFLINE_TITLE_RENAMES[g.id]) g.name=OFFLINE_TITLE_RENAMES[g.id]; });
-const PP_RENAMES={"huzruur": "Азгүй нь хэн?", "imposter": "Хэн нь худалч вэ?", "bomb": "Хэнд дэлбэрэх вэ?", "who": "Хэн хамгийн...?", "laws": "Шинэ хууль!", "shagai": "Шагай шид!", "act": "Үггүйгээр хэл!", "pairs": "Хосоо хэр мэдэх вэ?", "sync": "Нэг долгион", "talk": "Шөнө дундын яриа", "cards": "Хөзөр юу хэлэв?", "hilo": "Дээш үү, доош уу?", "wyr": "Алийг нь сонгох вэ?", "never": "Би лав тэгээгүй!", "hum": "Аяыг нь таа!", "minute": "30 секундэд амж!", "mission": "Нууц даалгавар", "guess": "Таагаад үз!", "duel": "Нэг нь ялна", "impress": "Дуурайж үз!", "forehead": "Духан дээр юу?", "kingcup": "Хөзрийн хаан", "toast": "Тост хэл!", "wink": "Хэн ирмэв?", "liar": "Худалч байна!", "bus": "4 даваа", "tower": "Хөзрийн цамхаг", "forbid": "Хориотой үг", "story": "Нэг үгээр үргэлжлүүл", "seven": "7 дээр БУМ!", "sugalaa": "Азын хөзөр", "zavsar": "Дунд нь орно", "alga": "Түрүүлж цохь!", "tulaan": "Хөзрийн халз", "21": "21-ээс хэтэр!", "hos": "Хосыг ол", "naim": "Наймын эргэлт", "halbaga": "Халбага булаацалд!", "haanbool": "Хаан эсвэл боол", "gurvalsan": "3-ыг цуглуул", "haralgan": "Духан дээрх хөзөр", "uraldaan": "Тузын уралдаан", "hurdan": "Хэн нь хурдан?", "durs": "Дүрс юу хэлэв?", "baishin": "Нурааж болохгүй!", "uleeh": "Сүүлчийн үлээлт", "dohio": "Нууц дохио", "shagai-real": "Шагайн тойрог"};
+const PP_RENAMES={"huzruur": "Азгүй нь хэн?", "imposter": "Imposter", "bomb": "Хэнд дэлбэрэх вэ?", "who": "Хэн хамгийн...?", "laws": "Шинэ хууль!", "shagai": "Шагай шид!", "act": "Үггүйгээр хэл!", "pairs": "Хосоо хэр мэдэх вэ?", "sync": "Нэг долгион", "talk": "Нууцаа дэлгэе", "cards": "Хөзрийн сорил", "hilo": "Дээш үү, доош уу?", "wyr": "Алийг нь сонгох вэ?", "never": "Би хэзээ ч...", "hum": "Аяыг нь таа!", "minute": "30 секундэд амж!", "mission": "Нууц даалгавар", "guess": "Таагаад үз!", "duel": "Нэг нь ялна", "impress": "Дуурайж үз!", "forehead": "Духан дээр юу?", "kingcup": "Хөзрийн хаан", "toast": "Тост хэл!", "wink": "Хэн ирмэв?", "liar": "Худалч байна!", "bus": "4 даваа", "tower": "Хөзрийн цамхаг", "forbid": "Хориотой үг", "story": "Нэг үгээр үргэлжлүүл", "seven": "7 дээр БУМ!", "sugalaa": "Азын хөзөр", "zavsar": "Дунд нь орно", "alga": "Түрүүлж цохь!", "tulaan": "Хөзрийн халз", "21": "21-ээс хэтэр!", "hos": "Хосыг ол", "naim": "Наймын эргэлт", "halbaga": "Халбага булаацалд!", "haanbool": "Хаан эсвэл боол", "gurvalsan": "3-ыг цуглуул", "haralgan": "Духан дээрх хөзөр", "uraldaan": "Тузын уралдаан", "hurdan": "Хэн нь хурдан?", "durs": "Дүрс юу хэлэв?", "baishin": "Нурааж болохгүй!", "uleeh": "Сүүлчийн үлээлт", "dohio": "Нууц дохио", "shagai-real": "Шагайн тойрог"};
 [...GAMES,...OFFLINE].forEach(g=>{ if(PP_RENAMES[g.id]) g.name=PP_RENAMES[g.id]; });
 const syncGame=GAMES.find(g=>g.id==='sync');
 if(syncGame){
@@ -1775,25 +1805,51 @@ const PP_VIBES={
  deep:{name:'Үнэнийг ярья',line:'Үнэнийг ярья',emoji:'👀',color:'#a98aff',desc:'Асуулт, сонголт, сонин үнэн'}
 };
 const PP_ICONS={spin:'🎡',flash:'⚡',secretpick:'🗳️',memory:'🟪',huzruur:'🎲',imposter:'🕵️',bomb:'💣',who:'👀',laws:'📜',shagai:'🎯',act:'🎭',pairs:'💘',sync:'🧠',talk:'💬',cards:'🃏',hilo:'📈',wyr:'🤔',never:'🙈',hum:'🎵',minute:'⏱️',mission:'🤫',guess:'🔮',duel:'🥊',impress:'🎬',forehead:'😵‍💫',kingcup:'👑',toast:'🎤',wink:'🫣',liar:'🤥',bus:'🚌',tower:'🏗️',forbid:'🤐',story:'📖',seven:'7️⃣',sugalaa:'🎟️',zavsar:'♠️',alga:'👏',tulaan:'⚔️',21:'2️⃣',hos:'🧩',naim:'♣️',halbaga:'🥄',haanbool:'👑',gurvalsan:'3️⃣',haralgan:'😶',uraldaan:'🏇',hurdan:'🏁',durs:'♦️',baishin:'🏠',uleeh:'🌬️',dohio:'🤫'};
-const PP_FEATURES={laugh:['spin','secretpick','wyr','sync'],chaos:['flash','memory','duel','bomb'],deep:['secretpick','never','talk','imposter']};
+const PP_FEATURES={laugh:['imposter','who','bomb','sync'],chaos:['bomb','flash','duel','memory'],deep:['imposter','never','pairs','talk']};
 const ppFavs=()=>{ const d=store('pp-favorites');return Array.isArray(d)?d:[]; };
 const ppIsFav=id=>ppFavs().includes(id);
 function ppFavorite(id){const v=ppFavs();store('pp-favorites',v.includes(id)?v.filter(x=>x!==id):[...v,id]); home();}
 function ppEligible(g){return g&&!g.hidden&&fits(g,S.count);}
 function ppCountLabel(){return S.count?(S.count===8?'8+':S.count)+' хүн':'Бүх хүн';}
-function ppTile(g,feature=false,idx=0){
- const on=ppIsFav(g.id),sym=PP_ICONS[g.id]||'🎮',isOff=OFFLINE.includes(g);
- if(feature)return `<article class="pp-feature" style="--tint:${['rgba(255,101,134,.26)','rgba(124,255,211,.20)','rgba(243,187,110,.25)','rgba(164,125,255,.25)'][idx%4]}"><button type="button" class="pp-feature-main" data-open="${esc(g.id)}" data-off="${isOff}"><span class="pp-fnumber">0${idx+1} / ${esc(pl(g))}</span><span class="pp-feature-icon">${sym}</span><b>${esc(g.name)}${['spin','flash','secretpick','memory'].includes(g.id)?'<span class="pp-v8-newflag">NEW</span>':''}</b><p>${esc(g.desc)}</p></button><button class="pp-star" type="button" data-fav="${esc(g.id)}" aria-pressed="${on}" aria-label="${esc(g.name)} дуртай тоглоомд ${on?'хасах':'нэмэх'}">${on?'★':'☆'}</button></article>`;
- return `<article class="pp-tile"><button class="pp-tile-main" type="button" data-open="${esc(g.id)}" data-off="${isOff}"><span class="pp-tile-emoji">${sym}</span><span><b>${esc(g.name)}${['spin','flash','secretpick','memory'].includes(g.id)?'<span class="pp-v8-newflag">NEW</span>':''}</b><p>${esc(g.desc)}</p><small>${esc(pl(g))}${isOff?' · Утасгүй':''}</small></span></button><button type="button" class="pp-star" data-fav="${esc(g.id)}" aria-pressed="${on}" aria-label="${esc(g.name)} дуртай тоглоомд ${on?'хасах':'нэмэх'}">${on?'★':'☆'}</button></article>`;
+
+const PP_VISUALS={
+ huzruur:['🎲','✦'],imposter:['🕵️','?'],bomb:['💣','✴'],who:['👀','✧'],laws:['📜','✦'],shagai:['🎯','✺'],act:['🎭','✦'],pairs:['💞','♡'],sync:['🧠','⚡'],talk:['🌙','✧'],cards:['🃏','♠'],hilo:['📈','↗'],wyr:['🅰️','🅱'],never:['🤫','!?'],hum:['🎧','♫'],minute:['⏱️','⚡'],mission:['🔐','✦'],guess:['🔮','?'],duel:['🥊','✴'],impress:['🎬','✧'],forehead:['🤯','?'],kingcup:['👑','♛'],toast:['🥂','✦'],spin:['🎡','✷'],flash:['⚡','✴'],secretpick:['🗳️','✧'],memory:['🧩','✦'],wink:['😉','✦'],liar:['🃏','?'],bus:['🚌','↗'],tower:['🏗️','✦'],forbid:['🤐','×'],story:['📖','✧'],seven:['7️⃣','✺'],sugalaa:['🎟️','✦'],zavsar:['♠️','?'],alga:['👏','✷'],tulaan:['⚔️','✴'],'21':['2️⃣','1️⃣'],hos:['🧩','♡'],naim:['8️⃣','✧'],halbaga:['🥄','✴'],haanbool:['👑','♚'],gurvalsan:['3️⃣','✦'],haralgan:['🕶️','?'],uraldaan:['🂡','✴'],hurdan:['🏁','↗'],durs:['🔷','✦'],baishin:['🏠','♠'],uleeh:['🌬️','✧'],dohio:['🤫','✦'],'shagai-real':['🦴','✺']
+};
+const PP_VISUAL_COLORS=[['#6828a8','#bd2c98','#e7ff70'],['#4b258c','#d64884','#ffe0a2'],['#352b95','#8a49f7','#caff6d'],['#2d4486','#4695b9','#fede8a'],['#713280','#ba428e','#a8ffe2'],['#693050','#f46b93','#f8dc77'],['#383d92','#8751cb','#d7ff81'],['#305583','#549bba','#fff087']];
+function ppArtwork(g){
+ const ids=Object.keys(PP_VISUALS),k=Math.max(0,ids.indexOf(g.id)),p=PP_VISUAL_COLORS[(k*3+Math.floor(k/8))%PP_VISUAL_COLORS.length];
+ const [icon,accent]=PP_VISUALS[g.id]||[PP_ICONS[g.id]||'🎮','✦'];
+ const cx=268+(k%3)*14,uid='poster-'+g.id.replace(/[^a-z0-9]/g,'');
+ return '<svg class="pp-poster-art" aria-hidden="true" viewBox="0 0 420 260" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">'+
+ '<defs><linearGradient id="'+uid+'" x2="95%" y2="70%"><stop stop-color="'+p[0]+'"/><stop offset=".73" stop-color="'+p[1]+'"/><stop offset="1" stop-color="'+p[0]+'"/></linearGradient></defs>'+
+ '<rect width="420" height="260" fill="url(#'+uid+')"/>'+
+ '<path d="M185 -50Q410 -40 440 130L365 300 180 235Z" fill="'+p[2]+'" opacity=".10"/>'+
+ '<circle cx="'+cx+'" cy="115" r="88" fill="#170921" opacity=".30" stroke="'+p[2]+'" stroke-opacity=".38" stroke-width="2"/>'+
+ '<circle cx="'+(cx+12)+'" cy="112" r="72" fill="'+p[2]+'" opacity=".17"/>'+
+ '<text x="'+cx+'" y="151" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif" font-size="101">'+icon+'</text>'+
+ '<path d="M225 42 l11 -22 11 22 25 8 -25 8 -11 22 -11 -22 -23 -8Z" fill="'+p[2]+'" opacity=".92"/>'+
+ '<text x="'+(cx+77)+'" y="67" text-anchor="middle" font-size="43" font-weight="900" fill="'+p[2]+'">'+accent+'</text>'+
+ '<path d="M220 231q90 -19 171 0" fill="none" stroke="'+p[2]+'" stroke-width="6" stroke-linecap="round" opacity=".55"/></svg>';
 }
+
+function ppTile(g,feature=false,idx=0){
+ const on=ppIsFav(g.id),isOff=OFFLINE.includes(g),newFlag=['spin','flash','secretpick','memory'].includes(g.id);
+ return '<article class="pp-poster-card'+(feature?' pp-poster-feature':'')+'">'+
+ '<button type="button" class="pp-poster-open" data-open="'+esc(g.id)+'" data-off="'+isOff+'">'+ppArtwork(g)+
+ '<span class="pp-poster-shade"></span><span class="pp-poster-labels">'+
+ (newFlag?'<span class="pp-poster-new">NEW</span>':'')+
+ '<strong>'+esc(g.name)+'</strong><small>♧ '+esc(pl(g))+(isOff?' · Утасгүй':'')+'</small></span></button>'+
+ '<button type="button" class="pp-star pp-poster-fav" data-fav="'+esc(g.id)+'" aria-pressed="'+on+'" aria-label="'+esc(g.name)+' дуртай тоглоомд '+(on?'хасах':'нэмэх')+'">'+(on?'★':'☆')+'</button></article>';
+}
+
 function ppDrawLibrary(){
  const q=ppQuery.trim().toLocaleLowerCase();
  const coll=[...GAMES,...OFFLINE].filter(g=>ppEligible(g)&&(!q||[g.name,g.desc,...(g.rules||[]).slice(0,2)].join(' ').toLocaleLowerCase().includes(q))&&(
    ppTab==='all'||(ppTab==='new'&&['spin','flash','secretpick','memory'].includes(g.id))||(ppTab==='favs'&&ppIsFav(g.id))||(ppTab==='offline'&&OFFLINE.includes(g))||(ppTab==='cards'&&(g.cards===true||g.modes&&g.modes.includes('cards')))||(ppTab==='2'&&(g.modes&&g.modes.includes('2')))||(ppTab==='group'&&(g.modes&&g.modes.includes('group')))
  ));
  const box=$('#ppLibrary');if(!box)return;
- const shortList=!ppShowAll&&!q&&ppTab==='all';const visible=shortList?coll.slice(0,8):coll;
- box.innerHTML=`<div class="pp-results">${coll.length} тоглоом олдлоо</div><div class="pp-list">${visible.length?visible.map(g=>ppTile(g)).join(''):'<div class="pp-empty">Энэ сонголтод тоглоом алга байна. Өөрөөр хайж үзээрэй. 🔎</div>'}</div>${shortList&&coll.length>8?`<button type="button" class="seeall" id="ppSeeAll">Бүгдийг харах · ${coll.length} тоглоом ↓</button>`:''}`;
+ const shortList=!ppShowAll&&!q&&ppTab==='all';const visible=shortList?coll.slice(0,12):coll;
+ box.innerHTML=`<div class="pp-results">${coll.length} тоглоом олдлоо</div><div class="pp-list">${visible.length?visible.map(g=>ppTile(g)).join(''):'<div class="pp-empty">Энэ сонголтод тоглоом алга байна. Өөрөөр хайж үзээрэй. 🔎</div>'}</div>${shortList&&coll.length>8?`<button type="button" class="seeall" id="ppSeeAll">Үлдсэн бүх тоглоомыг харах · ${coll.length} →</button>`:''}`;
  const more=$('#ppSeeAll');if(more)more.onclick=()=>{ppShowAll=true;ppDrawLibrary();};
  box.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>go(b.dataset.off==='true'?'rules-'+b.dataset.open:b.dataset.open));
  box.querySelectorAll('[data-fav]').forEach(b=>b.onclick=()=>{const id=b.dataset.fav;const a=ppFavs();store('pp-favorites',a.includes(id)?a.filter(x=>x!==id):[...a,id]);ppDrawLibrary();b.disabled=false;});
@@ -1819,11 +1875,11 @@ function home(){
  <details class="pp-customize"><summary>✧ Тоглоомын уур амьсгал ба тоглогчид <span>Тохируулах ▾</span></summary><div class="pp-head pp-head-moods"><div><span class="pp-section-kicker">01 / MOOD</span><h2>Өнөөдөр ямар вайб вэ?</h2><p>Сонгосон mood-оор раундууд солигдоно</p></div></div>
  <div class="pp-vibes">${Object.entries(PP_VIBES).map(([id,v])=>`<button type="button" class="pp-vibe" style="--vc:${v.color}" data-mood="${id}" aria-pressed="${id===ppMood}"><span class="pp-emoji">${v.emoji}</span><b>${v.name}</b><span>${v.line}</span><i class="pp-vibe-check">✓</i></button>`).join('')}</div>
  <section class="pp-setup"><div class="pp-setup-top"><span class="pp-setup-label">Хэдүүлээ тоглох вэ?</span><button type="button" id="ppNames" class="pp-editnames">+ Нэр нэмэх</button></div><div class="pp-numbers">${[[0,'Бүгд'],[2,'2'],[3,'3'],[4,'4'],[5,'5'],[6,'6'],[7,'7'],[8,'8+']].map(([n,t])=>`<button type="button" data-count="${n}" aria-label="${t} хүн" aria-pressed="${S.count===n}">${t}</button>`).join('')}</div></section>
- <div class="pp-head pp-head-featured"><div><span class="pp-section-kicker">TRY SOMETHING FUN</span><h2>Эднээс эхлээд үз ✨</h2><p>${PP_VIBES[ppMood].desc}</p></div><small>4 СОНГОЛТ</small></div>
- <div class="pp-featured">${picks.slice(0,3).map((g,i)=>ppTile(g,true,i)).join('')}</div>
- <details class="pp-library-reveal" id="ppBrowseAll"><summary>🎮 Бүх 52 тоглоомыг үзэх <span>Нээх ↗</span></summary><section class="pp-library"><div class="pp-head"><div><span class="pp-section-kicker">03 / ALL GAMES</span><h2>Тоглоомын сан</h2><p>Таалагдсанаа сонгоод эхлүүл</p></div><small>52 ТОГЛООМ</small></div>
+ </details><div class="pp-head pp-head-featured"><div><span class="pp-section-kicker">TRY SOMETHING FUN</span><h2>Онцлох тоглоомууд ✨</h2><p>${PP_VIBES[ppMood].desc}</p></div><small>4 СОНГОЛТ</small></div>
+ <div class="pp-featured">${picks.slice(0,4).map((g,i)=>ppTile(g,true,i)).join('')}</div>
+ <section class="pp-library" id="ppBrowseAll"><div class="pp-head"><div><span class="pp-section-kicker">03 / ALL GAMES</span><h2>Бүх тоглоом</h2><p>Зургаар нь сонгоод шууд тогло</p></div><small>52 ТОГЛООМ</small></div>
  <div class="pp-library-tools"><input type="text" class="pp-search" id="ppSearch" placeholder="🔎 Тоглоом хайх..." value="${esc(ppQuery)}" autocomplete="off" aria-label="Тоглоом хайх"/><div class="pp-filters">${tabs.map(([k,t])=>`<button type="button" data-tab="${k}" aria-pressed="${ppTab===k}">${t}</button>`).join('')}</div></div>
- <div id="ppLibrary"></div></section></details>
+ <div id="ppLibrary"></div></section>
  ${canEdit?'<button class="addline" id="ppAdd" type="button" style="margin-top:21px;width:100%">+ Өөрийн тоглоом нэмэх</button>':''}
  <p class="pp-footer">Дуртай тоглоомоо ☆ дарж хадгал. Хэн нэгэн оролцохыг хүсэхгүй бол тухайн раундыг алгасаж болно.</p>
  ${MODE==='server'&&!ADMIN?'<button class="adminlink" id="adm" type="button">Админ</button>':''}`;
