@@ -2137,6 +2137,48 @@ html[data-studio-art] #app .pp22-art-bg.pp30-poster-image{
 #app .pp22-search{background:rgba(255,255,255,.5)!important;color:var(--pp-auto-body)!important}
 #app .pp22-card-link:focus-visible,#app .pp22-cta:focus-visible{outline:3px solid var(--pp-cyan)!important;outline-offset:2px}
 @media(max-width:600px){#app .pp22-card-copy strong{font-size:clamp(14px,4.2vw,20px)!important;line-height:1.2!important}}
+
+/* V33: durable rounded poster corners, including user-uploaded artwork.
+   Scope to visual cards; no impact on game screens or custom images. */
+#app .pp22-card,
+#app .pp22-feature,
+#app article.pp22-card,
+#app article.pp22-feature {
+  border-radius:var(--pp-round,26px)!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+  -webkit-mask-image:-webkit-radial-gradient(white,black);
+}
+#app .pp22-card > .pp22-card-link,
+#app .pp22-feature > .pp22-card-link,
+#app .pp22-card .pp22-card-link,
+#app .pp22-feature .pp22-card-link {
+  display:block!important;
+  overflow:hidden!important;
+  border-radius:inherit!important;
+  clip-path:inset(0 round var(--pp-round,26px))!important;
+  -webkit-clip-path:inset(0 round var(--pp-round,26px))!important;
+}
+#app .pp22-card img.pp30-poster-image,
+#app .pp22-feature img.pp30-poster-image,
+#app .pp22-card img.pp22-art-bg,
+#app .pp22-feature img.pp22-art-bg {
+  border-radius:inherit!important;
+  object-fit:cover!important;
+}
+#app .pp22-card-gradient {
+  border-radius:inherit!important;
+  pointer-events:none!important;
+}
+#app .pp22-card:focus-within,
+#app .pp22-feature:focus-within {
+  outline:2px solid #b21678;
+  outline-offset:2px;
+}
+@media(max-width:620px){
+  #app .pp22-card, #app .pp22-feature {border-radius:var(--pp-round,26px)!important;}
+}
+
 </style>
 </head>
 <body>
@@ -2771,7 +2813,7 @@ const PP22_PALETTES=[
 const pp22ChooseArt=g=>PP22_PICTURE[g.id]??(Math.abs([...g.id].reduce((v,c)=>v*31+c.charCodeAt(0),7))%16);
 /* PID PAD V25 - personal Design Studio. Does not grant Cloudflare admin access. */
 const PP_STUDIO_DEFAULT={
- pink:'#FF1E9D',cyan:'#00FFF7',titleText:'#160B1B',bodyText:'#160B1B',buttonText:'#160B1B',posterText:'#FFFFFF',font:'Manrope',radius:19,columns:2,artMode:'original',
+ pink:'#FF1E9D',cyan:'#00FFF7',titleText:'#160B1B',bodyText:'#160B1B',buttonText:'#160B1B',posterText:'#FFFFFF',font:'Manrope',radius:26,columns:2,artMode:'original',
  headingA:'Уйдах зав',headingB:'өгөхгүй!',
  subtitle:'Найзууд цугласан уу? Тэгвэл тоглоомоо эхлүүлье.',
  start:'Шууд тоглох',online:'Онлайн өрөө',
@@ -2798,7 +2840,7 @@ function ppStudioNormalize(v){
   if(typeof v[key]==='string')base[key]=v[key].slice(0,180);
  base.font=['Manrope','Unbounded','system'].includes(v.font)?v.font:base.font;
  base.artMode='original'; // The poster colors are never recolored. Existing edits and user images remain.
- base.radius=Number.isFinite(+v.radius)?Math.max(4,Math.min(32,+v.radius)):19;
+ base.radius=Number.isFinite(+v.radius)?Math.max(22,Math.min(38,+v.radius)):26;
  base.columns=[1,2].includes(+v.columns)?+v.columns:2;
  if(v.sections&&typeof v.sections==='object')for(const key of Object.keys(base.sections))if(typeof v.sections[key]==='boolean')base.sections[key]=v.sections[key];
  if(v.games&&typeof v.games==='object')for(const [k,o] of Object.entries(v.games))if(/^[a-z0-9-]{1,50}$/.test(k)&&o&&typeof o==='object'){
@@ -2852,7 +2894,7 @@ function ppStudioApply(){
  r.setProperty('--pp-auto-body',pp30SafeText(PP_STUDIO.cyan,PP_STUDIO.bodyText));
  r.setProperty('--pp-auto-button',pp30SafeText(PP_STUDIO.pink,PP_STUDIO.buttonText));
  r.setProperty('--pp-auto-cyan',pp30SafeText(PP_STUDIO.cyan,PP_STUDIO.buttonText));
- r.setProperty('--pp-round',PP_STUDIO.radius+'px');
+ r.setProperty('--pp-round',Math.max(22,Math.min(38,+PP_STUDIO.radius||26))+'px');
  r.setProperty('--pp-grid-phone',String(PP_STUDIO.columns));
  document.documentElement.dataset.studioArt=PP_STUDIO.artMode;
  r.setProperty('--pp-font',PP_STUDIO.font==='system'?"'Noto Sans',system-ui,sans-serif":"'Manrope','Noto Sans',system-ui,sans-serif");
@@ -2925,7 +2967,7 @@ function ppStudioForm(){
  <label class="pp-studio-field">Фонт<select data-studio-opt="font"><option value="Manrope" ${PP_STUDIO.font==='Manrope'?'selected':''}>Manrope · Цэвэрхэн</option><option value="Unbounded" ${PP_STUDIO.font==='Unbounded'?'selected':''}>Unbounded · Тод</option><option value="system" ${PP_STUDIO.font==='system'?'selected':''}>System · Энгийн</option></select></label>
  <label class="pp-studio-field">Утсан дээрх багана<select data-studio-opt="columns"><option value="2" ${PP_STUDIO.columns===2?'selected':''}>2 постер</option><option value="1" ${PP_STUDIO.columns===1?'selected':''}>1 том постер</option></select></label></div>
  <p class="pp-studio-info">Постерын зураг өөрийн анхны өнгөөрөө харагдана. Зургийн өнгөн дээр ягаан, cyan эсвэл өөр өнгө нэмэхгүй.</p>
- <label class="pp-studio-field">Картын булан — <span id="ppStudioRadiusLabel">${PP_STUDIO.radius}px</span><input type="range" min="4" max="32" data-studio-opt="radius" value="${PP_STUDIO.radius}"></label></div>`;
+ <label class="pp-studio-field">Картын булан — <span id="ppStudioRadiusLabel">${PP_STUDIO.radius}px</span><input type="range" min="22" max="38" data-studio-opt="radius" value="${PP_STUDIO.radius}"></label></div>`;
  const selected=ppStudioAllGames().find(g=>g.id===ppStudioGameId)||ppStudioAllGames()[0];
  if(!selected)return '<div class="pp-studio-section">Тоглоом олдсонгүй.</div>';
  const change=PP_STUDIO.games[selected.id]||{};
