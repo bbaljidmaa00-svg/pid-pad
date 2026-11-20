@@ -2440,7 +2440,7 @@ if(syncGame){
 GAMES.push(
  {id:'spin',name:'Азын хүрд',glyph:'◉',c:'#ff9fc5',players:'2+',modes:['2','pair','group'],desc:'Нэрсээ оруулаад хүрд эргүүл. Хэнийг сонгохыг аз шийднэ.',rules:['Тоглогчдын нэрийг тохиргоонд нэмнэ.','«Эргүүлэх» товчийг дарна. Хүрд санамсаргүй нэг хүнийг сонгоно.','Сонгогдсон хүн дараагийн раунд эхлүүлэх эсвэл баталсан шийтгэл сугалж болно.']},
  {id:'flash',name:'Аянгын рефлекс',glyph:'⚡',c:'#ffcb76',players:'2',modes:['2'],desc:'Гэрэл асахад түрүүлж дар. Эрт дарвал ялагдана!',rules:['Хоёр хүн утасны хоёр талд бэлэн сууна.','«Бэлэн» товчийг дарж, GO! гэж гарахыг хүлээнэ.','GO! гармагц түрүүлж өөрийн талын товчийг дарсан нь ялна. Эрт дарвал шууд ялагдана.']},
- {id:'secretpick',name:'Нууц санал',glyph:'◎',c:'#b5a4ff',players:'3–12',modes:['group'],desc:'Асуултаа өөрсдөө бичээд, хүн бүр нууцаар санал өгнө.',rules:['Нэг хүн асуултаа өөрөө бичнэ. Бэлэн асуулт байхгүй.','Тоглогч бүр утсаа авч, нэг хүнийг нууцаар сонгоод дараагийн хүнд дамжуулна.','Бүх санал дууссаны дараа үр дүнг зэрэг нээнэ.']},
+ {id:'secretpick',name:'Нууц санал',glyph:'◎',c:'#b5a4ff',players:'3–12',modes:['group'],desc:'Хүн бүр нэг асуултаа нууцаар бичиж, дараа нь бүгд саналаа өгнө.',rules:['Утсаа нэг нэгээр нь дамжуулж, хүн бүр нэг асуулт нууцаар бичнэ.','Бичсэн хүний нэрийг хадгалахгүй. Асуултуудыг хольж дарааллаар нь гаргана.','Асуулт бүр дээр хүн бүр нууцаар санал өгнө.','Нийт саналын үр дүнг харуулна; асуултын эзэн болон хэн хэнд санал өгснийг харуулахгүй.']},
  {id:'memory',name:'Өнгөний сорил',glyph:'◈',c:'#77d9c4',players:'2+',modes:['2','pair','group'],desc:'Гялсхийх өнгүүдийг тогтоогоод яг дарааллаар нь дар.',rules:['Дөрвөн өнгө гэрэлтэх дарааллыг сайн ажигла.','Гэрэлтэж дуусмагц өнгүүдийг тэр дарааллаар нь дар.','Амжилттай давтбал нэг өнгө нэмэгдэнэ. Алдвал ээлж дараагийн хүнд шилжинэ.']}
 );
 
@@ -3773,8 +3773,9 @@ SCREENS.flash=g=>{
  document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{if(state!=='wait'&&state!=='go')return;let index=+b.dataset.f;if(timeout)clearTimeout(timeout);result=state==='wait'?`${ps[index]} эрт дарлаа! ${ps[1-index]} яллаа.`:`${ps[index]} яллаа! ${Math.round(performance.now()-start)} мс`;state='result';paint();buzz([60,40,60]);});};
  paint();
 };
-SCREENS.secretpick=function customSecretVote(g){
-  frame(g);
+/* V32: Every player anonymously writes ONE question, then everyone votes on shuffled questions. */
+SCREENS.secretpick=g=>{
+ frame(g);
   if(!document.getElementById("pp31SecretStyle")){
     const style=document.createElement("style");style.id="pp31SecretStyle";
     style.textContent=`
@@ -3802,30 +3803,127 @@ SCREENS.secretpick=function customSecretVote(g){
     @media(max-width:350px){.pp-secret-choices{gap:7px}.pp-secret-v31 .pp-secret-choices button{font-size:14px}}`;
     document.head.appendChild(style);
   }
-  const ps=players().slice(0,12);
-  let question="",draft="",phase="edit",index=0,votes=[];
-  const render=()=>{
-    if(phase==="edit"){
-      stage(`<section class="pp-secret-v31"><div class="pp-secret-step">🗳️ НУУЦ САНАЛ</div><h2>Асуултаа өөрсдөө бичээрэй</h2><p class="pp-secret-muted">Бэлэн асуулт гарахгүй. Бүгд нууцаар саналаа өгнө.</p><label class="pp-secret-label" for="ppSecretQuestion">Таны асуулт</label><textarea id="ppSecretQuestion" maxlength="220" rows="3" placeholder="Жишээ: Хэн хамгийн түрүүнд аялал төлөвлөх вэ?">${esc(draft)}</textarea><div class="pp-secret-count"><span id="ppSecretLength">${draft.length}</span>/220</div><button type="button" class="pp-secret-main" id="ppSecretBegin">Санал хураалтыг эхлүүлэх →</button><p id="ppSecretError" class="pp-secret-error" role="alert" hidden>Эхлээд асуултаа бичээрэй.</p></section>`);
-      const field=document.getElementById("ppSecretQuestion");
-      field.oninput=()=>{draft=field.value;document.getElementById("ppSecretLength").textContent=draft.length;};
-      document.getElementById("ppSecretBegin").onclick=()=>{const q=field.value.trim();if(!q){document.getElementById("ppSecretError").hidden=false;field.focus();return;}question=q;draft=q;index=0;votes=[];phase="vote";render();};return;
-    }
-    if(phase==="handoff"){
-      stage(`<section class="pp-secret-v31"><div class="pp-secret-step">🔒 ${votes.length} / ${ps.length} САНАЛ ӨГСӨН</div><div class="pp-secret-handoff">✓</div><h2>Саналыг хадгаллаа!</h2><p class="pp-secret-muted">Утсаа <b>${esc(ps[index])}</b>-д дамжуулаарай. Өмнөх сонголт харагдахгүй.</p><button type="button" class="pp-secret-main" id="ppSecretNext">Би ${esc(ps[index])} — санал өгөх →</button></section>`);
-      document.getElementById("ppSecretNext").onclick=()=>{phase="vote";render();};return;
-    }
-    if(phase==="results"){
-      const tally=ps.map((name,i)=>({name,count:votes.filter(v=>v===i).length})).sort((a,b)=>b.count-a.count);
-      stage(`<section class="pp-secret-v31"><div class="pp-secret-step">🎉 ${ps.length} САНАЛ · ҮР ДҮН</div><h2>${esc(question)}</h2><div class="pp-secret-tally">${tally.map(t=>`<div class="pp-secret-tally-row"><div class="pp-secret-tally-label"><b>${esc(t.name)}</b><span>${t.count} санал</span></div><div class="pp-secret-tally-track"><div style="width:${Math.round(t.count*100/ps.length)}%"></div></div></div>`).join("")}</div><button type="button" class="pp-secret-main" id="ppSecretAgain">Шинэ асуулт бичих →</button><button type="button" class="pp-secret-secondary" id="ppSecretRepeat">Энэ асуултаар дахин санал авах</button></section>`);
-      document.getElementById("ppSecretAgain").onclick=()=>{question="";draft="";index=0;votes=[];phase="edit";render();};
-      document.getElementById("ppSecretRepeat").onclick=()=>{index=0;votes=[];phase="vote";render();};return;
-    }
-    stage(`<section class="pp-secret-v31"><div class="pp-secret-step">🔒 НУУЦ САНАЛ · ${index+1} / ${ps.length}</div><h2>${esc(question)}</h2><p class="pp-secret-muted"><b>${esc(ps[index])}</b>, зөвхөн чи саналаа өг.</p><div class="pp-secret-choices">${ps.map((name,i)=>`<button type="button" data-candidate="${i}">${esc(name)}</button>`).join("")}</div><p class="pp-secret-footnote">Санал өгсний дараа сонголт чинь нууц хэвээр үлдэнэ.</p></section>`);
-    document.querySelectorAll("#stage [data-candidate]").forEach(b=>b.onclick=()=>{votes.push(+b.dataset.candidate);index++;phase=index>=ps.length?"results":"handoff";render();});
-  };
-  render();
+ const ps=players().slice(0,12);
+ const n=ps.length;
+ let questions=[],questionIndex=0,authorTurn=0,voterTurn=0,votes=[],phase="writer-handoff";
+ // Store ONLY text. Never store question-author mappings or display writers' names with questions.
+ const mix=arr=>{
+   const a=arr.slice();
+   for(let i=a.length-1;i>0;i--){
+     const j=Math.floor(Math.random()*(i+1));
+     [a[i],a[j]]=[a[j],a[i]];
+   }
+   return a;
+ };
+ let shuffled=[],ranking=null;
+ const header=(text)=>`<div class="pp-secret-step">🔒 ${text}</div>`;
+ const render=()=>{
+   if(!document.getElementById("stage"))return;
+   if(phase==="writer-handoff"){
+     stage(`<section class="pp-secret-v31 pp-secret-v32">
+       ${header(`АСУУЛТ БИЧИХ · ${questions.length} / ${n}`)}
+       <div class="pp-secret-handoff">✍️</div>
+       <h2>Утсаа ${esc(ps[authorTurn])}-д өгөөрэй</h2>
+       <p class="pp-secret-muted">Хүн бүр нэг асуулт бичнэ. Бичсэн хүний нэр хадгалагдахгүй, асуултууд холилдож гарна.</p>
+       <button id="ppSecretWrite" type="button" class="pp-secret-main">Асуултаа нууцаар бичих →</button>
+     </section>`);
+     document.getElementById("ppSecretWrite").onclick=()=>{phase="write";render();};
+     return;
+   }
+   if(phase==="write"){
+     stage(`<section class="pp-secret-v31 pp-secret-v32">
+       ${header(`АСУУЛТ БИЧИХ · ${questions.length+1} / ${n}`)}
+       <h2>Нэг асуулт бичээрэй</h2>
+       <p class="pp-secret-muted">Бусдад харуулахгүйгээр бичээд “Хадгалах”-ыг дар. Хэн бичсэнийг үр дүн дээр харуулахгүй.</p>
+       <label class="pp-secret-label" for="ppSecretQuestion">Нууц асуулт</label>
+       <textarea id="ppSecretQuestion" maxlength="220" rows="3" autocomplete="off" spellcheck="true" placeholder="Жишээ: Хэн хамгийн түрүүнд алдартай болох вэ?"></textarea>
+       <div class="pp-secret-count"><span id="ppSecretLength">0</span>/220</div>
+       <button type="button" id="ppSecretSave" class="pp-secret-main">Асуултаа нууцаар хадгалах ✓</button>
+       <p class="pp-secret-error" id="ppSecretError" role="alert" hidden>Нэг асуулт бичээрэй.</p>
+     </section>`);
+     const field=document.getElementById("ppSecretQuestion");
+     field.oninput=()=>document.getElementById("ppSecretLength").textContent=field.value.length;
+     document.getElementById("ppSecretSave").onclick=()=>{
+       const q=field.value.trim();
+       if(!q){document.getElementById("ppSecretError").hidden=false;field.focus();return;}
+       // No question writer's ID/name or order is recorded with the text.
+       questions.push(q);field.value="";field.blur();authorTurn++;
+       if(authorTurn<n){phase="writer-handoff";render();}
+       else{shuffled=mix(questions);questions=[];questionIndex=0;phase="round-ready";render();}
+     };
+     return;
+   }
+   if(phase==="round-ready"){
+     stage(`<section class="pp-secret-v31 pp-secret-v32">
+       ${header(`АСУУЛТ ${questionIndex+1} / ${shuffled.length}`)}
+       <h2>Бүгд асуултаа бичлээ!</h2>
+       <p class="pp-secret-muted">Асуултууд холилдсон. Одоо нэг нэгээрээ саналаа өгнө. Асуултын эзэн болон хэн хэнд санал өгсөн нь харагдахгүй.</p>
+       <button type="button" class="pp-secret-main" id="ppSecretRound">Асуулт нээж, санал эхлүүлэх →</button>
+     </section>`);
+     document.getElementById("ppSecretRound").onclick=()=>{votes=[];voterTurn=0;phase="voter-handoff";render();};
+     return;
+   }
+   if(phase==="voter-handoff"){
+     stage(`<section class="pp-secret-v31 pp-secret-v32">
+       ${header(`АСУУЛТ ${questionIndex+1} / ${shuffled.length} · ${votes.length} / ${n} САНАЛ`)}
+       <div class="pp-secret-handoff">🔒</div>
+       <h2>Утсаа ${esc(ps[voterTurn])}-д дамжуул</h2>
+       <p class="pp-secret-muted">Өмнөх хүний сонголт харагдахгүй. Утсаа авсан хүн товчийг дараад саналаа өгнө.</p>
+       <button type="button" id="ppSecretVoteStart" class="pp-secret-main">Би ${esc(ps[voterTurn])} — санал өгөх →</button>
+     </section>`);
+     document.getElementById("ppSecretVoteStart").onclick=()=>{phase="vote";render();};
+     return;
+   }
+   if(phase==="vote"){
+     stage(`<section class="pp-secret-v31 pp-secret-v32">
+       ${header(`НУУЦ САНАЛ · ${questionIndex+1}/${shuffled.length} · ${voterTurn+1}/${n}`)}
+       <h2 class="pp-secret-question">${esc(shuffled[questionIndex])}</h2>
+       <p class="pp-secret-muted"><b>${esc(ps[voterTurn])}</b>, нэг хүнийг сонгоорой.</p>
+       <div class="pp-secret-choices">${ps.map((name,i)=>`<button type="button" data-candidate="${i}">${esc(name)}</button>`).join("")}</div>
+       <p class="pp-secret-footnote">Сонгосны дараа санал нуугдаж, дараагийн хүнд утас дамжина.</p>
+     </section>`);
+     document.querySelectorAll("#stage [data-candidate]").forEach(b=>b.onclick=()=>{
+       votes.push(Number(b.dataset.candidate));
+       voterTurn++;
+       phase=voterTurn===n?"results":"voter-handoff";
+       render();
+     });
+     return;
+   }
+   if(phase==="results"){
+     ranking=ps.map((name,i)=>({name,count:votes.filter(v=>v===i).length})).sort((a,b)=>b.count-a.count);
+     stage(`<section class="pp-secret-v31 pp-secret-v32">
+       ${header(`ҮР ДҮН · АСУУЛТ ${questionIndex+1} / ${shuffled.length}`)}
+       <h2 class="pp-secret-question">${esc(shuffled[questionIndex])}</h2>
+       <div class="pp-secret-tally">${ranking.map(t=>`<div class="pp-secret-tally-row">
+         <div class="pp-secret-tally-label"><b>${esc(t.name)}</b><span>${t.count} санал</span></div>
+         <div class="pp-secret-tally-track"><div style="width:${Math.round(t.count*100/n)}%"></div></div>
+       </div>`).join("")}</div>
+       <p class="pp-secret-footnote">Зөвхөн нийт саналын тоо харагдана. Асуултын эзэн, санал өгсөн хүнийг харуулахгүй.</p>
+       <button type="button" class="pp-secret-main" id="ppSecretContinue">${questionIndex+1<shuffled.length?"Дараагийн нууц асуулт →":"Тоглолтыг дуусгах ✓"}</button>
+     </section>`);
+     document.getElementById("ppSecretContinue").onclick=()=>{
+       votes=[];ranking=null;questionIndex++;
+       if(questionIndex<shuffled.length){phase="round-ready";}
+       else{shuffled=[];phase="finished";}
+       render();
+     };
+     return;
+   }
+   stage(`<section class="pp-secret-v31 pp-secret-v32">
+     ${header("НУУЦ САНАЛ · ДУУССАН")}
+     <div class="pp-secret-handoff">🎉</div>
+     <h2>Бүх асуулт дууслаа!</h2>
+     <p class="pp-secret-muted">Хэн ямар асуулт бичсэнийг тоглоом харуулсангүй. Дахин эхлүүлбэл хүн бүр шинээр нэг асуулт бичнэ.</p>
+     <button class="pp-secret-main" type="button" id="ppSecretRestart">Дахин тоглох →</button>
+   </section>`);
+   document.getElementById("ppSecretRestart").onclick=()=>{
+     questions=[];shuffled=[];votes=[];authorTurn=0;voterTurn=0;questionIndex=0;phase="writer-handoff";render();
+   };
+ };
+ render();
 };
+
 SCREENS.memory=g=>{
  frame(g);let seq=[],entered=0,state='ready',level=0,epoch=0;
  const setOn=i=>{const b=document.querySelector(`[data-color="${i}"]`);if(b)b.classList.add('on');};
