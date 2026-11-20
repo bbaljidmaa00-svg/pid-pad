@@ -2179,6 +2179,8 @@ html[data-studio-art] #app .pp22-art-bg.pp30-poster-image{
   #app .pp22-card, #app .pp22-feature {border-radius:var(--pp-round,26px)!important;}
 }
 
+.pp22-home .pp22-count-pill{min-height:54px!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:9px 4px!important;gap:0!important}
+.pp22-home .pp22-count-pill span{font-size:clamp(14px,3.6vw,19px)!important;font-weight:800!important;line-height:1.15!important;white-space:nowrap!important}
 </style>
 </head>
 <body>
@@ -3232,7 +3234,7 @@ function home(){
  </section>
  <section class="pp22-count" aria-labelledby="pp22GroupTitle">
    <div class="pp22-section-lead"><span class="pp22-section-sup">01 / ТОГЛОГЧИД</span><h2 id="pp22GroupTitle">${ppStudioText(PP_STUDIO.countTitle)}</h2><p>${ppStudioText(PP_STUDIO.countSubtitle)}</p></div>
-   <div class="pp22-count-grid">${[[2,'2','♡'],[3,'3','✌'],[4,'4','♣'],[5,'5','✦'],[6,'6','☆'],[7,'7','⚡'],[8,'8+','♛'],[0,'Бүгд','◌']].map(([n,txt,emoji])=>`<button class="pp22-count-pill" data-count="${n}" aria-pressed="${n===8?S.count>=8:S.count===n}" type="button"><b>${emoji}</b><span>${txt}</span></button>`).join('')}</div>
+   <div class="pp22-count-grid">${[[2,'2'],[3,'3'],[4,'4'],[5,'5'],[6,'6'],[7,'7'],[8,'8+'],[0,'Бүгд']].map(([n,txt])=>`<button class="pp22-count-pill" data-count="${n}" aria-pressed="${n===8?S.count>=8:S.count===n}" type="button"><span>${txt}</span></button>`).join('')}</div>
    <div class="pp23-roster" aria-label="Тоглогчдын нэр">
     <div class="pp23-roster-info"><span class="pp23-roster-caption">${ppStudioText(PP_STUDIO.namesTitle)}</span>
      <div class="pp23-roster-names">${pp23NamesPreview()}</div></div>
