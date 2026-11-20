@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#14081f">
-<title>Пид Пад · Play Focus Preview</title>
+<title>Пид Пад · Тоглоом</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Manrope:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500;600;700;800&display=swap">
 <style>
 /* Layout: one-column phone app; home = game catalogue on a night-felt table, game = full-screen card stage */
 :root{
@@ -2095,6 +2095,48 @@ html:has(.pp29-play) body{background-image:none!important;}
 @keyframes pp29Pop{0%{opacity:0;transform:translate(-50%,-40%) scale(.75)}30%{opacity:1;transform:translate(-50%,-60%) scale(1.07)}75%{opacity:1}100%{opacity:0;transform:translate(-50%,-100%) scale(1)}}
 @media(prefers-reduced-motion:reduce){.pp29-burst{animation:none;display:none;}}
 
+
+/* V30: consistent Cyrillic typography, readable custom posters and soft shadows. */
+:root{--pp30-shadow:color-mix(in srgb,var(--pp-pink) 18%,transparent)}
+body:has(.pp22-home),body:has(.pp29-play),.pp-studio-panel{font-family:'Manrope','Noto Sans',system-ui,sans-serif!important}
+#app .pp22-home h1,#app .pp22-home h2,#app .pp22-home h3,#app .pp22-home button,
+#app .pp22-home input,#app .pp22-home p,#app .pp22-home .pp22-card-copy strong,
+#app .pp29-play h1,#app .pp29-play h2,#app .pp29-play h3,#app .pp29-play button,
+#app .pp29-play p,#app .pp29-play input{font-family:'Manrope','Noto Sans',system-ui,sans-serif!important;letter-spacing:-.015em!important}
+#app .pp22-home h1,#app .pp22-home h2,#app .pp29-play h1,#app .pp29-play h2{font-weight:800!important}
+#app .pp22-home p,#app .pp29-play p{font-weight:500!important;line-height:1.55!important}
+#app .pp22-home button,#app .pp29-play button{font-weight:700!important}
+#app .pp22-hero,#app .pp22-count-pill,#app .pp22-count-panel,#app .pp23-roster,
+#app .pp22-feature .pp22-card-link,#app .pp22-card,#app .pp22-feature,
+#app .pp22-cta,#app .pp22-random,#app .pp22-extra,#app .pp22-more,
+#app .pp22-tabs button,#app .pp22-search,#app .pp-studio-launch,
+#app .pp23-edit-names,#app .pp29-stage .btn,#app .pp29-stage .card{
+ box-shadow:0 7px 22px var(--pp30-shadow),0 2px 5px rgba(44,23,50,.07)!important
+}
+#app .pp22-hero,#app .pp22-feature,#app .pp22-card,#app .pp22-card .pp22-card-link,
+#app .pp22-feature .pp22-card-link{border-radius:var(--pp-round,22px)!important}
+#app .pp22-card,#app .pp22-feature{overflow:hidden!important;isolation:isolate}
+#app .pp22-card-link,#app .pp22-feature .pp22-card-link{position:relative;overflow:hidden!important}
+#app img.pp30-poster-image,#app .pp22-art-bg.pp30-poster-image,
+html[data-studio-art] #app .pp22-art-bg.pp30-poster-image{
+ display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+ object-fit:cover!important;object-position:center!important;border-radius:0!important;
+ transform:none!important;filter:none!important;opacity:1!important;mix-blend-mode:normal!important;
+ clip-path:none!important;mask:none!important;z-index:0!important
+}
+#app .pp22-card-gradient{z-index:1!important;pointer-events:none;
+ background:linear-gradient(180deg,transparent 8%,rgba(17,10,27,.04) 43%,rgba(19,12,29,.80) 100%)!important}
+#app .pp22-card-copy{z-index:2!important}
+#app .pp22-card-copy strong{color:#fff!important;font-weight:800!important;text-shadow:0 1px 5px rgba(30,19,35,.65)!important}
+#app .pp22-card-copy .pp22-people{background:rgba(28,19,37,.75)!important;color:#fff!important}
+#app .pp22-fav{z-index:4!important}
+#app .pp22-cta-main,#app .pp22-cta-main span,#app .pp22-cta-main small,
+#app .pp22-nav-actions button,#app .pp22-random{color:var(--pp-auto-button)!important}
+#app .pp22-cta-alt,#app .pp22-cta-alt span,#app .pp22-cta-alt small{color:var(--pp-auto-cyan)!important}
+#app .pp22-hero h1 em{color:var(--pp-auto-title)!important}
+#app .pp22-search{background:rgba(255,255,255,.5)!important;color:var(--pp-auto-body)!important}
+#app .pp22-card-link:focus-visible,#app .pp22-cta:focus-visible{outline:3px solid var(--pp-cyan)!important;outline-offset:2px}
+@media(max-width:600px){#app .pp22-card-copy strong{font-size:clamp(14px,4.2vw,20px)!important;line-height:1.2!important}}
 </style>
 </head>
 <body>
@@ -2734,6 +2776,11 @@ const PP_STUDIO_DEFAULT={
  subtitle:'Найзууд цугласан уу? Тэгвэл тоглоомоо эхлүүлье.',
  start:'Шууд тоглох',online:'Онлайн өрөө',
  featuredTitle:'Чамд санал болгох тоглоом',libraryTitle:'Сонгоод л тогло',
+ eyebrow:'PARTY NIGHT STARTS HERE',startHint:'Нэг утсаар • шууд эхэл',onlineHint:'Найзуудтайгаа кодоор нэгд',
+ howLabel:'Хэрхэн тоглох вэ?',countTitle:'Хэдүүлээ вэ?',countSubtitle:'Хүнийхээ тоог сонгоод нэрсээ бичээрэй',
+ namesTitle:'Хэн хэн тоглох вэ?',namesButton:'Нэрсээ бичих',featuredBadge:'САНАЛ БОЛГОХ',
+ randomButton:'Сугалаад өг',libraryBadge:'ТОГЛООМЫН САН',librarySubtitle:'Зураг хар. Тоглоомоо сонго. Эхэл.',
+ searchPlaceholder:'Тоглоом хайх...',
  sections:{count:true,featured:true,library:true,extras:true},games:{},order:[]
 };
 function ppStudioStored(){
@@ -2747,7 +2794,7 @@ function ppStudioStored(){
 function ppStudioNormalize(v){
  const base=structuredClone(PP_STUDIO_DEFAULT);if(!v||typeof v!=='object')return base;
  for(const key of ['pink','cyan','titleText','bodyText','buttonText','posterText'])if(/^#[0-9a-fA-F]{6}$/.test(v[key]||''))base[key]=v[key];
- for(const key of ['headingA','headingB','subtitle','start','online','featuredTitle','libraryTitle'])
+ for(const key of ['headingA','headingB','subtitle','start','online','featuredTitle','libraryTitle','eyebrow','startHint','onlineHint','howLabel','countTitle','countSubtitle','namesTitle','namesButton','featuredBadge','randomButton','libraryBadge','librarySubtitle','searchPlaceholder'])
   if(typeof v[key]==='string')base[key]=v[key].slice(0,180);
  base.font=['Manrope','Unbounded','system'].includes(v.font)?v.font:base.font;
  base.artMode='original'; // The poster colors are never recolored. Existing edits and user images remain.
@@ -2782,6 +2829,17 @@ function ppStudioSave(){
  try{localStorage.setItem('pp-studio-v25',JSON.stringify(PP_STUDIO));}catch(e){toast('Хадгалах сан дүүрлээ. Зургаа жижигрүүлж үзээрэй.',true);}
  ppStudioApply();
 }
+function pp30Luminance(hex){
+ const rgb=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);
+ return .2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2];
+}
+function pp30SafeText(bg,wanted){
+ const a=pp30Luminance(bg),b=pp30Luminance(wanted),ratio=(Math.max(a,b)+.05)/(Math.min(a,b)+.05);
+ if(ratio>=4.5)return wanted;
+ const dark='#201329',light='#FFFFFF';
+ const c=x=>{const t=pp30Luminance(x);return (Math.max(a,t)+.05)/(Math.min(a,t)+.05);};
+ return c(dark)>c(light)?dark:light;
+}
 function ppStudioApply(){
  const r=document.documentElement.style;
  r.setProperty('--pp-pink',PP_STUDIO.pink);
@@ -2790,10 +2848,14 @@ function ppStudioApply(){
  r.setProperty('--pp-text-body',PP_STUDIO.bodyText);
  r.setProperty('--pp-text-button',PP_STUDIO.buttonText);
  r.setProperty('--pp-text-poster',PP_STUDIO.posterText);
+ r.setProperty('--pp-auto-title',pp30SafeText(PP_STUDIO.pink,PP_STUDIO.titleText));
+ r.setProperty('--pp-auto-body',pp30SafeText(PP_STUDIO.cyan,PP_STUDIO.bodyText));
+ r.setProperty('--pp-auto-button',pp30SafeText(PP_STUDIO.pink,PP_STUDIO.buttonText));
+ r.setProperty('--pp-auto-cyan',pp30SafeText(PP_STUDIO.cyan,PP_STUDIO.buttonText));
  r.setProperty('--pp-round',PP_STUDIO.radius+'px');
  r.setProperty('--pp-grid-phone',String(PP_STUDIO.columns));
  document.documentElement.dataset.studioArt=PP_STUDIO.artMode;
- r.setProperty('--pp-font',PP_STUDIO.font==='Unbounded'?"'Unbounded',system-ui,sans-serif":PP_STUDIO.font==='Manrope'?"'Manrope',system-ui,sans-serif":"system-ui,-apple-system,sans-serif");
+ r.setProperty('--pp-font',PP_STUDIO.font==='system'?"'Noto Sans',system-ui,sans-serif":"'Manrope','Noto Sans',system-ui,sans-serif");
  for(const [key,value] of Object.entries(PP_STUDIO.sections))document.documentElement.dataset['studio'+key[0].toUpperCase()+key.slice(1)]=value?'1':'0';
 }
 function ppStudioAllGames(){return [...GAMES,...OFFLINE];}
@@ -2848,7 +2910,14 @@ function ppStudioForm(){
  <p class="pp-studio-info">Ягаан болон cyan дээр уншигдахуйц өнгө сонгоорой. Энэ тохиргоо сайтын өөрийн бичвэрт үйлчилнэ, засварлагчийн цэсийн бичвэр өөрчлөгдөхгүй.</p>
  </div>`;
  if(ppStudioTab==='text')return `<div class="pp-studio-section"><h3>Нүүр хуудасны бичвэр</h3>
- ${[['headingA','Том гарчиг — эхний мөр'],['headingB','Тодруулах үг'],['subtitle','Тайлбар'],['start','Үндсэн товч'],['online','Онлайн товч'],['featuredTitle','Санал болгох хэсэг'],['libraryTitle','Тоглоомын сангийн гарчиг']].map(([key,label])=>`<label class="pp-studio-field">${label}<input type="text" maxlength="180" data-studio-text="${key}" value="${esc(PP_STUDIO[key])}"></label>`).join('')}
+ ${[['headingA','Том гарчиг — эхний мөр'],['headingB','Тодруулах үг'],['subtitle','Тайлбар'],['start','Үндсэн товч'],['online','Онлайн товч'],['featuredTitle','Санал болгох хэсэг'],['libraryTitle','Тоглоомын сангийн гарчиг'],
+ ['eyebrow','Нүүрний жижиг гарчиг'],['startHint','Шууд тоглох — тайлбар'],
+ ['onlineHint','Онлайн өрөө — тайлбар'],['howLabel','Хэрхэн тоглох товч'],
+ ['countTitle','Хэдүүлээ вэ? — гарчиг'],['countSubtitle','Тоглогчдын тайлбар'],
+ ['namesTitle','Тоглогчдын нэрс — гарчиг'],['namesButton','Нэр засах товч'],
+ ['featuredBadge','Санал болгох — жижиг гарчиг'],['randomButton','Санамсаргүй тоглоом товч'],
+ ['libraryBadge','Тоглоомын сан — жижиг гарчиг'],['librarySubtitle','Тоглоомын сангийн тайлбар'],
+ ['searchPlaceholder','Хайлтын талбар']].map(([key,label])=>`<label class="pp-studio-field">${label}<input type="text" maxlength="180" data-studio-text="${key}" value="${esc(PP_STUDIO[key])}"></label>`).join('')}
  <p>Шинэ үгс бичихэд нүүр хуудсанд шууд харагдана.</p></div>`;
  if(ppStudioTab==='layout')return `<div class="pp-studio-section"><h3>Харагдах хэсгүүд</h3><p>“Хэдүүлээ вэ?” болон нэр оруулах тохиргоог анхнаасаа асаалттай үлдээсэн.</p>
  ${[['count','Хэдүүлээ вэ? / Нэр оруулах'],['featured','Санал болгох тоглоомууд'],['library','Бүх тоглоомын сан'],['extras','Азын хүрд / Санамсаргүй тоглоом']].map(([key,label])=>`<label class="pp-studio-check"><span>${label}</span><input type="checkbox" data-studio-section="${key}" ${PP_STUDIO.sections[key]?'checked':''}></label>`).join('')}</div>
@@ -2865,7 +2934,7 @@ function ppStudioForm(){
  <label class="pp-studio-field">Тоглоом сонгох<select id="ppStudioGameSelect">${rows.map(g=>`<option value="${esc(g.id)}" ${g.id===selected.id?'selected':''}>${esc(g.name)}</option>`).join('')}</select></label>
  <label class="pp-studio-field">Картын нэр<input type="text" maxlength="70" id="ppStudioGameName" value="${esc(change.name||selected.name)}"></label>
  <label class="pp-studio-field">Богино тайлбар<input type="text" maxlength="150" id="ppStudioGameDesc" value="${esc(change.desc||selected.desc||'')}"></label>
- <label class="pp-studio-field">Постерын зураг (1 МБ-аас бага)<input id="ppStudioGameArt" type="file" accept="image/png,image/jpeg,image/webp"></label>
+ <label class="pp-studio-field">Постерын зураг (автоматаар багасгаж хадгална)<input id="ppStudioGameArt" type="file" accept="image/png,image/jpeg,image/webp"></label>
  <label class="pp-studio-field">Эсвэл зургийн HTTPS холбоос<input type="url" id="ppStudioGameURL" placeholder="https://..." value="${esc(change.art?.startsWith('https://')?change.art:'')}"></label>
  <label class="pp-studio-check">Каталогоос нуух<input type="checkbox" id="ppStudioGameHide" ${change.hidden?'checked':''}></label>
  <div class="pp-studio-grid"><button class="pp-studio-btn" type="button" id="ppStudioGameSave">Тоглоомыг хадгалах</button><button class="pp-studio-btn secondary" type="button" id="ppStudioGameClear">Зургийг сэргээх</button></div></div>
@@ -2916,11 +2985,23 @@ function ppStudioRender(){
   ppStudioSave();ppStudioRerender();ppStudioRender();toast('Тоглоомын өөрчлөлт хадгалагдлаа.');
  };
  const clearGame=root.querySelector('#ppStudioGameClear');if(clearGame)clearGame.onclick=()=>{const o=PP_STUDIO.games[ppStudioGameId]||(PP_STUDIO.games[ppStudioGameId]={});delete o.art;ppStudioSave();ppStudioRerender();ppStudioRender();};
- const imageInput=root.querySelector('#ppStudioGameArt');if(imageInput)imageInput.onchange=()=>{
+ const imageInput=root.querySelector('#ppStudioGameArt');if(imageInput)imageInput.onchange=async()=>{
   const f=imageInput.files?.[0];if(!f)return;
-  if(!['image/jpeg','image/png','image/webp'].includes(f.type)||f.size>1048576){toast('1 МБ-аас бага PNG, JPG, WebP зураг сонгоорой.',true);return;}
-  const reader=new FileReader();const id=ppStudioGameId;
-  reader.onload=()=>{const o=PP_STUDIO.games[id]||(PP_STUDIO.games[id]={});o.art=String(reader.result);ppStudioSave();ppStudioRerender();ppStudioRender();toast('Постер шинэчлэгдлээ.')};reader.readAsDataURL(f);
+  if(!['image/jpeg','image/png','image/webp'].includes(f.type)||f.size>8*1024*1024){toast('8 МБ-аас бага PNG, JPG, WebP зураг сонгоорой.',true);return;}
+  const id=ppStudioGameId;
+  try{
+   const url=URL.createObjectURL(f);
+   const img=new Image();
+   await new Promise((resolve,reject)=>{img.onload=resolve;img.onerror=reject;img.src=url;});
+   const ratio=Math.min(1,1024/Math.max(img.naturalWidth,img.naturalHeight));
+   const canvas=document.createElement('canvas');canvas.width=Math.round(img.naturalWidth*ratio);canvas.height=Math.round(img.naturalHeight*ratio);
+   canvas.getContext('2d',{alpha:false}).drawImage(img,0,0,canvas.width,canvas.height);
+   const encoded=canvas.toDataURL('image/webp',.80);
+   URL.revokeObjectURL(url);
+   if(encoded.length>650000){toast('Зураг хэт том байна. Арай жижиг зураг ашиглаарай.',true);return;}
+   const o=PP_STUDIO.games[id]||(PP_STUDIO.games[id]={});o.art=encoded;
+   ppStudioSave();ppStudioRerender();ppStudioRender();toast('Зураг хадгалагдлаа. Тоглоомын карт дээр шинэчлэгдсэн.');
+  }catch(error){toast('Энэ зураг нээгдсэнгүй. JPG эсвэл PNG-аар дахин оролдоорой.',true);}
  };
  root.querySelectorAll('[data-studio-move]').forEach(b=>b.onclick=()=>{
   const all=ppStudioOrder(ppStudioAllGames()).map(g=>g.id),i=all.indexOf(b.dataset.studioMove),j=i+(+b.dataset.dir);
@@ -2959,7 +3040,7 @@ ppStudioApply();
 
 function pp22Art(g){
  const custom=PP_STUDIO.games[g.id]?.art;
- if(custom) return {src:custom.replace(/["'<>\n]/g,c=>encodeURIComponent(c)),colors:[PP_STUDIO.pink,PP_STUDIO.cyan,PP_STUDIO.pink],stamp:'✦'};
+ if(custom) return {src:custom,colors:[PP_STUDIO.pink,PP_STUDIO.cyan,PP_STUDIO.pink],stamp:'✦'};
 
  const colorIndex=[...g.id].reduce((v,c)=>v+c.charCodeAt(0),0)%PP22_PALETTES.length;
  if(g.id==='shagai' || g.id==='shagai-real'){
@@ -3009,7 +3090,7 @@ function ppTile(g,feature=false,idx=0){
  const art=pp22Art(g),on=ppIsFav(g.id),off=OFFLINE.includes(g),newTag=['spin','flash','secretpick','memory'].includes(g.id);
  return `<article class="pp22-card ${feature?'pp-poster-feature pp22-feature':''}" style="--p-one:${art.colors[0]};--p-two:${art.colors[1]};--p-pop:${art.colors[2]}">
    <button class="pp22-card-link" data-open="${esc(g.id)}" data-off="${off}" type="button" aria-label="${esc(g.name)} тоглох">
-     <span class="pp22-art-bg" style="background-image:url('${art.src}')"></span>
+     <img class="pp22-art-bg pp30-poster-image" src="${esc(art.src)}" loading="lazy" decoding="async" alt="${esc(g.name)} тоглоомын зураг">
      <span class="pp22-card-deco">✳</span>
      <span class="pp22-card-gradient"></span>
      <span class="pp22-card-copy">
@@ -3101,28 +3182,28 @@ function home(){
  </header>
  <section class="pp22-hero" aria-labelledby="pp22Heading">
    <div class="pp22-hero-graphics" aria-hidden="true"><div class="pp22-star-one">✳</div><div class="pp22-hero-card pp22-hero-card-a" style="background-image:url('${PP22_ARTS[0]}')"></div><div class="pp22-hero-card pp22-hero-card-b" style="background-image:url('${PP22_ARTS[9]}')"></div><div class="pp22-hero-spark">✦</div></div>
-   <div class="pp22-eyebrow"><span></span> PARTY NIGHT STARTS HERE</div>
+   <div class="pp22-eyebrow"><span></span> ${ppStudioText(PP_STUDIO.eyebrow)}</div>
    <h1 id="pp22Heading">${ppStudioText(PP_STUDIO.headingA)} <em>${ppStudioText(PP_STUDIO.headingB)}</em></h1>
    <p>${ppStudioText(PP_STUDIO.subtitle)}</p>
-   <div class="pp22-hero-ctas"><button class="pp22-cta pp22-cta-main" id="ppStart" type="button"><span class="pp22-cta-icon">▶</span><span>${ppStudioText(PP_STUDIO.start)}<small>Нэг утсаар • шууд эхэл</small></span><span class="pp22-cta-arrow">↗</span></button><button class="pp22-cta pp22-cta-alt" id="ppOnlineEntry" type="button"><span class="pp22-cta-icon">♣</span><span>${ppStudioText(PP_STUDIO.online)}<small>Найзуудтайгаа кодоор нэгд</small></span><span class="pp22-cta-arrow">↗</span></button></div>
-   <button id="ppGuideHome" type="button" class="pp22-how">▷ Хэрхэн тоглох вэ?</button>
+   <div class="pp22-hero-ctas"><button class="pp22-cta pp22-cta-main" id="ppStart" type="button"><span class="pp22-cta-icon">▶</span><span>${ppStudioText(PP_STUDIO.start)}<small>${ppStudioText(PP_STUDIO.startHint)}</small></span><span class="pp22-cta-arrow">↗</span></button><button class="pp22-cta pp22-cta-alt" id="ppOnlineEntry" type="button"><span class="pp22-cta-icon">♣</span><span>${ppStudioText(PP_STUDIO.online)}<small>${ppStudioText(PP_STUDIO.onlineHint)}</small></span><span class="pp22-cta-arrow">↗</span></button></div>
+   <button id="ppGuideHome" type="button" class="pp22-how">▷ ${ppStudioText(PP_STUDIO.howLabel)}</button>
  </section>
  <section class="pp22-count" aria-labelledby="pp22GroupTitle">
-   <div class="pp22-section-lead"><span class="pp22-section-sup">01 / ТОГЛОГЧИД</span><h2 id="pp22GroupTitle">Хэдүүлээ вэ?</h2><p>Хүнийхээ тоог сонгоод нэрсээ бичээрэй</p></div>
+   <div class="pp22-section-lead"><span class="pp22-section-sup">01 / ТОГЛОГЧИД</span><h2 id="pp22GroupTitle">${ppStudioText(PP_STUDIO.countTitle)}</h2><p>${ppStudioText(PP_STUDIO.countSubtitle)}</p></div>
    <div class="pp22-count-grid">${[[2,'2','♡'],[3,'3','✌'],[4,'4','♣'],[5,'5','✦'],[6,'6','☆'],[7,'7','⚡'],[8,'8+','♛'],[0,'Бүгд','◌']].map(([n,txt,emoji])=>`<button class="pp22-count-pill" data-count="${n}" aria-pressed="${n===8?S.count>=8:S.count===n}" type="button"><b>${emoji}</b><span>${txt}</span></button>`).join('')}</div>
    <div class="pp23-roster" aria-label="Тоглогчдын нэр">
-    <div class="pp23-roster-info"><span class="pp23-roster-caption">Хэн хэн тоглох вэ?</span>
+    <div class="pp23-roster-info"><span class="pp23-roster-caption">${ppStudioText(PP_STUDIO.namesTitle)}</span>
      <div class="pp23-roster-names">${pp23NamesPreview()}</div></div>
-    <button id="pp23NamesEdit" class="pp23-edit-names" type="button">✎ Нэрсээ бичих</button>
+    <button id="pp23NamesEdit" class="pp23-edit-names" type="button">✎ ${ppStudioText(PP_STUDIO.namesButton)}</button>
    </div>
  </section>
  <section class="pp22-feature-area" aria-labelledby="pp22FeatTitle">
-   <div class="pp22-section-head"><div><span class="pp22-section-sup">02 / САНАЛ БОЛГОХ</span><h2 id="pp22FeatTitle">${S.count?`${S.count>=8?`${S.count}+`:`${S.count}`} хүнд тохирох тоглоом`:ppStudioText(PP_STUDIO.featuredTitle)} ✨</h2></div><button id="pp22Random" class="pp22-random" type="button">🎲 Сугалаад өг</button></div>
+   <div class="pp22-section-head"><div><span class="pp22-section-sup">02 / ${ppStudioText(PP_STUDIO.featuredBadge)}</span><h2 id="pp22FeatTitle">${S.count?`${S.count>=8?`${S.count}+`:`${S.count}`} хүнд тохирох тоглоом`:ppStudioText(PP_STUDIO.featuredTitle)} ✨</h2></div><button id="pp22Random" class="pp22-random" type="button">🎲 ${ppStudioText(PP_STUDIO.randomButton)}</button></div>
    <div class="pp22-featured">${featured.map((g,i)=>ppTile(g,true,i)).join('')}</div>
  </section>
  <section class="pp22-library" id="ppBrowseAll" aria-labelledby="pp22AllTitle">
-   <div class="pp22-section-head"><div><span class="pp22-section-sup">03 / ТОГЛООМЫН САН</span><h2 id="pp22AllTitle">${ppStudioText(PP_STUDIO.libraryTitle)}</h2><p>Зураг хар. Тоглоомоо сонго. Эхэл.</p></div><span class="pp22-library-total">52+ тоглоом</span></div>
-   <input id="ppSearch" class="pp22-search" type="search" aria-label="Тоглоом хайх" placeholder="⌕  Тоглоом хайх..." autocomplete="off" value="${esc(ppQuery)}">
+   <div class="pp22-section-head"><div><span class="pp22-section-sup">03 / ${ppStudioText(PP_STUDIO.libraryBadge)}</span><h2 id="pp22AllTitle">${ppStudioText(PP_STUDIO.libraryTitle)}</h2><p>${ppStudioText(PP_STUDIO.librarySubtitle)}</p></div><span class="pp22-library-total">52+ тоглоом</span></div>
+   <input id="ppSearch" class="pp22-search" type="search" aria-label="Тоглоом хайх" placeholder="⌕  ${ppStudioText(PP_STUDIO.searchPlaceholder)}" autocomplete="off" value="${esc(ppQuery)}">
    <div class="pp22-tabs" aria-label="Тоглоомын төрлүүд">${tabs.map(([k,t])=>`<button type="button" data-tab="${k}" aria-pressed="${ppTab===k}">${t}</button>`).join('')}</div>
    <div id="ppLibrary"></div>
  </section>
