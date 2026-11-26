@@ -2181,7 +2181,21 @@ html[data-studio-art] #app .pp22-art-bg.pp30-poster-image{
 
 .pp22-home .pp22-count-pill{min-height:54px!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:9px 4px!important;gap:0!important}
 .pp22-home .pp22-count-pill span{font-size:clamp(14px,3.6vw,19px)!important;font-weight:800!important;line-height:1.15!important;white-space:nowrap!important}
-.ppSongCats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.ppSongCats button{border:1px solid #ded2e6;background:#f3edf6;color:#34213f;border-radius:14px;min-height:52px;padding:10px;font:700 14px Manrope,system-ui,sans-serif}.ppSongCats button[aria-pressed=true]{background:#a91067;color:white}.ppSongCats button:last-child{grid-column:1/-1}#ppSongLocal[hidden]{display:none!important}</style>
+.ppSongCats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.ppSongCats button{border:1px solid #ded2e6;background:#f3edf6;color:#34213f;border-radius:14px;min-height:52px;padding:10px;font:700 14px Manrope,system-ui,sans-serif}.ppSongCats button[aria-pressed=true]{background:#a91067;color:white}.ppSongCats button:last-child{grid-column:1/-1}#ppSongLocal[hidden]{display:none!important}
+.pp-manager-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pp-manager-shortcuts button{background:#ffe2f0;border:2px solid #28172e;border-radius:12px;min-height:48px;padding:8px;font-weight:850;font-size:12px;color:#28172e}
+.pp-manager-list{max-height:350px;overflow:auto;display:grid;gap:8px;overscroll-behavior:contain}
+.pp-manager-row{background:#fff;border:1px solid #d2bacc;padding:11px;border-radius:12px;display:grid;gap:8px}
+.pp-manager-row[hidden],[data-copy-field][hidden]{display:none!important}
+.pp-manager-row[data-status="deleted"]{background:#f2edf2;opacity:.86}
+.pp-manager-row-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pp-manager-row-head strong{color:#28172e;overflow-wrap:anywhere;font-size:13px}
+.pp-manager-row-head small{white-space:nowrap;color:#6f5979;font-size:10px}
+.pp-manager-actions{display:flex;flex-wrap:wrap;gap:6px}
+.pp-manager-actions button{background:#f0e8f3;color:#30203a;border:1px solid #d6c5df;min-height:39px;padding:7px 10px;border-radius:9px;font-weight:800;font-size:12px}
+.pp-manager-actions button.danger{background:#ffe8ed;color:#9c1c4d;border-color:#ebb6c8}
+.pp-manager-actions button.restore{background:#ddf8ed;color:#146a50;border-color:#a7d5c3}
+</style>
 </head>
 <body>
 <div id="app"></div>
@@ -2579,7 +2593,7 @@ function rebuildContent(){
 
 /* ---------- routing ---------- */
 let filter = "all", current = "home";
-function go(id){ if(typeof ppSongCleanup!=="undefined"&&ppSongCleanup){ppSongCleanup();ppSongCleanup=null;} clearTimers(); closeHZ(); window.scrollTo(0,0); current=id||"home"; if(!id) return home(); if(id==="party") return partyScreen(); if(id==="admin"||(id==="edit"&&MODE==="server"&&!ADMIN)) return adminLogin(); if(id==="edit") return editor(); if(id.startsWith("rules-")){ const rg=[...OFFLINE,...GAMES].find(x=>x.id===id.slice(6)); return rg?rulesScreen(rg):home(); } const g=GAMES.find(x=>x.id===id); if(!g) return home(); (SCREENS[id]||customScreen)(g); }
+function go(id){ if(typeof ppSongCleanup!=="undefined"&&ppSongCleanup){ppSongCleanup();ppSongCleanup=null;} clearTimers(); closeHZ(); window.scrollTo(0,0); current=id||"home"; if(!id) return home(); if(id==="party") return partyScreen(); if(id==="admin"||(id==="edit"&&MODE==="server"&&!ADMIN)) return adminLogin(); if(id==="edit") return editor(); if(id.startsWith("rules-")){ const rg=[...OFFLINE,...GAMES].find(x=>x.id===id.slice(6)); return rg&&!PP_STUDIO.games[rg.id]?.deleted?rulesScreen(rg):home(); } const g=GAMES.find(x=>x.id===id); if(!g||PP_STUDIO.games[g.id]?.deleted) return home(); (SCREENS[id]||customScreen)(g); }
 
 function rulesHTML(g,open){ return `<details class="rules"${open?" open":""}><summary>Яаж тоглох вэ</summary><ol>${g.rules.map(r=>`<li>${esc(r)}</li>`).join("")}</ol></details>`; }
 /* V21 unified in-game layout — retain each game's original handlers */
@@ -2773,7 +2787,7 @@ const PP_FEATURES={laugh:['imposter','who','bomb','sync'],chaos:['bomb','flash',
 const ppFavs=()=>{ const d=store('pp-favorites');return Array.isArray(d)?d:[]; };
 const ppIsFav=id=>ppFavs().includes(id);
 function ppFavorite(id){const v=ppFavs();store('pp-favorites',v.includes(id)?v.filter(x=>x!==id):[...v,id]); home();}
-function ppEligible(g){return g&&!g.hidden&&!PP_STUDIO.games[g.id]?.hidden&&fits(g,S.count);}
+function ppEligible(g){return g&&!g.hidden&&!PP_STUDIO.games[g.id]?.hidden&&!PP_STUDIO.games[g.id]?.deleted&&fits(g,S.count);}
 function ppCountLabel(){return S.count?(S.count===8?'8+':S.count)+' хүн':'Бүх хүн';}
 
 const PP_VISUALS={
@@ -2850,6 +2864,7 @@ function ppStudioNormalize(v){
   if(typeof o.name==='string')entry.name=o.name.slice(0,70);
   if(typeof o.desc==='string')entry.desc=o.desc.slice(0,150);
   if(typeof o.hidden==='boolean')entry.hidden=o.hidden;
+  if(typeof o.deleted==='boolean')entry.deleted=o.deleted;
   if(typeof o.art==='string'&&o.art.length<1600000&&(/^(https?:\/\/)/.test(o.art)||/^data:image\/(?:png|jpeg|webp);base64,/.test(o.art)))entry.art=o.art;
   base.games[k]=entry;
  }
@@ -2866,7 +2881,7 @@ function ppStudioLoadSharedDesign(config){
  PP_STUDIO=ppStudioNormalize(config);ppStudioApply();
 }
 let PP_STUDIO_ORIGINAL=null;
-let ppStudioTab='colors',ppStudioGameId='imposter';
+let ppStudioTab='manage',ppStudioGameId='imposter';
 function ppStudioSave(){
  PP_STUDIO.__saved=true;
  PP_STUDIO_LOCAL_ACTIVE=true;
@@ -2922,6 +2937,35 @@ function ppStudioRestoreNames(){
  }
 }
 function ppStudioRerender(){ppStudioRestoreNames();if(typeof current==='string'&&current==='home')home();}
+
+function ppStudioAdminAllowed(){return MODE!=='server'||ADMIN;}
+function ppStudioManageAction(id,action){
+ const game=ppStudioAllGames().find(g=>g.id===id);if(!game)return;
+ if(!ppStudioAdminAllowed()){ppStudioClose();go('admin');toast('Сайтын тоглоомыг өөрчлөхийн тулд админ эрхээр нэвтэрнэ үү.',true);return;}
+ if(action==='edit'){ppStudioGameId=id;ppStudioTab='games';ppStudioRender();return;}
+ if(action==='rules'){ppStudioClose();go('edit');if(typeof gameEditForm==='function'&&document.querySelector('#geform'))gameEditForm(id);return;}
+ const data=PP_STUDIO.games[id]||(PP_STUDIO.games[id]={});
+ if(action==='delete'){
+  if(!confirm('«'+game.name+'» тоглоомыг сайтаас устгах уу? Буцааж сэргээх боломжтой.'))return;
+  data.deleted=true;data.hidden=true;
+ }else if(action==='restore'){data.deleted=false;data.hidden=false;}
+ else if(action==='hide'){data.hidden=!data.hidden;data.deleted=false;}
+ else return;
+ ppStudioSave();ppStudioRerender();
+ if(MODE==='server'&&ADMIN){BUNDLE.content.__ppStudio={...PP_STUDIO,__saved:true};pushServer();}
+ ppStudioRender();
+}
+function ppStudioFilterManager(){
+ const root=document.querySelector('.pp-studio-overlay');if(!root)return;
+ const q=(root.querySelector('#ppStudioSearch')?.value||'').trim().toLocaleLowerCase();
+ const status=root.querySelector('#ppStudioStatus')?.value||'all';let count=0;
+ root.querySelectorAll('[data-game-row]').forEach(row=>{
+  const ok=(!q||row.dataset.match.includes(q))&&(status==='all'||row.dataset.status===status);
+  row.hidden=!ok;if(ok)count++;
+ });
+ const label=root.querySelector('#ppStudioVisibleCount');if(label)label.textContent=count+' тоглоом';
+}
+
 function ppStudioOrder(games){const ranks=new Map(PP_STUDIO.order.map((id,i)=>[id,i]));return [...games].sort((a,b)=>(ranks.get(a.id)??999)-(ranks.get(b.id)??999));}
 function ppStudioText(value){return esc(String(value??''));}
 function ppStudioDownload(name,text,mime){
@@ -2942,6 +2986,36 @@ function ppStudioExportHTML(){
 function ppStudioExportJSON(){ppStudioDownload('PidPad_Design_Backup.json',JSON.stringify({...PP_STUDIO,__saved:true},null,2),'application/json;charset=utf-8');}
 function ppStudioClose(){document.querySelector('.pp-studio-overlay')?.remove();}
 function ppStudioForm(){
+
+ if(ppStudioTab==='manage'){
+ const all=ppStudioOrder(ppStudioAllGames());
+ const deleted=all.filter(g=>PP_STUDIO.games[g.id]?.deleted).length;
+ const hidden=all.filter(g=>!PP_STUDIO.games[g.id]?.deleted&&PP_STUDIO.games[g.id]?.hidden).length;
+ return `<div class="pp-studio-section pp-studio-manager">
+ <h3>Тоглоомуудаа удирдах</h3><p>Нэрээр хайгаад шууд засах, нуух, устгах, сэргээх боломжтой.</p>
+ <div class="pp-manager-shortcuts">
+ <button type="button" data-studio-shortcut="text">✎ Бичвэр</button>
+ <button type="button" data-studio-shortcut="colors">🎨 Өнгө</button>
+ <button type="button" data-studio-shortcut="layout">▦ Харагдац</button></div>
+ <p>Нийт ${all.length} · Нуусан ${hidden} · Устгасан ${deleted}</p>
+ <div class="pp-studio-grid">
+  <label class="pp-studio-field">Хайх<input id="ppStudioSearch" type="search" placeholder="Тоглоомын нэр..."></label>
+  <label class="pp-studio-field">Шүүх<select id="ppStudioStatus"><option value="all">Бүгд</option><option value="active">Идэвхтэй</option><option value="hidden">Нуусан</option><option value="deleted">Устгасан</option></select></label>
+ </div>
+ <p id="ppStudioVisibleCount">${all.length} тоглоом</p>
+ <div class="pp-manager-list">${all.map(g=>{
+  const o=PP_STUDIO.games[g.id]||{},status=o.deleted?'deleted':o.hidden?'hidden':'active';
+  return `<div class="pp-manager-row" data-game-row data-match="${esc((g.name+' '+g.id).toLocaleLowerCase())}" data-status="${status}">
+   <div class="pp-manager-row-head"><strong>${esc(g.name)}</strong><small>${status==='deleted'?'Устгасан':status==='hidden'?'Нуусан':'Идэвхтэй'}</small></div>
+   <div class="pp-manager-actions">
+    <button type="button" data-manage-action="edit" data-id="${esc(g.id)}">✎ Засах</button><button type="button" data-manage-action="rules" data-id="${esc(g.id)}">Дүрэм / асуулт</button>
+    ${status==='deleted'?`<button type="button" class="restore" data-manage-action="restore" data-id="${esc(g.id)}">↺ Сэргээх</button>`:
+      `<button type="button" data-manage-action="hide" data-id="${esc(g.id)}">${status==='hidden'?'Харуулах':'Нуух'}</button><button type="button" class="danger" data-manage-action="delete" data-id="${esc(g.id)}">Устгах</button>`}
+   </div></div>`;
+ }).join('')}</div>
+ <p class="pp-studio-info">${ppStudioAdminAllowed()?'Серверт нийтлэхдээ админ эрх хэрэглэнэ.':'Бүх хүнд нийтлэх өөрчлөлт зөвхөн админ эрхээр хийгдэнэ.'}</p>
+ </div>`;
+ }
  if(ppStudioTab==='colors')return `<div class="pp-studio-section"><h3>Хоёр үндсэн өнгө</h3><p>Анхны загвар: <b>Neon Pink #FF1E9D</b> + <b>Bright Cyan #00FFF7</b>. Нүүр хуудас болон товчнуудад хэрэглэнэ. Тоглоомын постерын зураг, картыг өнгөөр будахгүй.</p>
  <div class="pp-studio-preview"><span>NEON PINK</span><span>BRIGHT CYAN</span></div>
  <div class="pp-studio-grid"><label class="pp-studio-field">Ягаан өнгө<input type="color" data-studio-color="pink" value="${PP_STUDIO.pink}"><b>${PP_STUDIO.pink}</b></label>
@@ -2953,7 +3027,7 @@ function ppStudioForm(){
  <div class="pp-studio-grid"><button class="pp-studio-btn secondary" id="ppStudioOneFontColor" type="button">Бүгдийг нэг өнгөөр</button><button class="pp-studio-btn secondary" id="ppStudioResetFontColors" type="button">↺ Фонтын өнгө сэргээх</button></div>
  <p class="pp-studio-info">Ягаан болон cyan дээр уншигдахуйц өнгө сонгоорой. Энэ тохиргоо сайтын өөрийн бичвэрт үйлчилнэ, засварлагчийн цэсийн бичвэр өөрчлөгдөхгүй.</p>
  </div>`;
- if(ppStudioTab==='text')return `<div class="pp-studio-section"><h3>Нүүр хуудасны бичвэр</h3>
+ if(ppStudioTab==='text')return `<div class="pp-studio-section"><h3>Нүүр хуудасны бичвэр</h3><label class="pp-studio-field">Засах үгээ хайх<input id="ppStudioCopySearch" type="search" placeholder="Гарчиг, товч, тайлбар..."></label>
  ${[['headingA','Том гарчиг — эхний мөр'],['headingB','Тодруулах үг'],['subtitle','Тайлбар'],['start','Үндсэн товч'],['online','Онлайн товч'],['featuredTitle','Санал болгох хэсэг'],['libraryTitle','Тоглоомын сангийн гарчиг'],
  ['eyebrow','Нүүрний жижиг гарчиг'],['startHint','Шууд тоглох — тайлбар'],
  ['onlineHint','Онлайн өрөө — тайлбар'],['howLabel','Хэрхэн тоглох товч'],
@@ -2961,7 +3035,7 @@ function ppStudioForm(){
  ['namesTitle','Тоглогчдын нэрс — гарчиг'],['namesButton','Нэр засах товч'],
  ['featuredBadge','Санал болгох — жижиг гарчиг'],['randomButton','Санамсаргүй тоглоом товч'],
  ['libraryBadge','Тоглоомын сан — жижиг гарчиг'],['librarySubtitle','Тоглоомын сангийн тайлбар'],
- ['searchPlaceholder','Хайлтын талбар']].map(([key,label])=>`<label class="pp-studio-field">${label}<input type="text" maxlength="180" data-studio-text="${key}" value="${esc(PP_STUDIO[key])}"></label>`).join('')}
+ ['searchPlaceholder','Хайлтын талбар']].map(([key,label])=>`<label class="pp-studio-field" data-copy-field data-search="${esc(label)}">${label}<input type="text" maxlength="180" data-studio-text="${key}" value="${esc(PP_STUDIO[key])}"></label>`).join('')}
  <p>Шинэ үгс бичихэд нүүр хуудсанд шууд харагдана.</p></div>`;
  if(ppStudioTab==='layout')return `<div class="pp-studio-section"><h3>Харагдах хэсгүүд</h3><p>“Хэдүүлээ вэ?” болон нэр оруулах тохиргоог анхнаасаа асаалттай үлдээсэн.</p>
  ${[['count','Хэдүүлээ вэ? / Нэр оруулах'],['featured','Санал болгох тоглоомууд'],['library','Бүх тоглоомын сан'],['extras','Азын хүрд / Санамсаргүй тоглоом']].map(([key,label])=>`<label class="pp-studio-check"><span>${label}</span><input type="checkbox" data-studio-section="${key}" ${PP_STUDIO.sections[key]?'checked':''}></label>`).join('')}</div>
@@ -2989,8 +3063,8 @@ function ppStudioForm(){
 function ppStudioRender(){
  const root=document.querySelector('.pp-studio-overlay');if(!root)return;
  root.innerHTML=`<section class="pp-studio-panel" role="dialog" aria-label="Пид Пад Дизайн Студио" aria-modal="true">
- <header class="pp-studio-head"><div><small>PID PAD · DESIGN STUDIO</small><h2>Сайтаа өөрөө зас ✦</h2></div><button type="button" id="ppStudioClose" aria-label="Хаах">×</button></header>
- <nav class="pp-studio-tabs">${[['colors','Өнгө'],['text','Бичвэр'],['layout','Харагдац'],['games','Тоглоом / Зураг']].map(([k,t])=>`<button type="button" data-studio-tab="${k}" aria-pressed="${ppStudioTab===k}">${t}</button>`).join('')}</nav>
+ <header class="pp-studio-head"><div><small>PID PAD · DESIGN STUDIO</small><h2>Сайтын удирдлага ✦</h2></div><button type="button" id="ppStudioClose" aria-label="Хаах">×</button></header>
+ <nav class="pp-studio-tabs">${[['manage','Тоглоомууд'],['games','Тоглоом засах'],['text','Бичвэр'],['colors','Өнгө'],['layout','Харагдац']].map(([k,t])=>`<button type="button" data-studio-tab="${k}" aria-pressed="${ppStudioTab===k}">${t}</button>`).join('')}</nav>
  <div class="pp-studio-body">${ppStudioForm()}</div>
  <footer class="pp-studio-actions"><button type="button" id="ppStudioPublish">☁ Бүх хүнд нийтлэх</button><button type="button" id="ppStudioExportHTML">↓ HTML татах</button><button type="button" id="ppStudioExportJSON">↓ Нөөцлөх</button><button type="button" id="ppStudioImport">↑ Буцааж оруулах</button><button type="button" id="ppStudioReset">↺ Анхны загвар</button>
  <button type="button" id="ppStudioContentEditor">✎ Асуулт / дүрэм засах</button>
@@ -2998,6 +3072,11 @@ function ppStudioRender(){
  <p class="pp-studio-info">Энд хийсэн өөрчлөлт энэ браузерт хадгалагдана. Бүх зочинд ижил болгох бол “HTML татах”-аар экспортоод GitHub/Cloudflare-д нийтэлнэ. Асуулт, дүрмийн засвар нь өмнөх админ эрхээр хамгаалагдсан хэвээр.</p></footer></section>`;
  root.querySelector('#ppStudioClose').onclick=ppStudioClose;
  root.querySelectorAll('[data-studio-tab]').forEach(b=>b.onclick=()=>{ppStudioTab=b.dataset.studioTab;ppStudioRender()});
+ root.querySelectorAll('[data-studio-shortcut]').forEach(b=>b.onclick=()=>{ppStudioTab=b.dataset.studioShortcut;ppStudioRender()});
+ root.querySelectorAll('[data-manage-action]').forEach(b=>b.onclick=()=>ppStudioManageAction(b.dataset.id,b.dataset.manageAction));
+ root.querySelector('#ppStudioSearch')?.addEventListener('input',ppStudioFilterManager);
+ root.querySelector('#ppStudioStatus')?.addEventListener('change',ppStudioFilterManager);
+ root.querySelector('#ppStudioCopySearch')?.addEventListener('input',e=>{const q=e.target.value.toLocaleLowerCase().trim();root.querySelectorAll('[data-copy-field]').forEach(el=>el.hidden=!!q&&!el.dataset.search.toLocaleLowerCase().includes(q));});
  root.querySelectorAll('[data-studio-color]').forEach(e=>e.oninput=()=>{PP_STUDIO[e.dataset.studioColor]=e.value;ppStudioSave();e.nextElementSibling.textContent=e.value});
  root.querySelector('#ppStudioOriginalColors')?.addEventListener('click',()=>{PP_STUDIO.pink='#FF1E9D';PP_STUDIO.cyan='#00FFF7';ppStudioSave();ppStudioRender()});
  root.querySelectorAll('[data-studio-text-color]').forEach(e=>e.oninput=()=>{
