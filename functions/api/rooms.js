@@ -1,8 +1,9 @@
 const json=(v,s=200)=>new Response(JSON.stringify(v),{status:s,headers:{"content-type":"application/json; charset=utf-8","cache-control":"no-store"}});
 const fail=(m,s=400)=>json({error:m},s);
 const safeName=v=>String(v||"").trim().replace(/[<>]/g,"").slice(0,24);
+const photo=v=>typeof v==="string"&&v.length<100000&&/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(v)?v:"";
 const newToken=()=>Array.from(crypto.getRandomValues(new Uint8Array(20)),x=>x.toString(16).padStart(2,"0")).join("");
-const visible=(r,t)=>({code:r.code,hostId:r.hostId,players:r.players.map(p=>({id:p.id,name:p.name})),phase:r.phase,round:r.round,card:r.card,ballotsCount:Object.keys(r.ballots).length,scores:r.scores||{},lastAward:r.lastAward||{},gameFinished:!!r.gameFinished,maxRounds:10,ballots:r.phase==="results"?r.ballots:{},selfId:r.players.find(p=>p.token===t)?.id||null,isHost:r.players.some(p=>p.token===t&&p.id===r.hostId),updatedAt:r.updatedAt});
+const visible=(r,t)=>({messages:r.messages||[],deadline:r.deadline||null,myVote:r.ballots[r.players.find(p=>p.token===t)?.id]||null,code:r.code,hostId:r.hostId,players:r.players.map(p=>({id:p.id,name:p.name,photo:p.photo||""})),phase:r.phase,round:r.round,card:r.card,ballotsCount:Object.keys(r.ballots).length,scores:r.scores||{},lastAward:r.lastAward||{},gameFinished:!!r.gameFinished,maxRounds:10,ballots:r.phase==="results"?r.ballots:{},selfId:r.players.find(p=>p.token===t)?.id||null,isHost:r.players.some(p=>p.token===t&&p.id===r.hostId),updatedAt:r.updatedAt});
 export class PartyRoom {
  constructor(state,env){this.state=state;this.env=env}
  async fetch(req){
@@ -14,7 +15,7 @@ export class PartyRoom {
    if(!name)return fail("Нэрээ оруулна уу.");
    if(r&&Date.now()-r.updatedAt<=86400000)return fail("Энэ код ашиглагдсан байна.",409);
    const t=newToken(),id=newToken().slice(0,12);
-   r={code,hostId:id,players:[{id,name,token:t}],phase:"lobby",round:0,card:null,ballots:{},scores:{[id]:0},lastAward:{},gameFinished:false,updatedAt:Date.now()};
+   r={code,hostId:id,players:[{id,name,token:t,photo:photo(d.photo)}],phase:"lobby",round:0,card:null,ballots:{},scores:{[id]:0},lastAward:{},gameFinished:false,updatedAt:Date.now()};
    await this.state.storage.put("room",r);
    return json({token:t,room:visible(r,t)},201);
   }
@@ -25,7 +26,7 @@ export class PartyRoom {
    if(r.phase==="closed")return fail("Өрөө хаагдсан байна.",410);
    if(r.players.length>=12)return fail("Өрөө дүүрсэн байна.",409);
    const t=newToken(),id=newToken().slice(0,12);
-   r.players.push({id,name,token:t});r.scores=r.scores||{};r.scores[id]=0;r.updatedAt=Date.now();
+   r.players.push({id,name,token:t,photo:photo(d.photo)});r.scores=r.scores||{};r.scores[id]=0;r.updatedAt=Date.now();
    await this.state.storage.put("room",r);return json({token:t,room:visible(r,t)});
   }
   const t=(req.headers.get("authorization")||"").replace(/^Bearer\s+/i,"");
@@ -35,7 +36,10 @@ export class PartyRoom {
   if(req.method!=="POST"||action!=="action")return fail("Үйлдэл олдсонгүй.",404);
   const d=await req.json().catch(()=>({})),host=player.id===r.hostId;
   r.scores=r.scores||{};r.lastAward=r.lastAward||{};
-  if(d.type==="start"||d.type==="next"){
+  if(d.type==="chat"||d.type==="reaction"){
+ const msg=String(d.text||"").trim().slice(0,240);if(!msg)return fail("Зурвас хоосон байна.");
+ r.messages=[...(r.messages||[]),{id:newToken().slice(0,12),playerId:player.id,text:msg,kind:d.type,at:Date.now()}].slice(-60);
+ }else if(d.type==="start"||d.type==="next"){
    if(!host)return fail("Зөвхөн өрөөний эзэн раунд эхлүүлнэ.",403);
    if(r.gameFinished||r.round>=10)return fail("10 раунд дууссан. Шинээр эхлүүлээрэй.",409);
    if(r.phase==="voting")return fail("Эхлээд үр дүнг нээнэ үү.",409);
@@ -44,20 +48,20 @@ export class PartyRoom {
    const opts=d.mode==="choice"?d.options:r.players.map(p=>({id:p.id,label:p.name}));
    if(!Array.isArray(opts)||opts.length<2||opts.length>12)return fail("Сонголтын тоо буруу байна.");
    if(d.mode==="choice"&&opts.some(o=>!o||typeof o.label!=="string"||!o.label.trim()))return fail("Сонголт буруу байна.");
-   r.round++;r.phase="voting";r.ballots={};r.lastAward={};
+   r.round++;r.deadline=Date.now()+30000;r.phase="voting";r.ballots={};r.lastAward={};
    r.card={mode:d.mode,prompt:d.prompt.trim(),options:opts.map((o,i)=>({id:String(o.id??i).slice(0,20),label:String(o.label||"").slice(0,110)}))};
   }else if(d.type==="vote"){
-   if(r.phase!=="voting")return fail("Санал хураалт дууссан байна.",409);
+   if(r.phase!=="voting"||Date.now()>(r.deadline||Infinity))return fail("Санал хураалт дууссан байна.",409);
    const opt=r.card?.options?.find(o=>o.id===String(d.optionId));if(!opt)return fail("Сонголт олдсонгүй.");
    r.ballots[player.id]=opt.id;
   }else if(d.type==="reveal"){
    if(!host)return fail("Зөвхөн өрөөний эзэн үр дүнг нээнэ.",403);
    if(r.phase!=="voting")return fail("Одоо санал хураалт байхгүй.");
-   if(!Object.keys(r.ballots).length)return fail("Эхлээд санал өгнө үү.",409);
+   if(!Object.keys(r.ballots).length&&Date.now()<(r.deadline||Infinity))return fail("Эхлээд санал өгнө үү.",409);
    const counts=Object.fromEntries(r.card.options.map(o=>[o.id,0]));
    for(const v of Object.values(r.ballots))if(Object.hasOwn(counts,v))counts[v]++;
    const best=Math.max(0,...Object.values(counts));
-   const winners=r.card.options.filter(o=>counts[o.id]===best).map(o=>o.id);
+   const winners=best===0?[]:r.card.options.filter(o=>counts[o.id]===best).map(o=>o.id);
    const award={};
    for(const id of Object.keys(r.ballots))award[id]=(award[id]||0)+1;
    if(r.card.mode==="who"){
