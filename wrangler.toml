@@ -16,3 +16,9 @@ class_name = "PartyRoom"
 [[migrations]]
 tag = "room-v1"
 new_sqlite_classes = ["PartyRoom"]
+
+[previews]
+
+[[previews.durable_objects.bindings]]
+name = "ROOMS"
+class_name = "PartyRoom"
